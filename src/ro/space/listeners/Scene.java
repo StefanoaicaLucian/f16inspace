@@ -13,10 +13,8 @@ public class Scene {
 
   private List<GraphicObject> objectsToDraw = new ArrayList<>();
 
-  private GraphicObjectBuilder objectBuilder;
-
   public Scene(GL2 gl) {
-    objectBuilder = new GraphicObjectBuilder(gl);
+    GraphicObjectBuilder objectBuilder = new GraphicObjectBuilder(gl);
 
     objectsToDraw.add(objectBuilder.buildFloor());
     objectsToDraw.add(objectBuilder.buildJetPlane());

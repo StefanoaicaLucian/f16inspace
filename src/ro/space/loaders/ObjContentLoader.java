@@ -1,5 +1,5 @@
 
-package ro.space.contents;
+package ro.space.loaders;
 
 import static javax.media.opengl.GL.GL_ARRAY_BUFFER;
 import static javax.media.opengl.GL.GL_ELEMENT_ARRAY_BUFFER;
@@ -10,6 +10,8 @@ import static javax.media.opengl.fixedfunc.GLPointerFunc.GL_TEXTURE_COORD_ARRAY;
 import static javax.media.opengl.fixedfunc.GLPointerFunc.GL_VERTEX_ARRAY;
 
 import javax.media.opengl.GL2;
+
+import ro.space.contents.ObjContent;
 
 
 public class ObjContentLoader {

@@ -16,11 +16,11 @@ import com.jogamp.opengl.util.FPSAnimator;
 
 public class Application {
 
-  private GLCanvas canvas;
-  private JFrame frame;
+  private GLCanvas canvas = new GLCanvas();
+  private JFrame frame = new JFrame();
 
   private KeyboardListener keyListener;
-  private GraphicListener graphicalListener;
+  private GraphicListener graphicListener;
 
   private FPSAnimator animator;
 
@@ -30,11 +30,8 @@ public class Application {
 
   public Application() {
 
-    canvas = new GLCanvas();
-    frame = new JFrame();
-
     keyListener = new KeyboardListener();
-    graphicalListener = new GraphicListener(keyListener);
+    graphicListener = new GraphicListener(keyListener);
 
     animator = new FPSAnimator(canvas, Numbers.FPS.getValue(), true);
 
@@ -49,14 +46,14 @@ public class Application {
 
     canvas.setPreferredSize(preferredSize);
 
-    keyListener.setSceneHandler(graphicalListener);
+    keyListener.setSceneHandler(graphicListener);
 
     canvas.addKeyListener(keyListener);
 
     canvas.setFocusable(true);
     canvas.requestFocus();
 
-    canvas.addGLEventListener(graphicalListener);
+    canvas.addGLEventListener(graphicListener);
 
     frame.getContentPane().add(canvas);
 

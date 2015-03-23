@@ -7,9 +7,9 @@ import com.jogamp.opengl.util.texture.Texture;
 
 import ro.space.contents.MtlContent;
 import ro.space.contents.ObjContent;
-import ro.space.contents.ObjContentLoader;
 import ro.space.display.GraphicComponent;
 import ro.space.loaders.BufferIdGenerator;
+import ro.space.loaders.ObjContentLoader;
 import ro.space.parsers.MtlFileParser;
 import ro.space.parsers.ObjFileParser;
 import ro.space.parsers.TextureParser;

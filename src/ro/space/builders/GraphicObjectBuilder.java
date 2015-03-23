@@ -16,7 +16,6 @@ public class GraphicObjectBuilder {
     this.gl = gl;
     
     componentBuilder = new GraphicComponentBuilder(gl);
-    
   }
 
   public GraphicObject buildJetPlane() {
