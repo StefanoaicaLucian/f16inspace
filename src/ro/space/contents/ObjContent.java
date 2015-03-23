@@ -20,6 +20,8 @@ public class ObjContent {
   private FloatBuffer normalBufferData;
   private IntBuffer elementBufferData;
 
+  private String mtlFileName;
+
   public int getVaoID() {
     return vaoID;
   }
@@ -110,5 +112,13 @@ public class ObjContent {
 
   public void setElementBufferID(int elementBufferID) {
     this.elementBufferID = elementBufferID;
+  }
+
+  public String getMtlFileName() {
+    return mtlFileName;
+  }
+
+  public void setMtlFileName(String mtlFileName) {
+    this.mtlFileName = mtlFileName;
   }
 }

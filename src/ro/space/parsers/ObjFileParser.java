@@ -20,8 +20,6 @@ public class ObjFileParser extends Parser {
 
   private int currentVertexIndex = 0;
 
-  private String mtlFileName;
-
   public ObjFileParser(String filesLocation) {
     super(filesLocation);
   }
@@ -31,6 +29,8 @@ public class ObjFileParser extends Parser {
 
     readLines(objFileName);
 
+    ObjContent result = new ObjContent();
+
     for (String line : lines) {
 
       String[] splitedLine = line.split("\\s+");
@@ -38,7 +38,7 @@ public class ObjFileParser extends Parser {
       switch (splitedLine[0]) {
 
         case "mtllib":
-          mtlFileName = splitedLine[1];
+          result.setMtlFileName(splitedLine[1]);
           break;
 
         case "v":
@@ -60,8 +60,6 @@ public class ObjFileParser extends Parser {
           break;
       }
     }
-
-    ObjContent result = new ObjContent();
 
     putDataInTarget(result);
 
@@ -218,10 +216,5 @@ public class ObjFileParser extends Parser {
       vertexIndices.add(currentVertexIndex);
       ++currentVertexIndex;
     }
-  }
-
-  //new methods
-  public String getMtlFileName() {
-    return mtlFileName;
   }
 }

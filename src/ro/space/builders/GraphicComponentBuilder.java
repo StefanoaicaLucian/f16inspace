@@ -35,9 +35,10 @@ public class GraphicComponentBuilder {
 
     ObjContent objContent = objParser.fetchContent(objFileName);
     generator.injectIds(objContent);
+
     objLoader.loadInVideoCard(objContent);
 
-    MtlContent mtlContent = mtlParser.fetchContent(objParser.getMtlFileName());
+    MtlContent mtlContent = mtlParser.fetchContent(objContent.getMtlFileName());
 
     Texture texture = textureParser.createTexture(textureFileName, ".png");
 
