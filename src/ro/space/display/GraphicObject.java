@@ -21,10 +21,6 @@ public class GraphicObject {
 
   private ArrayList<GraphicComponent> components = new ArrayList<>();
 
-  private float movementStep = 0.01f;
-
-  private float zValue = 0.0f;
-
   public GraphicObject(GL2 gl) {
     this.gl = gl;
   }
@@ -36,7 +32,7 @@ public class GraphicObject {
   public void draw() {
     gl.glPushMatrix();
 
-    gl.glTranslatef(3.0f, 0.2f, zValue);
+    // gl.glTranslatef(10.0f, 5.0f, -5.0f);
 
     //    gl.glRotatef(180, 0.0f, 1.0f, 0.0f);
 
@@ -48,7 +44,6 @@ public class GraphicObject {
     }
     gl.glPopMatrix();
 
-    zValue += movementStep;
   }
 
   protected void enableMaterial(MtlContent theMaterial) {
