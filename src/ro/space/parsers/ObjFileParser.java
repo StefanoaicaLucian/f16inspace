@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ro.space.contents.ObjContent;
+import ro.space.utils.Converter;
 import ro.space.wavefront.Vertex;
 import ro.space.wavefront.VertexIndices;
 
@@ -97,34 +98,13 @@ public class ObjFileParser extends Parser {
       normalBuffer.add(tempVertex.getNormalZ());
     }
 
-    target.setVertexBufferData(convertToFloatArray(positionBuffer));
+    target.setVertexBufferData(Converter.convertToFloatArray(positionBuffer));
 
-    target.setTextureBufferData(convertToFloatArray(textureBuffer));
+    target.setTextureBufferData(Converter.convertToFloatArray(textureBuffer));
 
-    target.setNormalBufferData(convertToFloatArray(normalBuffer));
+    target.setNormalBufferData(Converter.convertToFloatArray(normalBuffer));
 
-    target.setElementBufferData(convertToIntArray(vertexIndices));
-  }
-
-  private float[] convertToFloatArray(ArrayList<Float> container) {
-    float[] bucket = new float[container.size()];
-
-    int i = 0;
-    for (float val : container) {
-      bucket[i] = val;
-      ++i;
-    }
-    return bucket;
-  }
-
-  private int[] convertToIntArray(ArrayList<Integer> container) {
-    int[] bucket = new int[container.size()];
-    int i = 0;
-    for (int val : container) {
-      bucket[i] = val;
-      ++i;
-    }
-    return bucket;
+    target.setElementBufferData(Converter.convertToIntArray(vertexIndices));
   }
 
   private void putLineDataIntoList(String[] splitedLine, ArrayList<Float> targetList) {

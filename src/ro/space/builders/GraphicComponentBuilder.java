@@ -34,6 +34,7 @@ public class GraphicComponentBuilder {
   public GraphicComponent buildComponent(String objFileName, String textureFileName) {
 
     ObjContent objContent = objParser.fetchContent(objFileName);
+    
     generator.injectIds(objContent);
 
     objLoader.loadInVideoCard(objContent);
