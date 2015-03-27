@@ -8,17 +8,15 @@ import java.util.ArrayList;
 
 public class Parser {
 
-  protected ArrayList<String> lines;
-
   private String filesLocation;
 
   protected Parser(String filesLocation) {
     this.filesLocation = filesLocation;
   }
 
-  protected void readLines(String fileName) {
+  protected ArrayList<String> readLines(String fileName) {
 
-    lines = new ArrayList<>();
+    ArrayList<String> lines = new ArrayList<>();
 
     String dataSource = filesLocation + fileName;
 
@@ -39,5 +37,7 @@ public class Parser {
     } catch (Exception e) {
       System.out.println(e.toString());
     }
+    
+    return lines;
   }
 }

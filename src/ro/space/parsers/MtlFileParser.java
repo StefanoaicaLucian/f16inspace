@@ -1,6 +1,8 @@
 
 package ro.space.parsers;
 
+import java.util.ArrayList;
+
 import ro.space.contents.MtlContent;
 
 public class MtlFileParser extends Parser {
@@ -16,7 +18,7 @@ public class MtlFileParser extends Parser {
 
   public MtlContent fetchContent(String file) {
 
-    readLines(file);
+    ArrayList<String> lines = readLines(file);
 
     for (String line : lines) {
 

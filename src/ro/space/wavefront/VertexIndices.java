@@ -24,9 +24,4 @@ public class VertexIndices {
   public int getNormalIndex() {
     return normalIndex;
   }
-
-  @Override
-  public String toString() {
-    return "VertexIndices [positionIndex=" + positionIndex + ", textureIndex=" + textureIndex + ", normalIndex=" + normalIndex + "]";
-  }
 }
