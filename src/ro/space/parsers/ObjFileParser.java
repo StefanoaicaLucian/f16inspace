@@ -18,6 +18,7 @@ public class ObjFileParser extends Parser {
   private List<Float> texturesBuffer = new ArrayList<>();
 
   private Map<Integer, Vertex> outputVertices = new HashMap<>();
+  
   private ArrayList<Integer> vertexIndices = new ArrayList<>();
 
   private int currentVertexIndex = 0;
