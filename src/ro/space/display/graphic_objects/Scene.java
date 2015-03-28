@@ -1,24 +1,27 @@
 
 package ro.space.display.graphic_objects;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.media.opengl.GL2;
 
 import ro.space.load.builders.GraphicObjectBuilder;
 
 public class Scene {
 
-  private JetPlane thePlane;
-  private GraphicObject theFloor;
-  
+  private List<GraphicObject> objects = new ArrayList<>();
+
   public Scene(GL2 gl) {
     GraphicObjectBuilder objectBuilder = new GraphicObjectBuilder(gl);
-    
-    thePlane = objectBuilder.buildJetPlane();
-    theFloor = objectBuilder.buildFloor();
+
+    objects.add(objectBuilder.buildJetPlane());
+    objects.add(objectBuilder.buildFloor());
   }
 
   public void draw() {
-    thePlane.display();
-    theFloor.draw();
+    for (GraphicObject obj : objects) {
+      obj.display();
+    }
   }
 }

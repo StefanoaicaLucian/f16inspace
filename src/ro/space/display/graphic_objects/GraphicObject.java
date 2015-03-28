@@ -15,7 +15,7 @@ import javax.media.opengl.GL2;
 
 import ro.space.load.contents.MtlContent;
 
-public class GraphicObject {
+public abstract class GraphicObject {
 
   protected GL2 gl;
 
@@ -37,6 +37,8 @@ public class GraphicObject {
       gl.glDrawElements(GL_TRIANGLES, component.getTotalElements(), GL_UNSIGNED_INT, 0);
     }
   }
+
+  protected abstract void display();
 
   protected void enableMaterial(MtlContent theMaterial) {
 
