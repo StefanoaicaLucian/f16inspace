@@ -17,7 +17,7 @@ import ro.space.load.contents.MtlContent;
 
 public class GraphicObject {
 
-  private GL2 gl;
+  protected GL2 gl;
 
   private ArrayList<GraphicComponent> components = new ArrayList<>();
 
@@ -29,21 +29,13 @@ public class GraphicObject {
     components.add(component);
   }
 
-  public void draw() {
-    gl.glPushMatrix();
-
-    // gl.glTranslatef(10.0f, 5.0f, -5.0f);
-
-    //    gl.glRotatef(180, 0.0f, 1.0f, 0.0f);
-
+  protected void draw() {
     for (GraphicComponent component : components) {
       enableMaterial(component.getMaterial());
       component.getTexture().bind(gl);
       gl.glBindVertexArray(component.getVertexArrayObjectId());
       gl.glDrawElements(GL_TRIANGLES, component.getTotalElements(), GL_UNSIGNED_INT, 0);
     }
-    gl.glPopMatrix();
-
   }
 
   protected void enableMaterial(MtlContent theMaterial) {

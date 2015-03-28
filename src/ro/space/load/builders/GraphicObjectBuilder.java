@@ -5,6 +5,7 @@ import javax.media.opengl.GL2;
 
 import ro.space.display.graphic_objects.GraphicComponent;
 import ro.space.display.graphic_objects.GraphicObject;
+import ro.space.display.graphic_objects.JetPlane;
 
 public class GraphicObjectBuilder {
 
@@ -18,9 +19,9 @@ public class GraphicObjectBuilder {
     componentBuilder = new GraphicComponentBuilder(gl);
   }
 
-  public GraphicObject buildJetPlane() {
+  public JetPlane buildJetPlane() {
 
-    GraphicObject jetPlane = new GraphicObject(gl);
+    JetPlane jetPlane = new JetPlane(gl);
 
     jetPlane.addComponent(componentBuilder.buildComponent("bodyMat.obj", "camo.png"));
     jetPlane.addComponent(componentBuilder.buildComponent("bombsMat.obj", "metal.png"));

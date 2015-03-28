@@ -6,6 +6,7 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
 
+import ro.space.display.graphic_objects.Scene;
 import ro.space.display.lights.LightHandler;
 
 import static javax.media.opengl.GL.*;
