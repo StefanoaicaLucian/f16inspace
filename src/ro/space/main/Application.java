@@ -6,11 +6,11 @@ import java.awt.Dimension;
 import javax.media.opengl.awt.GLCanvas;
 import javax.swing.JFrame;
 
-import ro.space.constants.Numbers;
-import ro.space.constants.Strings;
-import ro.space.listeners.KeyboardListener;
-import ro.space.listeners.GraphicListener;
-import ro.space.stop.AnimatorStopper;
+import ro.space.display.listeners.GraphicListener;
+import ro.space.display.listeners.KeyboardListener;
+import ro.space.util.constants.Numbers;
+import ro.space.util.constants.Strings;
+import ro.space.util.stop.AnimatorStopper;
 
 import com.jogamp.opengl.util.FPSAnimator;
 
