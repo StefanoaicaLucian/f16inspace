@@ -6,9 +6,8 @@ import java.util.List;
 
 import javax.media.opengl.GL2;
 
-import com.pp.particles.FireSystem;
-import com.pp.particles.ParticleSystem;
-
+import ro.space.display.particles.FireSystem;
+import ro.space.display.particles.ParticleSystem;
 import ro.space.load.builders.GraphicObjectBuilder;
 
 public class Scene {
@@ -23,6 +22,7 @@ public class Scene {
     objects.add(objectBuilder.buildFloor());
 
     fireSystem = new FireSystem(gl);
+
   }
 
   public void draw() {

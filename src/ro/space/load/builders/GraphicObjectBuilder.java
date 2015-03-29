@@ -5,7 +5,6 @@ import javax.media.opengl.GL2;
 
 import ro.space.display.graphic_objects.Floor;
 import ro.space.display.graphic_objects.GraphicComponent;
-import ro.space.display.graphic_objects.GraphicObject;
 import ro.space.display.graphic_objects.JetPlane;
 
 public class GraphicObjectBuilder {
@@ -16,7 +15,7 @@ public class GraphicObjectBuilder {
 
   public GraphicObjectBuilder(GL2 gl) {
     this.gl = gl;
-    
+
     componentBuilder = new GraphicComponentBuilder(gl);
   }
 
@@ -31,11 +30,11 @@ public class GraphicObjectBuilder {
     return jetPlane;
   }
 
-  public GraphicObject buildFloor() {
+  public Floor buildFloor() {
     Floor floor = new Floor(gl);
 
     GraphicComponent component = componentBuilder.buildComponent("floor.obj", "floor.png");
-    
+
     floor.addComponent(component);
 
     return floor;

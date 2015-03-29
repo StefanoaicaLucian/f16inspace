@@ -1,5 +1,5 @@
 
-package com.pp.particles;
+package ro.space.display.particles;
 
 import java.util.ArrayList;
 import java.util.Iterator;

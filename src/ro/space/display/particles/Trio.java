@@ -1,4 +1,4 @@
-package com.pp.particles;
+package ro.space.display.particles;
 
 public class Trio {
 

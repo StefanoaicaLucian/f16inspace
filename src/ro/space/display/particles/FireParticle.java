@@ -1,5 +1,5 @@
 
-package com.pp.particles;
+package ro.space.display.particles;
 
 import static javax.media.opengl.GL.GL_TRIANGLE_STRIP;
 
@@ -24,7 +24,7 @@ public class FireParticle extends Particle {
   public void update() {
     speed.add(acceleration);
     location.add(speed);
-    lifespan -= 0.1f;
+    lifespan -= 0.01f;
   }
 
   @Override

@@ -1,5 +1,5 @@
 
-package com.pp.particles;
+package ro.space.display.particles;
 
 import static javax.media.opengl.GL.GL_LINEAR;
 import static javax.media.opengl.GL.GL_TEXTURE_2D;

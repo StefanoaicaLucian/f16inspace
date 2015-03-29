@@ -1,6 +1,8 @@
 
 package ro.space.display.listeners;
 
+import static javax.media.opengl.GL2.*;
+
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
@@ -8,9 +10,6 @@ import javax.media.opengl.glu.GLU;
 
 import ro.space.display.graphic_objects.Scene;
 import ro.space.display.lights.LightHandler;
-
-import static javax.media.opengl.GL.*;
-import static javax.media.opengl.GL2.*;
 
 public class GraphicListener implements GLEventListener {
 
@@ -53,10 +52,12 @@ public class GraphicListener implements GLEventListener {
     gl.glDepthFunc(GL_LEQUAL);
     gl.glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
+    gl.glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
+
     gl.glShadeModel(GL_SMOOTH);
 
     gl.glEnable(GL_BLEND);
-    gl.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    gl.glBlendFunc(GL_SRC_ALPHA, GL_ONE);
     gl.glEnable(GL_LINE_SMOOTH);
 
     lighter = new LightHandler(gl);
