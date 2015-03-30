@@ -5,20 +5,31 @@ import static javax.media.opengl.GL.GL_TRIANGLE_STRIP;
 
 import javax.media.opengl.GL2;
 
+import com.jogamp.opengl.util.texture.Texture;
+import com.jogamp.opengl.util.texture.TextureCoords;
+
 public class FireParticle extends Particle {
 
   private GL2 gl;
 
-  private float texLeft;
-  private float texRight;
-  private float texTop;
-  private float texBottom;
+  private Texture texture;
 
-  public FireParticle(GL2 gl, Trio location, Trio speed, Trio acceleration) {
+  private float left;
+  private float right;
+  private float top;
+  private float bottom;
 
+  public FireParticle(GL2 gl, Trio location, Trio speed, Trio acceleration, Texture texture) {
     super(location, speed, acceleration);
-
     this.gl = gl;
+    this.texture = texture;
+
+    TextureCoords textureCoords = this.texture.getImageTexCoords();
+
+    top = textureCoords.top();
+    bottom = textureCoords.bottom();
+    left = textureCoords.left();
+    right = textureCoords.right();
   }
 
   public void update() {
@@ -34,13 +45,13 @@ public class FireParticle extends Particle {
 
     gl.glBegin(GL_TRIANGLE_STRIP);
 
-    drawVertex(texLeft, texTop, location.getX() - 0.025f, location.getY() + 0.025f, location.getZ());
+    drawVertex(left, top, location.getX() - 0.025f, location.getY() + 0.025f, location.getZ());
 
-    drawVertex(texRight, texTop, location.getX() + 0.025f, location.getY() + 0.025f, location.getZ());
+    drawVertex(right, top, location.getX() + 0.025f, location.getY() + 0.025f, location.getZ());
 
-    drawVertex(texLeft, texBottom, location.getX() - 0.025f, location.getY() - 0.025f, location.getZ());
+    drawVertex(left, bottom, location.getX() - 0.025f, location.getY() - 0.025f, location.getZ());
 
-    drawVertex(texRight, texBottom, location.getX() + 0.025f, location.getY() - 0.025f, location.getZ());
+    drawVertex(right, bottom, location.getX() + 0.025f, location.getY() - 0.025f, location.getZ());
 
     gl.glEnd();
   }
@@ -49,21 +60,5 @@ public class FireParticle extends Particle {
 
     gl.glTexCoord2d(texCoordU, texCoordV);
     gl.glVertex3f(x, y, z);
-  }
-
-  public void setTexLeft(float texLeft) {
-    this.texLeft = texLeft;
-  }
-
-  public void setTexRight(float texRight) {
-    this.texRight = texRight;
-  }
-
-  public void setTexTop(float texTop) {
-    this.texTop = texTop;
-  }
-
-  public void setTexBottom(float texBottom) {
-    this.texBottom = texBottom;
   }
 }

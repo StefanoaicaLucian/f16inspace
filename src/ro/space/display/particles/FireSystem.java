@@ -3,22 +3,28 @@ package ro.space.display.particles;
 
 import java.util.Random;
 import javax.media.opengl.GL2;
+
+import com.jogamp.opengl.util.texture.Texture;
+
+import ro.space.read.textures.TextureReader;
 import ro.space.util.constants.*;
 
 public class FireSystem extends ParticleSystem {
 
-  private TextureLoader texLoader;
+  private TextureReader reader;
 
   private Random generator = new Random();
 
   public FireSystem(GL2 gl) {
     this.gl = gl;
-    texLoader = new TextureLoader(this.gl);
+    reader = new TextureReader(this.gl, "res/");
   }
 
   protected void spawnParticles() {
 
-    texLoader.getTexture().bind(gl);
+    Texture texture = reader.createTexture("fireParticle.png", ".png");
+
+    // texture.bind(gl);
 
     for (int i = 0; i < Numbers.NUMBER_OF_PARTICLES.getValue(); ++i) {
 
@@ -26,12 +32,7 @@ public class FireSystem extends ParticleSystem {
       Trio speed = new Trio(0.0f, 1.0f / generator.nextInt(1000), 0.0f);
       Trio acceleration = new Trio(0.0f, 1.0f / generator.nextInt(1000), 0.0f);
 
-      FireParticle particle = new FireParticle(gl, loc, speed, acceleration);
-
-      particle.setTexLeft(texLoader.getTextureLeft());
-      particle.setTexRight(texLoader.getTextureRight());
-      particle.setTexTop(texLoader.getTextureTop());
-      particle.setTexBottom(texLoader.getTextureBottom());
+      FireParticle particle = new FireParticle(gl, loc, speed, acceleration, texture);
 
       particles.add(particle);
     }
