@@ -11,8 +11,6 @@ public class FireSystem extends ParticleSystem {
 
   private Random generator = new Random();
 
-  private GL2 gl;
-
   public FireSystem(GL2 gl) {
     this.gl = gl;
     texLoader = new TextureLoader(this.gl);
