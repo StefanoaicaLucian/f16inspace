@@ -1,5 +1,5 @@
 
-package ro.space.display.graphic_objects;
+package ro.space.build.graphic_objects;
 
 import javax.media.opengl.GL2;
 
@@ -12,15 +12,17 @@ public class JetPlane extends GraphicObject {
   public JetPlane(GL2 gl) {
     super(gl);
   }
-
-  public void display() {
+  
+  @Override
+  public void draw() {
 
     gl.glDisable(GL_BLEND);
 
     gl.glPushMatrix();
-
+    
+    gl.glTranslatef(0.0f, 0.0f, -12.0f);
     gl.glRotatef(rotationAngle, 0.0f, 1.0f, 0.0f);
-    draw();
+    commonDraw();
 
     gl.glPopMatrix();
 

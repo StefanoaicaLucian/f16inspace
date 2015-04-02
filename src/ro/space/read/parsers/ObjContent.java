@@ -1,5 +1,5 @@
 
-package ro.space.load.contents;
+package ro.space.read.parsers;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;

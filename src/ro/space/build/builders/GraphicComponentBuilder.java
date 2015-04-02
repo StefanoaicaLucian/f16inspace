@@ -1,16 +1,14 @@
 
-package ro.space.load.builders;
+package ro.space.build.builders;
 
 import javax.media.opengl.GL2;
 
 import com.jogamp.opengl.util.texture.Texture;
 
-import ro.space.display.graphic_objects.GraphicComponent;
-import ro.space.load.contents.MtlContent;
-import ro.space.load.contents.ObjContent;
-import ro.space.load.loaders.BufferIdGenerator;
-import ro.space.load.loaders.ObjContentLoader;
+import ro.space.build.graphic_components.GraphicComponent;
+import ro.space.build.graphic_components.Material;
 import ro.space.read.parsers.MtlFileParser;
+import ro.space.read.parsers.ObjContent;
 import ro.space.read.parsers.ObjFileParser;
 import ro.space.read.textures.TextureReader;
 
@@ -40,9 +38,9 @@ public class GraphicComponentBuilder {
 
     objLoader.loadInVideoCard(objContent);
 
-    MtlContent mtlContent = mtlParser.fetchContent(objContent.getMtlFileName());
+    Material mtlContent = mtlParser.fetchContent(objContent.getMtlFileName());
 
-    Texture texture = textureParser.createTexture(textureFileName, ".png");
+    Texture texture = textureParser.readTexture(textureFileName, ".png");
 
     return new GraphicComponent(objContent.getVaoID(), mtlContent, texture, objContent.getTotalElements());
   }

@@ -1,5 +1,5 @@
 
-package ro.space.display.graphic_objects;
+package ro.space.build.graphic_objects;
 
 import static javax.media.opengl.GL.GL_FRONT;
 import static javax.media.opengl.GL.GL_TRIANGLES;
@@ -13,7 +13,8 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL2;
 
-import ro.space.load.contents.MtlContent;
+import ro.space.build.graphic_components.GraphicComponent;
+import ro.space.build.graphic_components.Material;
 
 public abstract class GraphicObject {
 
@@ -29,7 +30,7 @@ public abstract class GraphicObject {
     components.add(component);
   }
 
-  protected void draw() {
+  protected void commonDraw() {
     for (GraphicComponent component : components) {
       enableMaterial(component.getMaterial());
       component.getTexture().bind(gl);
@@ -38,9 +39,9 @@ public abstract class GraphicObject {
     }
   }
 
-  protected abstract void display();
+  public abstract void draw();
 
-  protected void enableMaterial(MtlContent theMaterial) {
+  protected void enableMaterial(Material theMaterial) {
 
     gl.glMaterialfv(GL_FRONT, GL_DIFFUSE, theMaterial.getKd(), 0);
     gl.glMaterialfv(GL_FRONT, GL_SPECULAR, theMaterial.getKs(), 0);

@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import ro.space.load.contents.ObjContent;
 import ro.space.util.converters.ListConverter;
 
 public class ObjFileParser extends Parser {

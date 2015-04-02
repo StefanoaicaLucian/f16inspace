@@ -1,18 +1,18 @@
 
-package ro.space.display.graphic_objects;
+package ro.space.build.graphic_components;
+
 
 import com.jogamp.opengl.util.texture.Texture;
 
-import ro.space.load.contents.MtlContent;
 
 public class GraphicComponent {
 
   private int vertexArrayObjectId;
-  private MtlContent material;
+  private Material material;
   private Texture texture;
   private int totalElements;
 
-  public GraphicComponent(int vertexArrayObjectId, MtlContent material, Texture texture, int totalElements) {
+  public GraphicComponent(int vertexArrayObjectId, Material material, Texture texture, int totalElements) {
     this.vertexArrayObjectId = vertexArrayObjectId;
     this.material = material;
     this.texture = texture;
@@ -23,7 +23,7 @@ public class GraphicComponent {
     return vertexArrayObjectId;
   }
 
-  public MtlContent getMaterial() {
+  public Material getMaterial() {
     return material;
   }
 

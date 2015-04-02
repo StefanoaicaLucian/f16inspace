@@ -1,7 +1,7 @@
 
 package ro.space.display.particles;
 
-import static javax.media.opengl.GL.GL_TRIANGLE_STRIP;
+import static javax.media.opengl.GL.GL_TRIANGLES;
 
 import javax.media.opengl.GL2;
 
@@ -43,22 +43,35 @@ public class FireParticle extends Particle {
 
     gl.glColor4f(1.0f, 0.5f, 0.5f, lifespan);
 
-    gl.glBegin(GL_TRIANGLE_STRIP);
+    gl.glBegin(GL_TRIANGLES);
+    // front
+    drawVertex(right, bottom, location.getX() + 0.05f, location.getY() - 0.05f, location.getZ());
+    drawVertex(right, top, location.getX() + 0.05f, location.getY() + 0.05f, location.getZ());
+    drawVertex(left, bottom, location.getX() - 0.05f, location.getY() - 0.05f, location.getZ());
+    drawVertex(right, top, location.getX() + 0.05f, location.getY() + 0.05f, location.getZ());
+    drawVertex(left, top, location.getX() - 0.05f, location.getY() + 0.05f, location.getZ());
+    drawVertex(left, bottom, location.getX() - 0.05f, location.getY() - 0.05f, location.getZ());
 
-    drawVertex(left, top, location.getX() - 0.025f, location.getY() + 0.025f, location.getZ());
-
-    drawVertex(right, top, location.getX() + 0.025f, location.getY() + 0.025f, location.getZ());
-
-    drawVertex(left, bottom, location.getX() - 0.025f, location.getY() - 0.025f, location.getZ());
-
-    drawVertex(right, bottom, location.getX() + 0.025f, location.getY() - 0.025f, location.getZ());
-
+    // back
+    drawVertex(right, bottom, location.getX() + 0.05f, location.getY() - 0.05f, location.getZ());
+    drawVertex(right, top, location.getX() + 0.05f, location.getY() + 0.05f, location.getZ());
+    drawVertex(left, bottom, location.getX() - 0.05f, location.getY() - 0.05f, location.getZ());
+    drawVertex(left, bottom, location.getX() - 0.05f, location.getY() - 0.05f, location.getZ());
+    drawVertex(right, top, location.getX() + 0.05f, location.getY() + 0.05f, location.getZ());
+    drawVertex(left, top, location.getX() - 0.05f, location.getY() + 0.05f, location.getZ());
     gl.glEnd();
   }
 
   private void drawVertex(float texCoordU, float texCoordV, float x, float y, float z) {
-
     gl.glTexCoord2d(texCoordU, texCoordV);
     gl.glVertex3f(x, y, z);
+  }
+
+  public Texture getTexture() {
+    return texture;
+  }
+
+  public void setTexture(Texture texture) {
+    this.texture = texture;
   }
 }

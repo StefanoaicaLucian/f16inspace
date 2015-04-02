@@ -1,11 +1,10 @@
 
-package ro.space.load.builders;
+package ro.space.build.builders;
 
 import javax.media.opengl.GL2;
 
-import ro.space.display.graphic_objects.Floor;
-import ro.space.display.graphic_objects.GraphicComponent;
-import ro.space.display.graphic_objects.JetPlane;
+import ro.space.build.graphic_objects.Floor;
+import ro.space.build.graphic_objects.JetPlane;
 
 public class GraphicObjectBuilder {
 
@@ -15,12 +14,10 @@ public class GraphicObjectBuilder {
 
   public GraphicObjectBuilder(GL2 gl) {
     this.gl = gl;
-
     componentBuilder = new GraphicComponentBuilder(gl);
   }
 
   public JetPlane buildJetPlane() {
-
     JetPlane jetPlane = new JetPlane(gl);
 
     jetPlane.addComponent(componentBuilder.buildComponent("bodyMat.obj", "camo.png"));
@@ -33,9 +30,7 @@ public class GraphicObjectBuilder {
   public Floor buildFloor() {
     Floor floor = new Floor(gl);
 
-    GraphicComponent component = componentBuilder.buildComponent("floor.obj", "floor.png");
-
-    floor.addComponent(component);
+    floor.addComponent(componentBuilder.buildComponent("floor.obj", "floor.png"));
 
     return floor;
   }

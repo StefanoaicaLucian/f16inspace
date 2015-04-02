@@ -15,7 +15,7 @@ public abstract class ParticleSystem {
 
   protected GL2 gl;
 
-  public void display() {
+  public void draw() {
     gl.glEnable(GL_BLEND);
 
     spawnParticles();

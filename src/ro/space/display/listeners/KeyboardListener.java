@@ -1,9 +1,11 @@
 
 package ro.space.display.listeners;
 
+import static java.awt.event.KeyEvent.VK_A;
 import static java.awt.event.KeyEvent.VK_DOWN;
 import static java.awt.event.KeyEvent.VK_LEFT;
 import static java.awt.event.KeyEvent.VK_RIGHT;
+import static java.awt.event.KeyEvent.VK_S;
 import static java.awt.event.KeyEvent.VK_UP;
 
 import java.awt.event.KeyEvent;
@@ -67,6 +69,14 @@ public class KeyboardListener implements KeyListener {
         eyeX -= (targetX * fraction);
         eyeZ -= (targetZ * fraction);
         notifySceneHandler();
+        break;
+
+      case VK_A:
+        sceneHandler.enableCulling();
+        break;
+
+      case VK_S:
+        sceneHandler.disableCulling();
         break;
     }
   }

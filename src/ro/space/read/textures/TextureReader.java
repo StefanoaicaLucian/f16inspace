@@ -28,7 +28,7 @@ public class TextureReader {
     setGLTextureFlags();
   }
 
-  public Texture createTexture(String fileName, String fileType) {
+  public Texture readTexture(String fileName, String fileType) {
     try {
       String filePath = filesLocation + fileName;
 

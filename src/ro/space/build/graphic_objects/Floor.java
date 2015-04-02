@@ -1,5 +1,5 @@
 
-package ro.space.display.graphic_objects;
+package ro.space.build.graphic_objects;
 
 import javax.media.opengl.GL2;
 
@@ -10,12 +10,12 @@ public class Floor extends GraphicObject {
   }
 
   @Override
-  protected void display() {
+  public void draw() {
     gl.glPushMatrix();
 
     gl.glTranslatef(0.0f, -1.0f, 0.0f);
 
-    draw();
+    commonDraw();
     gl.glPopMatrix();
   }
 }

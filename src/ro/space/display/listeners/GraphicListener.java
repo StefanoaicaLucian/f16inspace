@@ -1,6 +1,8 @@
 
 package ro.space.display.listeners;
 
+import static javax.media.opengl.GL.GL_BACK;
+import static javax.media.opengl.GL.GL_CULL_FACE;
 import static javax.media.opengl.GL2.*;
 
 import javax.media.opengl.GL2;
@@ -8,12 +10,9 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
 
-import ro.space.display.graphic_objects.Scene;
-import ro.space.display.lights.LightHandler;
-
 public class GraphicListener implements GLEventListener {
 
-  private LightHandler lighter;
+  private LightKeeper lighter;
 
   private GLU glu;
 
@@ -46,7 +45,7 @@ public class GraphicListener implements GLEventListener {
     gl = drawable.getGL().getGL2();
     glu = new GLU();
 
-    gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+    gl.glClearColor(0.0f, 0.0f, 0.2f, 0.0f);
     gl.glClearDepth(1.0f);
     gl.glEnable(GL_DEPTH_TEST);
     gl.glDepthFunc(GL_LEQUAL);
@@ -56,15 +55,11 @@ public class GraphicListener implements GLEventListener {
 
     gl.glShadeModel(GL_SMOOTH);
 
-    gl.glEnable(GL_BLEND);
     gl.glBlendFunc(GL_SRC_ALPHA, GL_ONE);
     gl.glEnable(GL_LINE_SMOOTH);
 
-    lighter = new LightHandler(gl);
+    lighter = new LightKeeper(gl);
     lighter.setupLights();
-
-    gl.glEnable(GL_LIGHTING);
-    gl.glEnable(GL_LIGHT0);
 
     theScene = new Scene(gl);
   }
@@ -88,8 +83,18 @@ public class GraphicListener implements GLEventListener {
     gl.glLoadIdentity();
   }
 
+  private boolean culling = false;
+
   @Override
   public void display(GLAutoDrawable drawable) {
+
+    if (culling) {
+      gl.glEnable(GL_CULL_FACE);
+      gl.glCullFace(GL_BACK);
+    } else {
+      gl.glDisable(GL_CULL_FACE);
+    }
+
     gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     gl.glLoadIdentity();
@@ -125,5 +130,15 @@ public class GraphicListener implements GLEventListener {
       errString = glu.gluErrorString(errCode);
       System.err.println("OpenGL Error:" + errString);
     }
+  }
+
+  public void enableCulling() {
+    culling = true;
+    System.out.println("enableCulling");
+  }
+
+  public void disableCulling() {
+    culling = false;
+    System.out.println("disableCulling");
   }
 }

@@ -1,14 +1,14 @@
 
-package ro.space.load.contents;
+package ro.space.build.graphic_components;
 
-public class MtlContent {
+public class Material {
 
   private float ka[];
   private float kd[];
   private float ks[];
   private float ns[];
 
-  public MtlContent(float[] ka, float[] kd, float[] ks, float[] ns) {
+  public Material(float[] ka, float[] kd, float[] ks, float[] ns) {
     this.ka = ka;
     this.kd = kd;
     this.ks = ks;

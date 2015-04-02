@@ -3,7 +3,7 @@ package ro.space.read.parsers;
 
 import java.util.ArrayList;
 
-import ro.space.load.contents.MtlContent;
+import ro.space.build.graphic_components.Material;
 
 public class MtlFileParser extends Parser {
 
@@ -16,7 +16,7 @@ public class MtlFileParser extends Parser {
     super(mtlFileName);
   }
 
-  public MtlContent fetchContent(String file) {
+  public Material fetchContent(String file) {
 
     ArrayList<String> lines = readLines(file);
 
@@ -43,7 +43,7 @@ public class MtlFileParser extends Parser {
       }
     }
 
-    return new MtlContent(ka, kd, ks, ns);
+    return new Material(ka, kd, ks, ns);
   }
 
   private void putValues(String[] source, float target[]) {
