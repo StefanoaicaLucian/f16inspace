@@ -180,12 +180,10 @@ public class GraphicListener implements GLEventListener {
 
   public void enableCulling() {
     culling = true;
-    System.out.println("enableCulling");
   }
 
   public void disableCulling() {
     culling = false;
-    System.out.println("disableCulling");
   }
 
   private void drawBillboard(Trio positionVec, Trio upVec, Trio lookVec, int scale) {
@@ -200,12 +198,12 @@ public class GraphicListener implements GLEventListener {
     Trio rightPlusUp = Calculator.add(rightVec, upVec);
     Trio rightMinusUp = Calculator.subtract(rightVec, upVec);
 
-    Trio rightBottom = Calculator.subtract(positionVec, Calculator.scale(rightMinusUp, scale));
-    Trio rightTop = Calculator.subtract(positionVec, Calculator.scale(rightPlusUp, scale));
+    Trio rightBottom = Calculator.subtract(positionVec, Calculator.scale(rightPlusUp, scale));
     Trio leftBottom = Calculator.add(positionVec, Calculator.scale(rightMinusUp, scale));
     Trio leftTop = Calculator.add(positionVec, Calculator.scale(rightPlusUp, scale));
+    Trio rightTop = Calculator.subtract(positionVec, Calculator.scale(rightMinusUp, scale));
 
-    System.out.println(rightBottom + " / " + rightTop + " / " + leftBottom + " / " + leftTop);
+    // System.out.println(rightBottom + " / " + rightTop + " / " + leftBottom + " / " + leftTop);
 
     texture.bind(gl);
     gl.glDisable(GL_BLEND);

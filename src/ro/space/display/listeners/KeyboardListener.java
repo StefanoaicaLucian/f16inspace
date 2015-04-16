@@ -38,6 +38,8 @@ public class KeyboardListener implements KeyListener {
 
     angleStep = 0.1f;
     fraction = 0.1f;
+    
+    System.out.println("angle: " + angle);
   }
 
   @Override
@@ -120,6 +122,8 @@ public class KeyboardListener implements KeyListener {
   }
 
   private void notifySceneHandler() {
+    System.out.println("angle: " + angle);
+
     sceneHandler.updateKeyboardInputs(this);
   }
 }
