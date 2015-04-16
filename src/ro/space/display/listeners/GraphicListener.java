@@ -28,7 +28,6 @@ import javax.media.opengl.glu.GLU;
 
 import ro.space.display.particles.Trio;
 import ro.space.read.textures.TextureReader;
-import ro.space.util.algebra.Calculator;
 
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureCoords;
@@ -63,6 +62,8 @@ public class GraphicListener implements GLEventListener {
 
   private Trio up = new Trio(0.0f, 1.0f, 0.0f);
 
+  private double cameraAngle;
+
   public GraphicListener(KeyboardListener keyhandler) {
 
     eyeX = keyhandler.getEyeX();
@@ -83,7 +84,7 @@ public class GraphicListener implements GLEventListener {
 
     glu = new GLU();
 
-    gl.glClearColor(0.0f, 0.0f, 0.2f, 0.0f);
+    gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     gl.glClearDepth(1.0f);
     gl.glEnable(GL_DEPTH_TEST);
     gl.glDepthFunc(GL_LEQUAL);
@@ -146,7 +147,7 @@ public class GraphicListener implements GLEventListener {
 
     theScene.draw();
 
-    drawBillboard(new Trio(2.0f, 2.0f, -5.0f), new Trio(up.getX(), up.getY(), up.getZ()), new Trio(eyeX + targetX, targetY, eyeZ + targetZ), 1);
+    drawBillboard(new Trio(2.0f, 2.0f, -5.0f), 0.5f);
 
     catchGLError();
 
@@ -165,6 +166,8 @@ public class GraphicListener implements GLEventListener {
     targetX = (float) handler.getTargetX();
     targetY = (float) handler.getEyeY();
     targetZ = (float) handler.getTargetZ();
+
+    cameraAngle = handler.getAngle();
   }
 
   private void catchGLError() {
@@ -186,24 +189,36 @@ public class GraphicListener implements GLEventListener {
     culling = false;
   }
 
-  private void drawBillboard(Trio positionVec, Trio upVec, Trio lookVec, int scale) {
+  private void drawBillboard(Trio position, float particleSize) {
 
-    upVec = Calculator.normalize(upVec);
-    lookVec = Calculator.normalize(lookVec);
+    Trio leftBottom = new Trio(position.getX(), position.getY(), position.getZ());
+    Trio rightBottom = new Trio(position.getX(), position.getY(), position.getZ());
+    Trio rightTop = new Trio(position.getX(), position.getY(), position.getZ());
+    Trio leftTop = new Trio(position.getX(), position.getY(), position.getZ());
 
-    Trio rightVec = Calculator.cross(upVec, lookVec);
+    float sinSize = particleSize * (float) Math.sin(cameraAngle);
+    float cosSize = particleSize * (float) Math.cos(cameraAngle);
+    
+    Trio negativeSin = new Trio(-1 * sinSize, 0.0f, 0.0f);
+    rightBottom.add(negativeSin);
+    rightTop.add(negativeSin);
+    Trio positiveSin = new Trio(sinSize, 0.0f, 0.0f);
+    leftBottom.add(positiveSin);
+    leftTop.add(positiveSin);
 
-    rightVec = Calculator.normalize(rightVec);
+    Trio positiveCos = new Trio(0.0f, 0.0f, cosSize);
+    rightBottom.add(positiveCos);
+    rightTop.add(positiveCos);
+    Trio negativeCos = new Trio(0.0f, 0.0f, -1 * cosSize);
+    leftBottom.add(negativeCos);
+    leftTop.add(negativeCos);
 
-    Trio rightPlusUp = Calculator.add(rightVec, upVec);
-    Trio rightMinusUp = Calculator.subtract(rightVec, upVec);
-
-    Trio rightBottom = Calculator.subtract(positionVec, Calculator.scale(rightPlusUp, scale));
-    Trio leftBottom = Calculator.add(positionVec, Calculator.scale(rightMinusUp, scale));
-    Trio leftTop = Calculator.add(positionVec, Calculator.scale(rightPlusUp, scale));
-    Trio rightTop = Calculator.subtract(positionVec, Calculator.scale(rightMinusUp, scale));
-
-    // System.out.println(rightBottom + " / " + rightTop + " / " + leftBottom + " / " + leftTop);
+    Trio negativeSize = new Trio(0.0f, -1 * particleSize, 0.0f);
+    leftBottom.add(negativeSize);
+    rightBottom.add(negativeSize);
+    Trio positiveSize = new Trio(0.0f, particleSize, 0.0f);
+    leftTop.add(positiveSize);
+    rightTop.add(positiveSize);
 
     texture.bind(gl);
     gl.glDisable(GL_BLEND);
