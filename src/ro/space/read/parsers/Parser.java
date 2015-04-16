@@ -35,7 +35,7 @@ public class Parser {
       }
 
     } catch (Exception e) {
-      System.out.println(e.toString());
+      System.err.println(e.toString());
     }
     
     return lines;

@@ -2,13 +2,36 @@
 package ro.space.display.listeners;
 
 import static javax.media.opengl.GL.GL_BACK;
+import static javax.media.opengl.GL.GL_BLEND;
+import static javax.media.opengl.GL.GL_COLOR_BUFFER_BIT;
 import static javax.media.opengl.GL.GL_CULL_FACE;
-import static javax.media.opengl.GL2.*;
+import static javax.media.opengl.GL.GL_DEPTH_BUFFER_BIT;
+import static javax.media.opengl.GL.GL_DEPTH_TEST;
+import static javax.media.opengl.GL.GL_LEQUAL;
+import static javax.media.opengl.GL.GL_LINE_SMOOTH;
+import static javax.media.opengl.GL.GL_NICEST;
+import static javax.media.opengl.GL.GL_NO_ERROR;
+import static javax.media.opengl.GL.GL_ONE;
+import static javax.media.opengl.GL.GL_SRC_ALPHA;
+import static javax.media.opengl.GL.GL_TRIANGLE_STRIP;
+import static javax.media.opengl.GL.GL_VERSION;
+import static javax.media.opengl.GL2ES1.GL_PERSPECTIVE_CORRECTION_HINT;
+import static javax.media.opengl.GL2ES1.GL_POINT_SMOOTH_HINT;
+import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_SMOOTH;
+import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
+import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
+
+import ro.space.display.particles.Trio;
+import ro.space.read.textures.TextureReader;
+import ro.space.util.algebra.Calculator;
+
+import com.jogamp.opengl.util.texture.Texture;
+import com.jogamp.opengl.util.texture.TextureCoords;
 
 public class GraphicListener implements GLEventListener {
 
@@ -21,13 +44,24 @@ public class GraphicListener implements GLEventListener {
   private Scene theScene;
 
   // used by gluLookAt()
-  private double eyeX;
-  private double eyeY;
-  private double eyeZ;
+  private float eyeX = 0.0f;
+  private float eyeY = 0.0f;
+  private float eyeZ = 0.0f;
 
-  private double targetX;
-  private double targetY;
-  private double targetZ;
+  private float targetX;
+  private float targetY;
+  private float targetZ;
+
+  private float top;
+  private float bottom;
+  private float left;
+  private float right;
+
+  private Texture texture;
+
+  private boolean culling = true;
+
+  private Trio up = new Trio(0.0f, 1.0f, 0.0f);
 
   public GraphicListener(KeyboardListener keyhandler) {
 
@@ -35,14 +69,18 @@ public class GraphicListener implements GLEventListener {
     eyeY = keyhandler.getEyeY();
     eyeZ = keyhandler.getEyeZ();
 
-    targetX = keyhandler.getTargetX();
-    targetY = keyhandler.getEyeY();
-    targetZ = keyhandler.getTargetZ();
+    targetX = (float) keyhandler.getTargetX();
+    targetY = (float) keyhandler.getEyeY();
+    targetZ = (float) keyhandler.getTargetZ();
   }
 
   @Override
   public void init(GLAutoDrawable drawable) {
+
+    System.out.println(drawable.getGL().glGetString(GL_VERSION));
+
     gl = drawable.getGL().getGL2();
+
     glu = new GLU();
 
     gl.glClearColor(0.0f, 0.0f, 0.2f, 0.0f);
@@ -62,6 +100,14 @@ public class GraphicListener implements GLEventListener {
     lighter.setupLights();
 
     theScene = new Scene(gl);
+
+    texture = (new TextureReader(this.gl, "res/")).readTexture("anotherParticle2.png", ".png");
+    TextureCoords textureCoords = texture.getImageTexCoords();
+
+    top = textureCoords.top();
+    bottom = textureCoords.bottom();
+    left = textureCoords.left();
+    right = textureCoords.right();
   }
 
   @Override
@@ -83,8 +129,6 @@ public class GraphicListener implements GLEventListener {
     gl.glLoadIdentity();
   }
 
-  private boolean culling = false;
-
   @Override
   public void display(GLAutoDrawable drawable) {
 
@@ -98,9 +142,11 @@ public class GraphicListener implements GLEventListener {
     gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     gl.glLoadIdentity();
-    glu.gluLookAt(eyeX, eyeY, eyeZ, eyeX + targetX, targetY, eyeZ + targetZ, 0, 1, 0);
+    glu.gluLookAt(eyeX, eyeY, eyeZ, eyeX + targetX, targetY, eyeZ + targetZ, up.getX(), up.getY(), up.getZ());
 
     theScene.draw();
+
+    drawBillboard(new Trio(2.0f, 2.0f, -5.0f), new Trio(up.getX(), up.getY(), up.getZ()), new Trio(eyeX + targetX, targetY, eyeZ + targetZ), 1);
 
     catchGLError();
 
@@ -116,9 +162,9 @@ public class GraphicListener implements GLEventListener {
     eyeY = handler.getEyeY();
     eyeZ = handler.getEyeZ();
 
-    targetX = handler.getTargetX();
-    targetY = handler.getEyeY();
-    targetZ = handler.getTargetZ();
+    targetX = (float) handler.getTargetX();
+    targetY = (float) handler.getEyeY();
+    targetZ = (float) handler.getTargetZ();
   }
 
   private void catchGLError() {
@@ -140,5 +186,48 @@ public class GraphicListener implements GLEventListener {
   public void disableCulling() {
     culling = false;
     System.out.println("disableCulling");
+  }
+
+  private void drawBillboard(Trio positionVec, Trio upVec, Trio lookVec, int scale) {
+
+    upVec = Calculator.normalize(upVec);
+    lookVec = Calculator.normalize(lookVec);
+
+    Trio rightVec = Calculator.cross(upVec, lookVec);
+
+    rightVec = Calculator.normalize(rightVec);
+
+    Trio rightPlusUp = Calculator.add(rightVec, upVec);
+    Trio rightMinusUp = Calculator.subtract(rightVec, upVec);
+
+    Trio rightBottom = Calculator.subtract(positionVec, Calculator.scale(rightMinusUp, scale));
+    Trio rightTop = Calculator.subtract(positionVec, Calculator.scale(rightPlusUp, scale));
+    Trio leftBottom = Calculator.add(positionVec, Calculator.scale(rightMinusUp, scale));
+    Trio leftTop = Calculator.add(positionVec, Calculator.scale(rightPlusUp, scale));
+
+    System.out.println(rightBottom + " / " + rightTop + " / " + leftBottom + " / " + leftTop);
+
+    texture.bind(gl);
+    gl.glDisable(GL_BLEND);
+
+    gl.glPushMatrix();
+
+    gl.glBegin(GL_TRIANGLE_STRIP);
+
+    gl.glTexCoord2d(right, bottom);
+    gl.glVertex3f(rightBottom.getX(), rightBottom.getY(), rightBottom.getZ());
+
+    gl.glTexCoord2d(right, top);
+    gl.glVertex3f(rightTop.getX(), rightTop.getY(), rightTop.getZ());
+
+    gl.glTexCoord2d(left, bottom);
+    gl.glVertex3f(leftBottom.getX(), leftBottom.getY(), leftBottom.getZ());
+
+    gl.glTexCoord2d(left, top);
+    gl.glVertex3f(leftTop.getX(), leftTop.getY(), leftTop.getZ());
+
+    gl.glEnd();
+
+    gl.glPopMatrix();
   }
 }

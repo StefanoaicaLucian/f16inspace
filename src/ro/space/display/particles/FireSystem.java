@@ -22,7 +22,7 @@ public class FireSystem extends ParticleSystem {
 
   protected void spawnParticles() {
 
-    Texture texture = reader.readTexture("fireParticle.png", ".png");
+    Texture texture = reader.readTexture("anotherParticle.png", ".png");
 
     for (int i = 0; i < Numbers.NUMBER_OF_PARTICLES.getValue(); ++i) {
 

@@ -15,9 +15,9 @@ public class KeyboardListener implements KeyListener {
 
   private GraphicListener sceneHandler;
 
-  private double eyeX;
-  private double eyeY;
-  private double eyeZ;
+  private float eyeX;
+  private float eyeY;
+  private float eyeZ;
 
   private double targetX;
   private double targetY;
@@ -29,11 +29,11 @@ public class KeyboardListener implements KeyListener {
 
   public KeyboardListener() {
     eyeX = 0.0f;
-    eyeY = 1.0f;
-    eyeZ = 5.0f;
+    eyeY = 0.0f;
+    eyeZ = 0.0f;
 
     targetX = 0.0f;
-    targetY = 1.0f;
+    targetY = 0.0f;
     targetZ = -1.0f;
 
     angleStep = 0.1f;
@@ -91,15 +91,15 @@ public class KeyboardListener implements KeyListener {
     // unused
   }
 
-  public double getEyeX() {
+  public float getEyeX() {
     return eyeX;
   }
 
-  public double getEyeY() {
+  public float getEyeY() {
     return eyeY;
   }
 
-  public double getEyeZ() {
+  public float getEyeZ() {
     return eyeZ;
   }
 

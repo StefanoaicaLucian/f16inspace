@@ -41,7 +41,7 @@ public class TextureReader {
       return resultTexture;
 
     } catch (Exception e) {
-      System.out.println(e.toString());
+      System.err.println(e.toString());
       return null;
     }
   }

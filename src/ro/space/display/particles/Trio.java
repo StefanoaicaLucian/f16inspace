@@ -13,6 +13,19 @@ public class Trio {
     this.z = z;
   }
 
+  public Trio add(Trio vector) {
+    x += vector.getX();
+    y += vector.getY();
+    z += vector.getZ();
+
+    return this;
+  }
+
+  @Override
+  public String toString() {
+    return "Trio [x=" + x + ", y=" + y + ", z=" + z + "]";
+  }
+
   public float getX() {
     return x;
   }
@@ -23,11 +36,5 @@ public class Trio {
 
   public float getZ() {
     return z;
-  }
-
-  public void add(Trio trio) {
-    x += trio.getX();
-    y += trio.getY();
-    z += trio.getZ();
   }
 }
