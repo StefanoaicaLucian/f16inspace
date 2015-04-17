@@ -126,8 +126,6 @@ public class KeyboardListener implements KeyListener {
   }
 
   private void notifySceneHandler() {
-    System.out.println("angle: " + angle);
-
     sceneHandler.updateKeyboardInputs(this);
   }
 }

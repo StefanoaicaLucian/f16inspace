@@ -84,7 +84,7 @@ public class GraphicListener implements GLEventListener {
 
     glu = new GLU();
 
-    gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+    gl.glClearColor(0.0f, 0.0f, 0.2f, 0.0f);
     gl.glClearDepth(1.0f);
     gl.glEnable(GL_DEPTH_TEST);
     gl.glDepthFunc(GL_LEQUAL);
@@ -168,6 +168,14 @@ public class GraphicListener implements GLEventListener {
     targetZ = (float) handler.getTargetZ();
 
     cameraAngle = handler.getAngle();
+    System.out.println("cameraAngle: " + cameraAngle);
+
+    System.out.println("leftBottom: " + leftBottom);
+    System.out.println("rightBottom: " + rightBottom);
+    System.out.println("rightTop: " + rightTop);
+    System.out.println("leftTop: " + leftTop);
+
+    System.out.println("===========================================");
   }
 
   private void catchGLError() {
@@ -189,27 +197,32 @@ public class GraphicListener implements GLEventListener {
     culling = false;
   }
 
+  Trio leftBottom = new Trio(0.0f, 0.0f, 0.0f);
+  Trio rightBottom = new Trio(0.0f, 0.0f, 0.0f);
+  Trio rightTop = new Trio(0.0f, 0.0f, 0.0f);
+  Trio leftTop = new Trio(0.0f, 0.0f, 0.0f);
+
   private void drawBillboard(Trio position, float particleSize) {
 
-    Trio leftBottom = new Trio(position.getX(), position.getY(), position.getZ());
-    Trio rightBottom = new Trio(position.getX(), position.getY(), position.getZ());
-    Trio rightTop = new Trio(position.getX(), position.getY(), position.getZ());
-    Trio leftTop = new Trio(position.getX(), position.getY(), position.getZ());
+    leftBottom = new Trio(position.getX(), position.getY(), position.getZ());
+    rightBottom = new Trio(position.getX(), position.getY(), position.getZ());
+    rightTop = new Trio(position.getX(), position.getY(), position.getZ());
+    leftTop = new Trio(position.getX(), position.getY(), position.getZ());
 
     float sinSize = particleSize * (float) Math.sin(cameraAngle);
     float cosSize = particleSize * (float) Math.cos(cameraAngle);
-    
-    Trio negativeSin = new Trio(-1 * sinSize, 0.0f, 0.0f);
-    rightBottom.add(negativeSin);
-    rightTop.add(negativeSin);
-    Trio positiveSin = new Trio(sinSize, 0.0f, 0.0f);
-    leftBottom.add(positiveSin);
-    leftTop.add(positiveSin);
 
-    Trio positiveCos = new Trio(0.0f, 0.0f, cosSize);
+    Trio positiveSin = new Trio(0.0f, 0.0f, sinSize);
+    rightBottom.add(positiveSin);
+    rightTop.add(positiveSin);
+    Trio negativeSin = new Trio(0.0f, 0.0f, -1 * sinSize);
+    leftBottom.add(negativeSin);
+    leftTop.add(negativeSin);
+
+    Trio positiveCos = new Trio(cosSize, 0.0f, 0.0f);
     rightBottom.add(positiveCos);
     rightTop.add(positiveCos);
-    Trio negativeCos = new Trio(0.0f, 0.0f, -1 * cosSize);
+    Trio negativeCos = new Trio(-1 * cosSize, 0.0f, 0.0f);
     leftBottom.add(negativeCos);
     leftTop.add(negativeCos);
 
