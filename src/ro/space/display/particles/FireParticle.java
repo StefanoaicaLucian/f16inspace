@@ -1,7 +1,7 @@
 
 package ro.space.display.particles;
 
-import static javax.media.opengl.GL.GL_TRIANGLES;
+import static javax.media.opengl.GL.GL_TRIANGLE_STRIP;
 
 import java.util.Random;
 
@@ -25,8 +25,9 @@ public class FireParticle extends Particle {
 
   private float fadeUnit;
 
-  public FireParticle(GL2 gl, Trio location, Trio speed, Trio acceleration, Texture texture) {
+  public FireParticle(GL2 gl, Trio location, Trio speed, Trio acceleration, Texture texture, double angle) {
     super(location, speed, acceleration);
+    this.angle = angle;
     this.gl = gl;
     this.texture = texture;
 
@@ -36,7 +37,7 @@ public class FireParticle extends Particle {
     bottom = textureCoords.bottom();
     left = textureCoords.left();
     right = textureCoords.right();
-    
+
     fadeUnit = new Random().nextInt(100) / 1000.0f + 0.003f;
   }
 
@@ -48,33 +49,8 @@ public class FireParticle extends Particle {
 
   @Override
   public void draw() {
-
-    // radius
-
     gl.glColor4f(1.0f, 0.0f, 0.0f, lifespan);
-
-    gl.glBegin(GL_TRIANGLES);
-    // front
-    drawVertex(right, bottom, location.getX() + radius, location.getY() - radius, location.getZ());
-    drawVertex(right, top, location.getX() + radius, location.getY() + radius, location.getZ());
-    drawVertex(left, bottom, location.getX() - radius, location.getY() - radius, location.getZ());
-    drawVertex(right, top, location.getX() + radius, location.getY() + radius, location.getZ());
-    drawVertex(left, top, location.getX() - radius, location.getY() + radius, location.getZ());
-    drawVertex(left, bottom, location.getX() - radius, location.getY() - radius, location.getZ());
-
-    // back
-    drawVertex(right, bottom, location.getX() + radius, location.getY() - radius, location.getZ());
-    drawVertex(right, top, location.getX() + radius, location.getY() + radius, location.getZ());
-    drawVertex(left, bottom, location.getX() - radius, location.getY() - radius, location.getZ());
-    drawVertex(left, bottom, location.getX() - radius, location.getY() - radius, location.getZ());
-    drawVertex(right, top, location.getX() + radius, location.getY() + radius, location.getZ());
-    drawVertex(left, top, location.getX() - radius, location.getY() + radius, location.getZ());
-    gl.glEnd();
-  }
-
-  private void drawVertex(float texCoordU, float texCoordV, float x, float y, float z) {
-    gl.glTexCoord2d(texCoordU, texCoordV);
-    gl.glVertex3f(x, y, z);
+    drawBillboard(location, radius);
   }
 
   public Texture getTexture() {
@@ -83,5 +59,65 @@ public class FireParticle extends Particle {
 
   public void setTexture(Texture texture) {
     this.texture = texture;
+  }
+
+  Trio leftBottom = new Trio(0.0f, 0.0f, 0.0f);
+  Trio rightBottom = new Trio(0.0f, 0.0f, 0.0f);
+  Trio rightTop = new Trio(0.0f, 0.0f, 0.0f);
+  Trio leftTop = new Trio(0.0f, 0.0f, 0.0f);
+
+  private void drawBillboard(Trio position, float particleSize) {
+
+    leftBottom = new Trio(position.getX(), position.getY(), position.getZ());
+    rightBottom = new Trio(position.getX(), position.getY(), position.getZ());
+    rightTop = new Trio(position.getX(), position.getY(), position.getZ());
+    leftTop = new Trio(position.getX(), position.getY(), position.getZ());
+
+    float sinSize = particleSize * (float) Math.sin(angle);
+    float cosSize = particleSize * (float) Math.cos(angle);
+
+    Trio positiveSin = new Trio(0.0f, 0.0f, sinSize);
+    rightBottom.add(positiveSin);
+    rightTop.add(positiveSin);
+    Trio negativeSin = new Trio(0.0f, 0.0f, -1 * sinSize);
+    leftBottom.add(negativeSin);
+    leftTop.add(negativeSin);
+
+    Trio positiveCos = new Trio(cosSize, 0.0f, 0.0f);
+    rightBottom.add(positiveCos);
+    rightTop.add(positiveCos);
+    Trio negativeCos = new Trio(-1 * cosSize, 0.0f, 0.0f);
+    leftBottom.add(negativeCos);
+    leftTop.add(negativeCos);
+
+    Trio negativeSize = new Trio(0.0f, -1 * particleSize, 0.0f);
+    leftBottom.add(negativeSize);
+    rightBottom.add(negativeSize);
+    Trio positiveSize = new Trio(0.0f, particleSize, 0.0f);
+    leftTop.add(positiveSize);
+    rightTop.add(positiveSize);
+
+    // texture.bind(gl);
+    // gl.glDisable(GL_BLEND);
+
+    gl.glPushMatrix();
+
+    gl.glBegin(GL_TRIANGLE_STRIP);
+
+    gl.glTexCoord2d(right, bottom);
+    gl.glVertex3f(rightBottom.getX(), rightBottom.getY(), rightBottom.getZ());
+
+    gl.glTexCoord2d(right, top);
+    gl.glVertex3f(rightTop.getX(), rightTop.getY(), rightTop.getZ());
+
+    gl.glTexCoord2d(left, bottom);
+    gl.glVertex3f(leftBottom.getX(), leftBottom.getY(), leftBottom.getZ());
+
+    gl.glTexCoord2d(left, top);
+    gl.glVertex3f(leftTop.getX(), leftTop.getY(), leftTop.getZ());
+
+    gl.glEnd();
+
+    gl.glPopMatrix();
   }
 }

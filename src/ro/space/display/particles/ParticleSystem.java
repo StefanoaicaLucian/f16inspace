@@ -14,7 +14,9 @@ public abstract class ParticleSystem {
   protected List<Particle> particles = new ArrayList<>();
 
   protected GL2 gl;
-
+  
+  protected double angle;
+  
   public void draw() {
     gl.glEnable(GL_BLEND);
 
@@ -37,4 +39,12 @@ public abstract class ParticleSystem {
   }
 
   protected abstract void spawnParticles();
+
+  public void adjustParticleAngles(double angle) {
+    this.angle = angle;
+    
+    for (Particle particle : particles) {
+      particle.setAngle(this.angle);
+    }
+  }
 }

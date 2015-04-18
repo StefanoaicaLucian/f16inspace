@@ -93,7 +93,7 @@ public class GraphicListener implements GLEventListener {
     gl.glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
 
     gl.glShadeModel(GL_SMOOTH);
-
+    
     gl.glBlendFunc(GL_SRC_ALPHA, GL_ONE);
     gl.glEnable(GL_LINE_SMOOTH);
 
@@ -168,6 +168,9 @@ public class GraphicListener implements GLEventListener {
     targetZ = (float) handler.getTargetZ();
 
     cameraAngle = handler.getAngle();
+    
+    theScene.updateParticleSystemAngle(handler);
+    
     System.out.println("cameraAngle: " + cameraAngle);
 
     System.out.println("leftBottom: " + leftBottom);

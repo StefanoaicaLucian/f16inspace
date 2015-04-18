@@ -1,6 +1,7 @@
 
 package ro.space.display.particles;
 
+
 public abstract class Particle {
 
   protected Trio location;
@@ -8,6 +9,8 @@ public abstract class Particle {
   protected Trio acceleration;
 
   protected float lifespan;
+
+  protected double angle;
 
   protected Particle(Trio location, Trio speed, Trio acceleration) {
     this.location = location;
@@ -28,4 +31,8 @@ public abstract class Particle {
   public abstract void update();
 
   public abstract void draw();
+
+  public void setAngle(double angle) {
+    this.angle = angle;
+  }
 }

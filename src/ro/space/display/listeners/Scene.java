@@ -33,4 +33,8 @@ public class Scene {
 
     fireSystem.draw();
   }
+
+  public void updateParticleSystemAngle(KeyboardListener listener) {
+    fireSystem.adjustParticleAngles(listener.getAngle());
+  }
 }

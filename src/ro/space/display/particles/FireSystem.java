@@ -30,7 +30,7 @@ public class FireSystem extends ParticleSystem {
       Trio speed = new Trio(0.0f, 1.0f / generator.nextInt(1000), 0.0f);
       Trio acceleration = new Trio(0.0f, 1.0f / generator.nextInt(1000), 0.0f);
 
-      FireParticle particle = new FireParticle(gl, loc, speed, acceleration, texture);
+      FireParticle particle = new FireParticle(gl, loc, speed, acceleration, texture, angle);
 
       particles.add(particle);
     }
