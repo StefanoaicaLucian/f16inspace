@@ -1,12 +1,18 @@
 
 package ro.space.display.particles;
 
+import static javax.media.opengl.GL.GL_FRONT;
 import static javax.media.opengl.GL.GL_TRIANGLE_STRIP;
+import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_AMBIENT;
+import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_DIFFUSE;
+import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_SHININESS;
+import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_SPECULAR;
 
 import java.util.Random;
 
 import javax.media.opengl.GL2;
 
+import ro.space.build.graphic_components.Material;
 import ro.space.util.algebra.Calculator;
 
 import com.jogamp.opengl.util.texture.Texture;
@@ -29,6 +35,13 @@ public class FireParticle extends Particle {
 
   private Random rand = new Random();
 
+  private float[] ambient = {0.6f, 0.25f, 0.25f};
+  private float[] diffuse = {0.6f, 0.25f, 0.25f};
+  private float[] specular = {0.6f, 0.25f, 0.25f};
+  private float[] shine = {120.078431f};
+
+  private Material theMaterial;
+
   public FireParticle(GL2 gl, Trio location, Trio speed, Trio acceleration, Texture texture, Trio eye, double cameraAngle) {
     super(location, speed, acceleration, eye, cameraAngle);
     this.gl = gl;
@@ -42,6 +55,8 @@ public class FireParticle extends Particle {
     right = textureCoords.right();
 
     fadeUnit = rand.nextInt(100) / 1000.0f + 0.003f;
+
+    theMaterial = new Material(ambient, diffuse, specular, shine);
   }
 
   @Override
@@ -55,7 +70,9 @@ public class FireParticle extends Particle {
 
   @Override
   public void draw() {
-    gl.glColor4f(1.0f, 0.0f, 0.0f, lifespan);
+    enableMaterial(theMaterial);
+
+    gl.glColor4f(0.0f, 0.0f, 0.0f, lifespan);
     drawBillboard(location, radius);
   }
 
@@ -117,5 +134,13 @@ public class FireParticle extends Particle {
     gl.glEnd();
 
     gl.glPopMatrix();
+  }
+
+  protected void enableMaterial(Material theMaterial) {
+
+    gl.glMaterialfv(GL_FRONT, GL_DIFFUSE, theMaterial.getKd(), 0);
+    gl.glMaterialfv(GL_FRONT, GL_SPECULAR, theMaterial.getKs(), 0);
+    gl.glMaterialfv(GL_FRONT, GL_AMBIENT, theMaterial.getKa(), 0);
+    gl.glMaterialfv(GL_FRONT, GL_SHININESS, theMaterial.getNs(), 0);
   }
 }

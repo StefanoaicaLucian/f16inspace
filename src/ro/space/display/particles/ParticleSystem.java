@@ -60,10 +60,11 @@ public abstract class ParticleSystem implements Observer {
     eye = subject.getEye();
     cameraAngle = subject.getCameraAngle();
   }
-
+  
   protected abstract void spawnParticles();
-
+  
   private void printSortStatus() {
+    
     boolean sorted = true;
 
     Particle current = particles.get(0);

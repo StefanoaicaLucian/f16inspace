@@ -2,7 +2,6 @@
 package ro.space.display.listeners;
 
 import static javax.media.opengl.GL.GL_BACK;
-import static javax.media.opengl.GL.GL_BLEND;
 import static javax.media.opengl.GL.GL_COLOR_BUFFER_BIT;
 import static javax.media.opengl.GL.GL_CULL_FACE;
 import static javax.media.opengl.GL.GL_DEPTH_BUFFER_BIT;
@@ -13,6 +12,7 @@ import static javax.media.opengl.GL.GL_LINE_SMOOTH;
 import static javax.media.opengl.GL.GL_NICEST;
 import static javax.media.opengl.GL.GL_NO_ERROR;
 import static javax.media.opengl.GL.GL_ONE;
+import static javax.media.opengl.GL.GL_ONE_MINUS_SRC_ALPHA;
 import static javax.media.opengl.GL.GL_SRC_ALPHA;
 import static javax.media.opengl.GL.GL_VERSION;
 import static javax.media.opengl.GL2ES1.GL_PERSPECTIVE_CORRECTION_HINT;
@@ -54,17 +54,17 @@ public class GraphicListener implements GLEventListener, Observer {
   private List<GraphicObject> objects = new ArrayList<>();
 
   private ParticleSystem fireSystem;
-  
+
   private KeyboardListener keyHandler;
-  
+
   public GraphicListener(KeyboardListener keyHandler) {
     eye = keyHandler.getEye();
     target = keyHandler.getTarget();
-    
+
     cameraAngle = keyHandler.getCameraAngle();
-    
+
     keyHandler.registerObserver(this);
-    
+
     this.keyHandler = keyHandler;
   }
 
@@ -81,9 +81,8 @@ public class GraphicListener implements GLEventListener, Observer {
 
     gl.glEnable(GL_CULL_FACE);
     gl.glCullFace(GL_BACK);
-    
-    gl.glEnable(GL_BLEND);
-    gl.glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+
+    gl.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     gl.glBlendEquation(GL_FUNC_ADD);
 
@@ -108,7 +107,7 @@ public class GraphicListener implements GLEventListener, Observer {
     objects.add(objectBuilder.buildFloor());
 
     fireSystem = new FireSystem(gl, eye, cameraAngle);
-    
+
     keyHandler.registerObserver(fireSystem);
   }
 
