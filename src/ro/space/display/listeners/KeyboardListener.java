@@ -1,84 +1,62 @@
 
 package ro.space.display.listeners;
 
-import static java.awt.event.KeyEvent.VK_A;
 import static java.awt.event.KeyEvent.VK_DOWN;
 import static java.awt.event.KeyEvent.VK_LEFT;
 import static java.awt.event.KeyEvent.VK_RIGHT;
-import static java.awt.event.KeyEvent.VK_S;
 import static java.awt.event.KeyEvent.VK_UP;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
+import java.util.List;
 
-public class KeyboardListener implements KeyListener {
+import ro.space.display.particles.Trio;
 
-  private GraphicListener sceneHandler;
+public class KeyboardListener implements KeyListener, Subject {
 
-  private float eyeX;
-  private float eyeY;
-  private float eyeZ;
+  private Trio eye = new Trio(0.0f, 0.0f, 0.0f);
 
-  private double targetX;
-  private double targetY;
-  private double targetZ;
+  private Trio target = new Trio(0.0f, 0.0f, -1.0f);
 
-  private double angle;
+  private double cameraAngle;
   private double angleStep;
   private double fraction;
 
+  private List<Observer> observers = new ArrayList<>();
+
   public KeyboardListener() {
-    eyeX = 0.0f;
-    eyeY = 0.0f;
-    eyeZ = 0.0f;
-
-    targetX = 0.0f;
-    targetY = 0.0f;
-    targetZ = -1.0f;
-
     angleStep = 0.1f;
     fraction = 0.1f;
-
-    System.out.println("angle: " + angle);
   }
 
   @Override
   public void keyPressed(KeyEvent e) {
-
     switch (e.getKeyCode()) {
-
       case VK_LEFT:
-        angle -= angleStep;
-        targetX = Math.sin(angle);
-        targetZ = -Math.cos(angle);
-        notifySceneHandler();
+        cameraAngle -= angleStep;
+        target.setX((float) Math.sin(cameraAngle));
+        target.setZ((float) -Math.cos(cameraAngle));
+        notifyObservers();
         break;
 
       case VK_RIGHT:
-        angle += angleStep;
-        targetX = Math.sin(angle);
-        targetZ = -Math.cos(angle);
-        notifySceneHandler();
+        cameraAngle += angleStep;
+        target.setX((float) Math.sin(cameraAngle));
+        target.setZ((float) -Math.cos(cameraAngle));
+        notifyObservers();
         break;
 
       case VK_UP:
-        eyeX += (targetX * fraction);
-        eyeZ += (targetZ * fraction);
-        notifySceneHandler();
+        eye.setX(eye.getX() + (float) (target.getX() * fraction));
+        eye.setZ(eye.getZ() + (float) (target.getZ() * fraction));
+        notifyObservers();
         break;
 
       case VK_DOWN:
-        eyeX -= (targetX * fraction);
-        eyeZ -= (targetZ * fraction);
-        notifySceneHandler();
-        break;
-
-      case VK_A:
-        sceneHandler.enableCulling();
-        break;
-
-      case VK_S:
-        sceneHandler.disableCulling();
+        eye.setX(eye.getX() - (float) (target.getX() * fraction));
+        eye.setZ(eye.getZ() - (float) (target.getZ() * fraction));
+        notifyObservers();
         break;
     }
   }
@@ -90,42 +68,35 @@ public class KeyboardListener implements KeyListener {
 
   @Override
   public void keyTyped(KeyEvent e) {
-    // unused
+    // TODO test this to see the difference
   }
 
-  public float getEyeX() {
-    return eyeX;
+  @Override
+  public void registerObserver(Observer toRegister) {
+    observers.add(toRegister);
   }
 
-  public float getEyeY() {
-    return eyeY;
+  @Override
+  public void removeObserver(Observer toRemove) {
+    observers.remove(toRemove);
   }
 
-  public float getEyeZ() {
-    return eyeZ;
+  @Override
+  public void notifyObservers() {
+    for (Observer observer : observers) {
+      observer.update(this);
+    }
   }
 
-  public double getTargetX() {
-    return targetX;
+  public Trio getEye() {
+    return eye;
   }
 
-  public double getTargetY() {
-    return targetY;
+  public Trio getTarget() {
+    return target;
   }
 
-  public double getAngle() {
-    return angle;
-  }
-
-  public double getTargetZ() {
-    return targetZ;
-  }
-
-  public void setSceneHandler(GraphicListener sceneHandler) {
-    this.sceneHandler = sceneHandler;
-  }
-
-  private void notifySceneHandler() {
-    sceneHandler.updateKeyboardInputs(this);
+  public double getCameraAngle() {
+    return cameraAngle;
   }
 }

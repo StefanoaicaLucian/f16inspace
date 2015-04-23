@@ -46,8 +46,6 @@ public class Application {
 
     canvas.setPreferredSize(preferredSize);
 
-    keyListener.setSceneHandler(graphicListener);
-
     canvas.addKeyListener(keyListener);
 
     canvas.setFocusable(true);

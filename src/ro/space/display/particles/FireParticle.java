@@ -7,6 +7,8 @@ import java.util.Random;
 
 import javax.media.opengl.GL2;
 
+import ro.space.util.algebra.Calculator;
+
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureCoords;
 
@@ -21,13 +23,14 @@ public class FireParticle extends Particle {
   private float top;
   private float bottom;
 
-  private float radius = 0.5f;
+  private float radius = 0.25f;
 
   private float fadeUnit;
 
-  public FireParticle(GL2 gl, Trio location, Trio speed, Trio acceleration, Texture texture, double angle) {
-    super(location, speed, acceleration);
-    this.angle = angle;
+  private Random rand = new Random();
+
+  public FireParticle(GL2 gl, Trio location, Trio speed, Trio acceleration, Texture texture, Trio eye, double cameraAngle) {
+    super(location, speed, acceleration, eye, cameraAngle);
     this.gl = gl;
     this.texture = texture;
 
@@ -38,13 +41,16 @@ public class FireParticle extends Particle {
     left = textureCoords.left();
     right = textureCoords.right();
 
-    fadeUnit = new Random().nextInt(100) / 1000.0f + 0.003f;
+    fadeUnit = rand.nextInt(100) / 1000.0f + 0.003f;
   }
 
-  public void update() {
+  @Override
+  public void move() {
     speed.add(acceleration);
     location.add(speed);
     lifespan -= fadeUnit;
+
+    cameraDistance = Calculator.computeDistance(eye, location);
   }
 
   @Override
@@ -61,20 +67,15 @@ public class FireParticle extends Particle {
     this.texture = texture;
   }
 
-  Trio leftBottom = new Trio(0.0f, 0.0f, 0.0f);
-  Trio rightBottom = new Trio(0.0f, 0.0f, 0.0f);
-  Trio rightTop = new Trio(0.0f, 0.0f, 0.0f);
-  Trio leftTop = new Trio(0.0f, 0.0f, 0.0f);
-
   private void drawBillboard(Trio position, float particleSize) {
 
-    leftBottom = new Trio(position.getX(), position.getY(), position.getZ());
-    rightBottom = new Trio(position.getX(), position.getY(), position.getZ());
-    rightTop = new Trio(position.getX(), position.getY(), position.getZ());
-    leftTop = new Trio(position.getX(), position.getY(), position.getZ());
+    Trio leftBottom = new Trio(position.getX(), position.getY(), position.getZ());
+    Trio rightBottom = new Trio(position.getX(), position.getY(), position.getZ());
+    Trio rightTop = new Trio(position.getX(), position.getY(), position.getZ());
+    Trio leftTop = new Trio(position.getX(), position.getY(), position.getZ());
 
-    float sinSize = particleSize * (float) Math.sin(angle);
-    float cosSize = particleSize * (float) Math.cos(angle);
+    float sinSize = particleSize * (float) Math.sin(cameraAngle);
+    float cosSize = particleSize * (float) Math.cos(cameraAngle);
 
     Trio positiveSin = new Trio(0.0f, 0.0f, sinSize);
     rightBottom.add(positiveSin);
@@ -96,9 +97,6 @@ public class FireParticle extends Particle {
     Trio positiveSize = new Trio(0.0f, particleSize, 0.0f);
     leftTop.add(positiveSize);
     rightTop.add(positiveSize);
-
-    // texture.bind(gl);
-    // gl.glDisable(GL_BLEND);
 
     gl.glPushMatrix();
 

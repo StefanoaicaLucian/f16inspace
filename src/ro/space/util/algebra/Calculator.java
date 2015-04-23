@@ -69,4 +69,21 @@ public class Calculator {
 
     return new Trio(a, b, c);
   }
+
+  public static double computeDistance(Trio first, Trio second) {
+
+    double x1 = first.getX();
+    double y1 = first.getY();
+    double z1 = first.getZ();
+
+    double x2 = second.getX();
+    double y2 = second.getY();
+    double z2 = second.getZ();
+
+    double firstTerm = Math.pow(x2 - x1, 2);
+    double secondTerm = Math.pow(y2 - y1, 2);
+    double thirdTerm = Math.pow(z2 - z1, 2);
+
+    return Math.sqrt(firstTerm + secondTerm + thirdTerm);
+  }
 }
