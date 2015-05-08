@@ -29,11 +29,11 @@ public class FireSystem extends ParticleSystem {
 
     for (int i = 0; i < Numbers.NUMBER_OF_PARTICLES.getValue(); ++i) {
 
-      Trio loc = new Trio(0.0f, 0.0f, 0.0f);
+      Trio loc = new Trio(2.0f, 1.0f, -5.0f);
       Trio speed = new Trio(0.0f, 0.0f, 0.0f);
       Trio acceleration = new Trio(1.0f / generator.nextInt(1000), 1.0f / generator.nextInt(1000), 1.0f / generator.nextInt(1000));
 
-      FireParticle particle = new FireParticle(gl, loc, speed, acceleration, texture, eye, cameraAngle);
+      Particle particle = new Particle(gl, loc, speed, acceleration, eye, cameraAngle, texture);
 
       particles.add(particle);
     }

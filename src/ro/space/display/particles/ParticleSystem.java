@@ -33,22 +33,27 @@ public abstract class ParticleSystem implements Observer {
     spawnParticles();
     Collections.sort(particles);
     
-    // printSortStatus();
-    
     gl.glEnable(GL_BLEND);
+    
+    /*
+     * ListIterator<Integer> index = someList.listIterator(someList.size());
+     * while (index.hasPrevious()) {
+     * System.out.print(index.previous() + " ");
+     * } 
+     */
+    
+    ListIterator<Particle> index = particles.listIterator(particles.size());
 
-    ListIterator<Particle> iterator = particles.listIterator(particles.size());
+    while (index.hasPrevious()) {
 
-    while (iterator.hasPrevious()) {
-
-      Particle particle = (Particle) iterator.previous();
+      Particle particle = (Particle) index.previous();
 
       particle.draw();
 
       particle.move();
 
-      if (particle.isDead()) {
-        iterator.remove();
+      if (particle.died() == true) {
+        index.remove();
       }
     }
   }
@@ -59,31 +64,12 @@ public abstract class ParticleSystem implements Observer {
 
     eye = subject.getEye();
     cameraAngle = subject.getCameraAngle();
+
+    for (Particle particle : particles) {
+      particle.setCameraAngle(cameraAngle);
+      particle.setCameraPosition(eye);
+    }
   }
-  
+
   protected abstract void spawnParticles();
-  
-  private void printSortStatus() {
-    
-    boolean sorted = true;
-
-    Particle current = particles.get(0);
-
-    for (int index = 1; index < particles.size(); ++index) {
-      if (particles.get(index).getCameraDistance() < current.getCameraDistance()) {
-        sorted = false;
-        break;
-      } else {
-        current = particles.get(index);
-      }
-    }
-
-    StringBuilder distances = new StringBuilder();
-
-    for (Particle p : particles) {
-      distances.append(p.getCameraDistance()).append(" ");
-    }
-
-    System.out.println(sorted + " : " + distances.toString());
-  }
 }

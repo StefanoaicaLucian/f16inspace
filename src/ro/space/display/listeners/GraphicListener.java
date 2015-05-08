@@ -12,8 +12,6 @@ import static javax.media.opengl.GL.GL_LINE_SMOOTH;
 import static javax.media.opengl.GL.GL_NICEST;
 import static javax.media.opengl.GL.GL_NO_ERROR;
 import static javax.media.opengl.GL.GL_ONE;
-import static javax.media.opengl.GL.GL_ONE_MINUS_SRC_ALPHA;
-import static javax.media.opengl.GL.GL_SRC_ALPHA;
 import static javax.media.opengl.GL.GL_VERSION;
 import static javax.media.opengl.GL2ES1.GL_PERSPECTIVE_CORRECTION_HINT;
 import static javax.media.opengl.GL2ES1.GL_POINT_SMOOTH_HINT;
@@ -82,10 +80,6 @@ public class GraphicListener implements GLEventListener, Observer {
     gl.glEnable(GL_CULL_FACE);
     gl.glCullFace(GL_BACK);
 
-    gl.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    gl.glBlendEquation(GL_FUNC_ADD);
-
     gl.glClearDepth(1.0f);
     gl.glEnable(GL_DEPTH_TEST);
     gl.glDepthFunc(GL_LEQUAL);
@@ -95,7 +89,10 @@ public class GraphicListener implements GLEventListener, Observer {
 
     gl.glShadeModel(GL_SMOOTH);
 
+    gl.glBlendEquation(GL_FUNC_ADD);
+    // gl.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     gl.glBlendFunc(GL_ONE, GL_ONE);
+
     gl.glEnable(GL_LINE_SMOOTH);
 
     lighter = new LightKeeper(gl);

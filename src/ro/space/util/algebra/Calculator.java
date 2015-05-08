@@ -86,4 +86,29 @@ public class Calculator {
 
     return Math.sqrt(firstTerm + secondTerm + thirdTerm);
   }
+
+  /**
+   * @param planePointVector a vector from a point P which is on the plane to a point Q which is not
+   * on the plane
+   * @param planeNormal a vector which represents the normal of the plane
+   * @return the distance from the plane to the point Q
+   */
+  public static double computePointPlaneDistance(Trio planePointVector, Trio planeNormal) {
+    double xPQ = planePointVector.getX();
+    double yPQ = planePointVector.getY();
+    double zPQ = planePointVector.getZ();
+
+    double xN = planeNormal.getX();
+    double yN = planeNormal.getY();
+    double zN = planeNormal.getZ();
+
+    double xSquared = Math.pow(xN, 2);
+    double ySquared = Math.pow(yN, 2);
+    double zSquared = Math.pow(zN, 2);
+
+    double denominator = (xPQ * xN) + (yPQ * yN) + (zPQ * zN);
+    double divisor = Math.sqrt(xSquared + ySquared + zSquared);
+
+    return denominator / divisor;
+  }
 }
