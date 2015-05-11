@@ -3,7 +3,7 @@ package ro.space.util.constants;
 
 public enum Numbers {
 
-  NUMBER_OF_PARTICLES(100),
+  NUMBER_OF_PARTICLES(450),
   CANVAS_WIDTH(800),
   CANVAS_HEIGHT(600),
   FPS(60);

@@ -13,6 +13,12 @@ public class Trio {
     this.z = z;
   }
 
+  public Trio(double x, double y, double z) {
+    this.x = (float) x;
+    this.y = (float) y;
+    this.z = (float) z;
+  }
+
   public Trio add(Trio vector) {
     x += vector.getX();
     y += vector.getY();
@@ -48,5 +54,9 @@ public class Trio {
   @Override
   public String toString() {
     return "Trio [x=" + x + ", y=" + y + ", z=" + z + "]";
+  }
+
+  public Trio clone() {
+    return new Trio(x, y, z);
   }
 }

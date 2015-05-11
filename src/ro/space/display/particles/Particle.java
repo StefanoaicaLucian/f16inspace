@@ -8,8 +8,6 @@ import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_DIFFUSE;
 import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_SHININESS;
 import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_SPECULAR;
 
-import java.util.Random;
-
 import javax.media.opengl.GL2;
 
 import ro.space.util.algebra.Calculator;
@@ -45,7 +43,7 @@ public class Particle implements Comparable<Particle> {
 
   private float fadeUnit;
 
-  private Random rand = new Random();
+  // private Random rand = new Random();
 
   public Particle(GL2 gl, Trio particlePosition, Trio speed, Trio acceleration, Trio cameraPosition, double cameraAngle, Texture texture) {
     this.particlePosition = particlePosition;
@@ -58,7 +56,8 @@ public class Particle implements Comparable<Particle> {
     this.cameraPosition = cameraPosition;
     this.cameraAngle = cameraAngle;
 
-    fadeUnit = rand.nextInt(100) / 1000.0f + 0.003f;
+    fadeUnit = 0.1f; 
+    // rand.nextInt(100) / 1000.0f + 0.003f;
 
     lifespan = 1.0f;
 
@@ -165,9 +164,9 @@ public class Particle implements Comparable<Particle> {
   }
 
   private void enableMaterial() {
-    float[] ambient = {0.6f, 0.2f, 0.3f};
-    float[] diffuse = {0.6f, 0.2f, 0.3f};
-    float[] specular = {0.6f, 0.2f, 0.3f};
+    float[] ambient = {0.6f, 0.2f, 0.0f};
+    float[] diffuse = {0.6f, 0.2f, 0.0f};
+    float[] specular = {0.6f, 0.2f, 0.0f};
     float[] shine = {120.078431f};
 
     gl.glMaterialfv(GL_FRONT, GL_DIFFUSE, diffuse, 0);

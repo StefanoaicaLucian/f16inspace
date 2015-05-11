@@ -35,13 +35,6 @@ public abstract class ParticleSystem implements Observer {
     
     gl.glEnable(GL_BLEND);
     
-    /*
-     * ListIterator<Integer> index = someList.listIterator(someList.size());
-     * while (index.hasPrevious()) {
-     * System.out.print(index.previous() + " ");
-     * } 
-     */
-    
     ListIterator<Particle> index = particles.listIterator(particles.size());
 
     while (index.hasPrevious()) {

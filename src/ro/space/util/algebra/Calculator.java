@@ -1,6 +1,8 @@
 
 package ro.space.util.algebra;
 
+import java.util.Random;
+
 import ro.space.display.particles.Trio;
 
 public class Calculator {
@@ -89,7 +91,7 @@ public class Calculator {
 
   /**
    * @param planePointVector a vector from a point P which is on the plane to a point Q which is not
-   * on the plane
+   * on the plane I AM NOT SHURE I NEED THIS FUNCTION ANYMORE...
    * @param planeNormal a vector which represents the normal of the plane
    * @return the distance from the plane to the point Q
    */
@@ -110,5 +112,23 @@ public class Calculator {
     double divisor = Math.sqrt(xSquared + ySquared + zSquared);
 
     return denominator / divisor;
+  }
+
+  public static double getRandomNumberInRange(double min, double max) {
+    double range = max - min;
+
+    Random gen = new Random();
+
+    double scaledNumber = gen.nextDouble() * range;
+
+    return scaledNumber + min;
+  }
+  
+  public static Trio makeItSmaller(Trio what, float denominator) {
+    float xVal = what.getX() / denominator;
+    float yVal = what.getY() / denominator;
+    float zVal = what.getZ() / denominator;
+    
+    return new Trio(xVal, yVal, zVal);
   }
 }

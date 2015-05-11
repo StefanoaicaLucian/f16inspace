@@ -103,7 +103,7 @@ public class GraphicListener implements GLEventListener, Observer {
     objects.add(objectBuilder.buildJetPlane());
     objects.add(objectBuilder.buildFloor());
 
-    fireSystem = new FireSystem(gl, eye, cameraAngle);
+    fireSystem = new FireSystem(gl, eye, cameraAngle, new Trio(2.5f, 1.7f, -6.8f), new Trio(10.0f, 1.7f, -6.8f), 2.7f);
 
     keyHandler.registerObserver(fireSystem);
   }
