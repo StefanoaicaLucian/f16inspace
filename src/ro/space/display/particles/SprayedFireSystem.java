@@ -9,7 +9,7 @@ import ro.space.util.constants.Numbers;
 
 import com.jogamp.opengl.util.texture.Texture;
 
-public class FireSystem extends ParticleSystem {
+public class SprayedFireSystem extends ParticleSystem {
 
   private TextureReader reader;
 
@@ -19,7 +19,7 @@ public class FireSystem extends ParticleSystem {
   private Trio destination;
   private float radius;
 
-  public FireSystem(GL2 gl, Trio eye, double cameraAngle, Trio source, Trio destination, float radius) {
+  public SprayedFireSystem(GL2 gl, Trio eye, double cameraAngle, Trio source, Trio destination, float radius) {
     super(eye, cameraAngle);
 
     this.gl = gl;

@@ -29,7 +29,8 @@ import javax.media.opengl.glu.GLU;
 
 import ro.space.build.builders.GraphicObjectBuilder;
 import ro.space.build.graphic_objects.GraphicObject;
-import ro.space.display.particles.FireSystem;
+import ro.space.display.particles.CylindricalFireSystem;
+import ro.space.display.particles.SprayedFireSystem;
 import ro.space.display.particles.ParticleSystem;
 import ro.space.display.particles.Trio;
 
@@ -52,6 +53,7 @@ public class GraphicListener implements GLEventListener, Observer {
   private List<GraphicObject> objects = new ArrayList<>();
 
   private ParticleSystem fireSystem;
+  private ParticleSystem secondFireSystem;
 
   private KeyboardListener keyHandler;
 
@@ -103,9 +105,11 @@ public class GraphicListener implements GLEventListener, Observer {
     objects.add(objectBuilder.buildJetPlane());
     objects.add(objectBuilder.buildFloor());
 
-    fireSystem = new FireSystem(gl, eye, cameraAngle, new Trio(2.5f, 1.7f, -6.8f), new Trio(10.0f, 1.7f, -6.8f), 2.7f);
+    fireSystem = new SprayedFireSystem(gl, eye, cameraAngle, new Trio(2.5f, 1.7f, -6.8f), new Trio(10.0f, 1.7f, -6.8f), 2.7f);
+    secondFireSystem = new CylindricalFireSystem(gl, eye, cameraAngle, new Trio(2.5f, 1.7f, -2.0f), new Trio(30.0f, 10.7f, -2.0f), 0.3f);
 
     keyHandler.registerObserver(fireSystem);
+    keyHandler.registerObserver(secondFireSystem);
   }
 
   @Override
@@ -140,7 +144,8 @@ public class GraphicListener implements GLEventListener, Observer {
     }
 
     fireSystem.draw();
-
+    secondFireSystem.draw();
+    
     catchGLError();
 
     gl.glFlush();
