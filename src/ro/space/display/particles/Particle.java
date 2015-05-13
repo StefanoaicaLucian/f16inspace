@@ -56,7 +56,7 @@ public class Particle implements Comparable<Particle> {
     this.cameraPosition = cameraPosition;
     this.cameraAngle = cameraAngle;
 
-    fadeUnit = 0.1f; 
+    fadeUnit = 0.07f; 
     // rand.nextInt(100) / 1000.0f + 0.003f;
 
     lifespan = 1.0f;
@@ -164,9 +164,9 @@ public class Particle implements Comparable<Particle> {
   }
 
   private void enableMaterial() {
-    float[] ambient = {0.6f, 0.2f, 0.0f};
-    float[] diffuse = {0.6f, 0.2f, 0.0f};
-    float[] specular = {0.6f, 0.2f, 0.0f};
+    float[] ambient = {0.6f, 0.2f, 0.3f};
+    float[] diffuse = {0.6f, 0.2f, 0.3f};
+    float[] specular = {0.6f, 0.2f, 0.3f};
     float[] shine = {120.078431f};
 
     gl.glMaterialfv(GL_FRONT, GL_DIFFUSE, diffuse, 0);
