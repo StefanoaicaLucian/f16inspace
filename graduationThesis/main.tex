@@ -1,4 +1,4 @@
-\documentclass[a4paper,12pt]{book}
+\documentclass[a4paper, 12pt, twoside]{report}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \graphicspath{{./images/}}
@@ -10,20 +10,27 @@
 	{\includegraphics{uvt_logo.jpg}}
 }
 
-\author{Lucian Stefanoaica}
+\author{Lucian Florian \c Stef\u anoaica}
 \date{April 2015}
 
 \begin{document}
 \maketitle
-\frontmatter
+
+\chapter*{Abstract}
+This chapter will hold the abstract...
+
+\chapter*{Dedication}
+This chapter will hold the dedication which will be to my mother and my sister.
+
+\chapter*{Declaration}
+This is a declaration...
 
 \tableofcontents
 
-\mainmatter
-\include{./TeX_files/chapter01}
-\include{./TeX_files/chapter02}
+\chapter{Introduction}
+\input{./TeX_files/chapter01}
+\chapter{Conclusion}
+\input{./TeX_files/chapter02}
 
-\backmatter
 % bibliography, glossary and index would go here.
-
 \end{document}
