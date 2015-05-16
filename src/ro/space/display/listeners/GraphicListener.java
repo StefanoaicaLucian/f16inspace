@@ -71,7 +71,7 @@ public class GraphicListener implements GLEventListener, Observer {
   @Override
   public void init(GLAutoDrawable drawable) {
 
-    System.out.println("version: " + drawable.getGL().glGetString(GL_VERSION));
+    System.out.println("OpenGL version: " + drawable.getGL().glGetString(GL_VERSION));
 
     gl = drawable.getGL().getGL2();
 
