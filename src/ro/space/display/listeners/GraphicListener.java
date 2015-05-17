@@ -29,8 +29,8 @@ import javax.media.opengl.glu.GLU;
 
 import ro.space.build.builders.GraphicObjectBuilder;
 import ro.space.build.graphic_objects.GraphicObject;
+import ro.space.display.particles.CylindricalFireSystem;
 import ro.space.display.particles.ParticleSystem;
-import ro.space.display.particles.ReversedConeFireSystem;
 import ro.space.display.particles.SprayedFireSystem;
 import ro.space.display.particles.Trio;
 
@@ -106,7 +106,7 @@ public class GraphicListener implements GLEventListener, Observer {
     objects.add(objectBuilder.buildFloor());
 
     fireSystem = new SprayedFireSystem(gl, eye, cameraAngle, new Trio(2.5f, 1.7f, -6.8f), new Trio(10.0f, 1.7f, -6.8f), 2.7f);
-    secondSystem = new ReversedConeFireSystem(gl, eye, cameraAngle, new Trio(2.5f, 1.7f, -2.0f), new Trio(5.0f, 1.7f, -2.0f), 0.5f);
+    secondSystem = new CylindricalFireSystem(gl, eye, cameraAngle, new Trio(2.5f, 1.7f, -2.0f), new Trio(5.0f, 1.7f, -2.0f), 0.5f);
     
     keyHandler.registerObserver(fireSystem);
     keyHandler.registerObserver(secondSystem);
