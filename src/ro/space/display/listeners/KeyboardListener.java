@@ -9,13 +9,16 @@ import static java.awt.event.KeyEvent.VK_UP;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import ro.space.display.particles.Trio;
+import ro.uvt.observer.Observer;
+import ro.uvt.observer.Subject;
 
 public class KeyboardListener implements KeyListener, Subject {
 
-  private Trio eye = new Trio(0.0f, 0.0f, 0.0f);
+  private Trio cameraPosition = new Trio(0.0f, 0.0f, 0.0f);
 
   private Trio target = new Trio(0.0f, 0.0f, -1.0f);
 
@@ -48,14 +51,14 @@ public class KeyboardListener implements KeyListener, Subject {
         break;
 
       case VK_UP:
-        eye.setX(eye.getX() + (float) (target.getX() * fraction));
-        eye.setZ(eye.getZ() + (float) (target.getZ() * fraction));
+        cameraPosition.setX(cameraPosition.getX() + (float) (target.getX() * fraction));
+        cameraPosition.setZ(cameraPosition.getZ() + (float) (target.getZ() * fraction));
         notifyObservers();
         break;
 
       case VK_DOWN:
-        eye.setX(eye.getX() - (float) (target.getX() * fraction));
-        eye.setZ(eye.getZ() - (float) (target.getZ() * fraction));
+        cameraPosition.setX(cameraPosition.getX() - (float) (target.getX() * fraction));
+        cameraPosition.setZ(cameraPosition.getZ() - (float) (target.getZ() * fraction));
         notifyObservers();
         break;
     }
@@ -88,15 +91,17 @@ public class KeyboardListener implements KeyListener, Subject {
     }
   }
 
-  public Trio getEye() {
-    return eye;
-  }
-
   public Trio getTarget() {
     return target;
   }
 
-  public double getCameraAngle() {
-    return cameraAngle;
+  @Override
+  public HashMap<String, Object> getState() {
+    HashMap<String, Object> state = new HashMap<>();
+    
+    state.put("camera_position", cameraPosition);
+    state.put("camera_angle", cameraAngle);
+    
+    return state;
   }
 }

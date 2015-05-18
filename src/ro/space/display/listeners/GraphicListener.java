@@ -20,6 +20,7 @@ import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
 import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.media.opengl.GL2;
@@ -33,6 +34,8 @@ import ro.space.display.particles.CylindricalFireSystem;
 import ro.space.display.particles.ParticleSystem;
 import ro.space.display.particles.SprayedFireSystem;
 import ro.space.display.particles.Trio;
+import ro.uvt.observer.Observer;
+import ro.uvt.observer.Subject;
 
 public class GraphicListener implements GLEventListener, Observer {
 
@@ -44,7 +47,7 @@ public class GraphicListener implements GLEventListener, Observer {
 
   private Trio up = new Trio(0.0f, 1.0f, 0.0f);
 
-  private Trio eye;
+  private Trio cameraPosition;
 
   private double cameraAngle;
 
@@ -58,10 +61,10 @@ public class GraphicListener implements GLEventListener, Observer {
   private KeyboardListener keyHandler;
 
   public GraphicListener(KeyboardListener keyHandler) {
-    eye = keyHandler.getEye();
+    cameraPosition = (Trio) keyHandler.getState().get("camera_position");
     target = keyHandler.getTarget();
 
-    cameraAngle = keyHandler.getCameraAngle();
+    cameraAngle = (Double) keyHandler.getState().get("camera_angle");
 
     keyHandler.registerObserver(this);
 
@@ -105,9 +108,9 @@ public class GraphicListener implements GLEventListener, Observer {
     objects.add(objectBuilder.buildJetPlane());
     objects.add(objectBuilder.buildFloor());
 
-    fireSystem = new SprayedFireSystem(gl, eye, cameraAngle, new Trio(2.5f, 1.7f, -6.8f), new Trio(10.0f, 1.7f, -6.8f), 2.7f);
-    secondSystem = new CylindricalFireSystem(gl, eye, cameraAngle, new Trio(2.5f, 1.7f, -2.0f), new Trio(5.0f, 1.7f, -2.0f), 0.5f);
-    
+    fireSystem = new SprayedFireSystem(gl, cameraPosition, cameraAngle, new Trio(2.5f, 1.7f, -6.8f), new Trio(10.0f, 1.7f, -6.8f), 2.7f);
+    secondSystem = new CylindricalFireSystem(gl, cameraPosition, cameraAngle, new Trio(2.5f, 1.7f, -2.0f), new Trio(5.0f, 1.7f, -2.0f), 0.5f);
+
     keyHandler.registerObserver(fireSystem);
     keyHandler.registerObserver(secondSystem);
   }
@@ -137,7 +140,15 @@ public class GraphicListener implements GLEventListener, Observer {
     gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     gl.glLoadIdentity();
-    glu.gluLookAt(eye.getX(), eye.getY(), eye.getZ(), eye.getX() + target.getX(), target.getY(), eye.getZ() + target.getZ(), up.getX(), up.getY(), up.getZ());
+    glu.gluLookAt(cameraPosition.getX(),
+                  cameraPosition.getY(),
+                  cameraPosition.getZ(),
+                  cameraPosition.getX() + target.getX(),
+                  target.getY(),
+                  cameraPosition.getZ() + target.getZ(),
+                  up.getX(),
+                  up.getY(),
+                  up.getZ());
 
     for (GraphicObject obj : objects) {
       obj.draw();
@@ -145,7 +156,7 @@ public class GraphicListener implements GLEventListener, Observer {
 
     fireSystem.draw();
     secondSystem.draw();
-    
+
     catchGLError();
 
     gl.glFlush();
@@ -157,9 +168,11 @@ public class GraphicListener implements GLEventListener, Observer {
 
   @Override
   public void update(Subject toObserve) {
-    KeyboardListener subject = (KeyboardListener) toObserve;
-    eye = subject.getEye();
-    target = subject.getTarget();
+    HashMap<String, Object> subjectState = toObserve.getState();
+
+    cameraPosition = (Trio) subjectState.get("camera_position");
+
+    target = ((KeyboardListener) toObserve).getTarget();
   }
 
   private void catchGLError() {
