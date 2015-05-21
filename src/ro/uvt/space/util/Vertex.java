@@ -1,5 +1,5 @@
 
-package ro.space.read.parsers;
+package ro.uvt.space.util;
 
 public class Vertex {
   private float positionX;

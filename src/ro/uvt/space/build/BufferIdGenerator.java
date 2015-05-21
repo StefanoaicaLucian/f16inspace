@@ -1,5 +1,5 @@
 
-package ro.space.build.builders;
+package ro.uvt.space.build;
 
 import java.nio.IntBuffer;
 
@@ -7,7 +7,7 @@ import javax.media.opengl.GL2;
 
 import com.jogamp.common.nio.Buffers;
 
-import ro.space.read.parsers.ObjContent;
+import ro.uvt.space.util.ObjContent;
 
 public class BufferIdGenerator {
 

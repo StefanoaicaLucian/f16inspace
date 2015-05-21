@@ -1,5 +1,5 @@
 
-package ro.space.build.graphic_objects;
+package ro.uvt.space.build;
 
 import static javax.media.opengl.GL.GL_FRONT;
 import static javax.media.opengl.GL.GL_TRIANGLES;
@@ -13,8 +13,7 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL2;
 
-import ro.space.build.graphic_components.GraphicComponent;
-import ro.space.build.graphic_components.Material;
+import ro.uvt.space.util.Material;
 
 public abstract class GraphicObject {
 

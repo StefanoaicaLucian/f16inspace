@@ -1,9 +1,8 @@
 
-package ro.space.read.parsers;
+package ro.uvt.space.util;
 
 import java.util.ArrayList;
 
-import ro.space.build.graphic_components.Material;
 
 public class MtlFileParser extends Parser {
 

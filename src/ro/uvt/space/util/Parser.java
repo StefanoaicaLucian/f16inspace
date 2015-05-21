@@ -1,5 +1,5 @@
 
-package ro.space.read.parsers;
+package ro.uvt.space.util;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;

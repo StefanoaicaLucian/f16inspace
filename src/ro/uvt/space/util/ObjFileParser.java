@@ -1,12 +1,11 @@
 
-package ro.space.read.parsers;
+package ro.uvt.space.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import ro.space.util.converters.ListConverter;
 
 public class ObjFileParser extends Parser {
 

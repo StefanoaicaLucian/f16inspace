@@ -1,5 +1,5 @@
 
-package ro.space.display.listeners;
+package ro.uvt.space.main;
 
 import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_AMBIENT;
 import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_DIFFUSE;

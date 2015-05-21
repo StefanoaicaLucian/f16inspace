@@ -1,5 +1,5 @@
 
-package ro.space.build.builders;
+package ro.uvt.space.build;
 
 import static javax.media.opengl.GL.GL_ARRAY_BUFFER;
 import static javax.media.opengl.GL.GL_ELEMENT_ARRAY_BUFFER;
@@ -11,7 +11,7 @@ import static javax.media.opengl.fixedfunc.GLPointerFunc.GL_VERTEX_ARRAY;
 
 import javax.media.opengl.GL2;
 
-import ro.space.read.parsers.ObjContent;
+import ro.uvt.space.util.ObjContent;
 
 
 public class ObjContentLoader {

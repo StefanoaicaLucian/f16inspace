@@ -1,5 +1,5 @@
 
-package ro.space.build.graphic_components;
+package ro.uvt.space.util;
 
 public class Material {
 

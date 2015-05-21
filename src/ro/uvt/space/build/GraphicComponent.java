@@ -1,6 +1,8 @@
 
-package ro.space.build.graphic_components;
+package ro.uvt.space.build;
 
+
+import ro.uvt.space.util.Material;
 
 import com.jogamp.opengl.util.texture.Texture;
 

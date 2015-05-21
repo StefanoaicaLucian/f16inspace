@@ -1,5 +1,5 @@
 
-package ro.space.display.listeners;
+package ro.uvt.space.main;
 
 import static javax.media.opengl.GL.GL_BACK;
 import static javax.media.opengl.GL.GL_COLOR_BUFFER_BIT;
@@ -20,24 +20,27 @@ import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
 import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
 
-import ro.space.build.builders.GraphicObjectBuilder;
-import ro.space.build.graphic_objects.GraphicObject;
-import ro.space.display.particles.CylindricalFireSystem;
-import ro.space.display.particles.ParticleSystem;
-import ro.space.display.particles.SprayedFireSystem;
-import ro.space.display.particles.Trio;
-import ro.uvt.observer.Observer;
-import ro.uvt.observer.Subject;
+import com.jogamp.opengl.util.texture.Texture;
 
-public class GraphicListener implements GLEventListener, Observer {
+import ro.uvt.api.particles.ParticleSystem;
+import ro.uvt.api.particles.SprayedFireSystem;
+import ro.uvt.api.particles.Trio;
+import ro.uvt.api.util.Observer;
+import ro.uvt.api.util.Subject;
+import ro.uvt.space.build.GraphicObject;
+import ro.uvt.space.build.GraphicObjectBuilder;
+import ro.uvt.space.util.TextureReader;
+
+public class Renderer implements GLEventListener, Observer {
 
   private LightKeeper lighter;
 
@@ -45,35 +48,28 @@ public class GraphicListener implements GLEventListener, Observer {
 
   private GL2 gl;
 
-  private Trio up = new Trio(0.0f, 1.0f, 0.0f);
-
   private Trio cameraPosition;
 
   private double cameraAngle;
 
-  private Trio target;
+  private Trio targetPosition;
 
   private List<GraphicObject> objects = new ArrayList<>();
 
   private ParticleSystem fireSystem;
-  private ParticleSystem secondSystem;
 
-  private KeyboardListener keyHandler;
+  private KeyboardListener keyListener = new KeyboardListener();
 
-  public GraphicListener(KeyboardListener keyHandler) {
-    cameraPosition = (Trio) keyHandler.getState().get("camera_position");
-    target = keyHandler.getTarget();
+  public Renderer() {
+    cameraPosition = (Trio) keyListener.getState().get("camera_position");
+    targetPosition = (Trio) keyListener.getState().get("target_position");
+    cameraAngle = (Double) keyListener.getState().get("camera_angle");
 
-    cameraAngle = (Double) keyHandler.getState().get("camera_angle");
-
-    keyHandler.registerObserver(this);
-
-    this.keyHandler = keyHandler;
+    keyListener.registerObserver(this);
   }
 
   @Override
   public void init(GLAutoDrawable drawable) {
-
     System.out.println("OpenGL version: " + drawable.getGL().glGetString(GL_VERSION));
 
     gl = drawable.getGL().getGL2();
@@ -95,7 +91,6 @@ public class GraphicListener implements GLEventListener, Observer {
     gl.glShadeModel(GL_SMOOTH);
 
     gl.glBlendEquation(GL_FUNC_ADD);
-    // gl.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     gl.glBlendFunc(GL_ONE, GL_ONE);
 
     gl.glEnable(GL_LINE_SMOOTH);
@@ -108,11 +103,11 @@ public class GraphicListener implements GLEventListener, Observer {
     objects.add(objectBuilder.buildJetPlane());
     objects.add(objectBuilder.buildFloor());
 
-    fireSystem = new SprayedFireSystem(gl, cameraPosition, cameraAngle, new Trio(2.5f, 1.7f, -6.8f), new Trio(10.0f, 1.7f, -6.8f), 2.7f);
-    secondSystem = new CylindricalFireSystem(gl, cameraPosition, cameraAngle, new Trio(2.5f, 1.7f, -2.0f), new Trio(5.0f, 1.7f, -2.0f), 0.5f);
+    Texture texture = new TextureReader(gl, "res/").readTexture("particle.png", ".png");
+    
+    fireSystem = new SprayedFireSystem(gl, cameraPosition, cameraAngle, new Trio(2.5f, 1.7f, -6.8f), new Trio(10.0f, 1.7f, -6.8f), 2.7f, 300, texture);
 
-    keyHandler.registerObserver(fireSystem);
-    keyHandler.registerObserver(secondSystem);
+    keyListener.registerObserver(fireSystem);
   }
 
   @Override
@@ -136,26 +131,27 @@ public class GraphicListener implements GLEventListener, Observer {
 
   @Override
   public void display(GLAutoDrawable drawable) {
-
     gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     gl.glLoadIdentity();
+
     glu.gluLookAt(cameraPosition.getX(),
                   cameraPosition.getY(),
                   cameraPosition.getZ(),
-                  cameraPosition.getX() + target.getX(),
-                  target.getY(),
-                  cameraPosition.getZ() + target.getZ(),
-                  up.getX(),
-                  up.getY(),
-                  up.getZ());
+                  cameraPosition.getX() + targetPosition.getX(),
+                  targetPosition.getY(),
+                  cameraPosition.getZ() + targetPosition.getZ(),
+                  0.0f,
+                  1.0f,
+                  0.0f);
 
     for (GraphicObject obj : objects) {
       obj.draw();
     }
 
     fireSystem.draw();
-    secondSystem.draw();
+
+    drawAxes();
 
     catchGLError();
 
@@ -168,11 +164,9 @@ public class GraphicListener implements GLEventListener, Observer {
 
   @Override
   public void update(Subject toObserve) {
-    HashMap<String, Object> subjectState = toObserve.getState();
-
+    Map<String, Object> subjectState = toObserve.getState();
     cameraPosition = (Trio) subjectState.get("camera_position");
-
-    target = ((KeyboardListener) toObserve).getTarget();
+    targetPosition = (Trio) subjectState.get("target_position");
   }
 
   private void catchGLError() {
@@ -183,5 +177,29 @@ public class GraphicListener implements GLEventListener, Observer {
       errString = glu.gluErrorString(errCode);
       System.err.println("OpenGL Error:" + errString);
     }
+  }
+
+  private void drawAxes() {
+    gl.glDisable(GL.GL_BLEND);
+
+    gl.glPushMatrix();
+
+    gl.glBegin(GL.GL_LINES);
+
+    gl.glVertex3f(-20f, 0.0f, 0.0f);
+    gl.glVertex3f(20.0f, 0.0f, 0.0f);
+
+    gl.glVertex3f(0.0f, -20.0f, 0.0f);
+    gl.glVertex3f(0.0f, 20.0f, 0.0f);
+
+    gl.glVertex3f(0.0f, 0.0f, -20.0f);
+    gl.glVertex3f(0.0f, 0.0f, 20.0f);
+
+    gl.glEnd();
+    gl.glPopMatrix();
+  }
+
+  public KeyboardListener getKeyListener() {
+    return keyListener;
   }
 }

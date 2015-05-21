@@ -1,5 +1,5 @@
 
-package ro.space.display.listeners;
+package ro.uvt.space.main;
 
 import static java.awt.event.KeyEvent.VK_DOWN;
 import static java.awt.event.KeyEvent.VK_LEFT;
@@ -12,53 +12,47 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import ro.space.display.particles.Trio;
-import ro.uvt.observer.Observer;
-import ro.uvt.observer.Subject;
+import ro.uvt.api.particles.Trio;
+import ro.uvt.api.util.Observer;
+import ro.uvt.api.util.Subject;
 
 public class KeyboardListener implements KeyListener, Subject {
 
-  private Trio cameraPosition = new Trio(0.0f, 0.0f, 0.0f);
-
-  private Trio target = new Trio(0.0f, 0.0f, -1.0f);
-
+  private Trio cameraPosition = new Trio(0.0f, 1.0f, 0.0f);
+  private Trio targetPosition = new Trio(0.0f, 1.0f, -1.0f);
   private double cameraAngle;
-  private double angleStep;
-  private double fraction;
+
+  private double angleStep = 0.1f;
+  private double fraction = 0.1f;
 
   private List<Observer> observers = new ArrayList<>();
-
-  public KeyboardListener() {
-    angleStep = 0.1f;
-    fraction = 0.1f;
-  }
 
   @Override
   public void keyPressed(KeyEvent e) {
     switch (e.getKeyCode()) {
       case VK_LEFT:
         cameraAngle -= angleStep;
-        target.setX((float) Math.sin(cameraAngle));
-        target.setZ((float) -Math.cos(cameraAngle));
+        targetPosition.setX((float) Math.sin(cameraAngle));
+        targetPosition.setZ((float) -Math.cos(cameraAngle));
         notifyObservers();
         break;
 
       case VK_RIGHT:
         cameraAngle += angleStep;
-        target.setX((float) Math.sin(cameraAngle));
-        target.setZ((float) -Math.cos(cameraAngle));
+        targetPosition.setX((float) Math.sin(cameraAngle));
+        targetPosition.setZ((float) -Math.cos(cameraAngle));
         notifyObservers();
         break;
 
       case VK_UP:
-        cameraPosition.setX(cameraPosition.getX() + (float) (target.getX() * fraction));
-        cameraPosition.setZ(cameraPosition.getZ() + (float) (target.getZ() * fraction));
+        cameraPosition.setX(cameraPosition.getX() + (float) (targetPosition.getX() * fraction));
+        cameraPosition.setZ(cameraPosition.getZ() + (float) (targetPosition.getZ() * fraction));
         notifyObservers();
         break;
 
       case VK_DOWN:
-        cameraPosition.setX(cameraPosition.getX() - (float) (target.getX() * fraction));
-        cameraPosition.setZ(cameraPosition.getZ() - (float) (target.getZ() * fraction));
+        cameraPosition.setX(cameraPosition.getX() - (float) (targetPosition.getX() * fraction));
+        cameraPosition.setZ(cameraPosition.getZ() - (float) (targetPosition.getZ() * fraction));
         notifyObservers();
         break;
     }
@@ -66,12 +60,10 @@ public class KeyboardListener implements KeyListener, Subject {
 
   @Override
   public void keyReleased(KeyEvent e) {
-    // unused
   }
 
   @Override
   public void keyTyped(KeyEvent e) {
-    // TODO test this to see the difference
   }
 
   @Override
@@ -91,17 +83,14 @@ public class KeyboardListener implements KeyListener, Subject {
     }
   }
 
-  public Trio getTarget() {
-    return target;
-  }
-
   @Override
   public HashMap<String, Object> getState() {
     HashMap<String, Object> state = new HashMap<>();
-    
+
     state.put("camera_position", cameraPosition);
+    state.put("target_position", targetPosition);
     state.put("camera_angle", cameraAngle);
-    
+
     return state;
   }
 }

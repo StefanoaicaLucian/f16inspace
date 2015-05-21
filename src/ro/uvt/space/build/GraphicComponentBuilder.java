@@ -1,16 +1,15 @@
 
-package ro.space.build.builders;
+package ro.uvt.space.build;
 
 import javax.media.opengl.GL2;
 
 import com.jogamp.opengl.util.texture.Texture;
 
-import ro.space.build.graphic_components.GraphicComponent;
-import ro.space.build.graphic_components.Material;
-import ro.space.read.parsers.MtlFileParser;
-import ro.space.read.parsers.ObjContent;
-import ro.space.read.parsers.ObjFileParser;
-import ro.space.read.textures.TextureReader;
+import ro.uvt.space.util.Material;
+import ro.uvt.space.util.MtlFileParser;
+import ro.uvt.space.util.ObjContent;
+import ro.uvt.space.util.ObjFileParser;
+import ro.uvt.space.util.TextureReader;
 
 public class GraphicComponentBuilder {
 

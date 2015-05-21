@@ -1,7 +1,8 @@
 
-package ro.space.build.graphic_objects;
+package ro.uvt.space.build;
 
 import javax.media.opengl.GL2;
+
 
 import static javax.media.opengl.GL2.GL_BLEND;
 

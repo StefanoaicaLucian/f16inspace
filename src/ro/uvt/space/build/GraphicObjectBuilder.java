@@ -1,10 +1,8 @@
 
-package ro.space.build.builders;
+package ro.uvt.space.build;
 
 import javax.media.opengl.GL2;
 
-import ro.space.build.graphic_objects.Floor;
-import ro.space.build.graphic_objects.JetPlane;
 
 public class GraphicObjectBuilder {
 
