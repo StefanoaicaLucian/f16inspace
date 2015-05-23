@@ -3,6 +3,8 @@ package ro.uvt.space.util;
 
 import java.util.ArrayList;
 
+import ro.uvt.api.particles.Material;
+
 
 public class MtlFileParser extends Parser {
 

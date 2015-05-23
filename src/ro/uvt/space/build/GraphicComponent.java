@@ -2,7 +2,7 @@
 package ro.uvt.space.build;
 
 
-import ro.uvt.space.util.Material;
+import ro.uvt.api.particles.Material;
 
 import com.jogamp.opengl.util.texture.Texture;
 

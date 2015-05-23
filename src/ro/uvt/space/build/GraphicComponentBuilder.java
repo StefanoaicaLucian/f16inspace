@@ -5,7 +5,7 @@ import javax.media.opengl.GL2;
 
 import com.jogamp.opengl.util.texture.Texture;
 
-import ro.uvt.space.util.Material;
+import ro.uvt.api.particles.Material;
 import ro.uvt.space.util.MtlFileParser;
 import ro.uvt.space.util.ObjContent;
 import ro.uvt.space.util.ObjFileParser;

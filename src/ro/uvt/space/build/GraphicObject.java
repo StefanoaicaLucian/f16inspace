@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL2;
 
-import ro.uvt.space.util.Material;
+import ro.uvt.api.particles.Material;
 
 public abstract class GraphicObject {
 
