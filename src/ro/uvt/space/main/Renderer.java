@@ -50,8 +50,6 @@ public class Renderer implements GLEventListener, Observer {
 
   private Trio cameraPosition;
 
-  private double cameraAngle;
-
   private Trio targetPosition;
 
   private List<GraphicObject> objects = new ArrayList<>();
@@ -63,7 +61,6 @@ public class Renderer implements GLEventListener, Observer {
   public Renderer() {
     cameraPosition = (Trio) keyListener.getState().get("camera_position");
     targetPosition = (Trio) keyListener.getState().get("target_position");
-    cameraAngle = (Double) keyListener.getState().get("camera_angle");
 
     keyListener.registerObserver(this);
   }
@@ -104,8 +101,9 @@ public class Renderer implements GLEventListener, Observer {
     objects.add(objectBuilder.buildFloor());
 
     Texture texture = new TextureReader(gl, "res/").readTexture("particle.png", ".png");
-    
-    fireSystem = new SprayedFireSystem(gl, cameraPosition, cameraAngle, new Trio(2.5f, 1.7f, -6.8f), new Trio(10.0f, 1.7f, -6.8f), 2.7f, 300, texture);
+
+    fireSystem = new SprayedFireSystem(gl, new Trio(2.5f, 1.7f, -6.8f), new Trio(10.0f, 1.7f, -6.8f), cameraPosition, texture);
+    // new SprayedFireSystem(gl, cameraPosition, cameraAngle, new Trio(2.5f, 1.7f, -6.8f), new Trio(10.0f, 1.7f, -6.8f), 2.7f, 300, texture);
 
     keyListener.registerObserver(fireSystem);
   }
