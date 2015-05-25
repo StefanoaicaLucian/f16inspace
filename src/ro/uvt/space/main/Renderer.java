@@ -29,7 +29,7 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
 
-import ro.uvt.api.particles.CylindricalFireSystem;
+import ro.uvt.api.particles.FountainSystem;
 import ro.uvt.api.particles.Material;
 import ro.uvt.api.particles.ParticleSystem;
 import ro.uvt.api.particles.Trio;
@@ -103,18 +103,18 @@ public class Renderer implements GLEventListener, Observer {
 
     Texture texture = new TextureReader(gl, "res/").readTexture("particle.png", ".png");
 
-    float[] ambient = {0.4f, 0.2f, 0.8f};
-    float[] diffuse = {0.4f, 0.2f, 0.8f};
-    float[] specular = {0.4f, 0.2f, 0.8f};
+    float[] ambient = {0.0f, 0.2f, 0.8f};
+    float[] diffuse = {0.0f, 0.2f, 0.8f};
+    float[] specular = {0.0f, 0.2f, 0.8f};
     float[] shine = {120.078431f};
 
     Material material = new Material(ambient, diffuse, specular, shine);
 
-    fireSystem = new CylindricalFireSystem(gl, new Trio(0.0f, 0.0f, 0.0f), new Trio(0.0f, 10.0f, 0.0f), 1.0f, cameraPosition, texture, material);
+    fireSystem = new FountainSystem(gl, new Trio(0.0f, 0.0f, 0.0f), new Trio(0.0f, 27.0f, 0.0), cameraPosition, texture, material);
     // new SprayedFireSystem(gl, new Trio(2.5f, 1.7f, -6.8f), new Trio(10.0f, 1.7f, -6.8f), cameraPosition, texture, material);
     fireSystem.setParticlesPerSpawn(100);
-    fireSystem.setParticleRadius(0.5f);
-    fireSystem.setFadeUnit(0.035f);
+    fireSystem.setParticleRadius(0.1f);
+    fireSystem.setFadeUnit(0.05f);
 
     keyListener.registerObserver(fireSystem);
   }
