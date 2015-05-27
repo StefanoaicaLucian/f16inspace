@@ -3,28 +3,34 @@
 \usepackage{graphicx}
 \graphicspath{{./images/}}
 
-\title{
-	{Simple API for 3D applications}\\
-	\vspace{2.5cm}
-	{\large WEST UNIVERSITY OF TIMI\c SOARA}\\
-	{\includegraphics{uvt_logo.jpg}}
-}
-
-\author{Lucian Florian \c Stef\u anoaica}
-\date{April 2015}
-
 \begin{document}
 \input{./TeX_files/titlepage}
 
-\chapter*{Abstract}
-Let's assume that in one of these days a programmer decides to write a 3D application. It can be anything from flight simulators to shooter games. The point is our guy wants his application to have 3D objects which he can model with an external tool and nice effects, obtained with particle engines, like fire, smoke or water.
+\newpage
+\thispagestyle{empty}
+\null
+\newpage
 
 \tableofcontents
 
+\newpage
+
+\input{./TeX_files/abstract}
+
+\newpage
+\input{./TeX_files/abstract_ro}
+
 \chapter{Introduction}
-\input{./TeX_files/chapter01}
+\input{./TeX_files/introduction}
+
+\chapter{Particle Systems}
+\input{./TeX_files/particle_systems}
+
+\chapter{Application}
+\input{./TeX_files/application}
+
 \chapter{Conclusion}
-\input{./TeX_files/chapter02}
+\input{./TeX_files/conclusion}
 
 % bibliography, glossary and index would go here.
 \end{document}
