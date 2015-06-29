@@ -22,3 +22,20 @@ A particle texture attribute can also be added to this basic attributes. Actuall
 
 The attributes of a particle can be initialized using methods similar to the ones used to compute the number of particles created per frame. For example the initial speed can be computed using the following formula: s = m + rv where s is the computed speed, m is the average of the speed values over a period of time, r is a random number between -1 and 1 and v is the maximum difference between the average speed and the actual speed of a particle. Nearly all the other particle attributes can be initialized using this technique.\\
 
+\newpage
+\section{What Makes a Particle Dynamic}
+Any particle that changes its state (if it moves, if it changes its color, its texture or any attribute whatsoever) is dynamic. A particle which keeps its state constant during its whole lifetime is a static particle. But how to make a particle move or change its color or its transparency?\\
+
+In order to change a particles position in three dimensional space one must add the speed vector to the old position vector. This is how the new position vector is obtained. This computation is performed with each frame. This is the basic particle movement mechanism. One could add other force vectors (gravity and wind are two good examples) to the position vector to make the movement of the particle more complex.\\
+
+\newpage
+\section{When to Kill a Particle}
+There are a few methods which can be used to determine when to destroy particles from a system. One of these methods is to keep track of a lifetime value which is supposed to drop with each rendered frame. The distance between a particles current position and the origin of the particle system can also be used to determine when a particle leaves a certain region surrounding the origin of the system. If that distance exceeds a certain value, the particle will be removed from the particle system.\\
+
+With each frame that is rendered on the screen, all the particles from a specific particle system are checked to see if they satisfy their dying condition satisfied. All the particles which satisfy that condition are sequentially removed from the system.
+
+\section{The Particle Rendering Process}
+There are more than one methods which can be used to render particles. The particles which formed the Genesis Effect from Star Trek II: The Wrath of Khan implemented by William T. Reeves and a team of computer graphics developers were actually light sources which combined themselves with each other in an additive manner regarding their color and transparency values. This technique removed the hidden surface problem because the particles did not obscure each other but simply added more light to a certain pixel.\\
+
+A second method would be to use billboards to represent particles. A simple rectangle made out of two simple triangles can be a billboard. In fact any two dimensional element rendered in a there dimensional environment can be a billboard. The main difference between billboards and simple triangles is that a billboard always rotates itself around one or more axes in order to face the camera. There are advantages and disadvantages to using billboards instead of light sources. One advantage is that billboards can be textured with more than one texture over their lifetime. A disadvantage is that billboards may need to be decreasingly sorted according to their distance from the camera. In other words the billboards which are furthest from the camera need to be rendered before the billboards which are closer to the camera otherwise the blending effect will be spoiled.\\
+

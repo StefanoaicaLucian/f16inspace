@@ -8,5 +8,8 @@
 \contentsline {section}{\numberline {2.1}How To Build Particle Systems}{11}
 \contentsline {section}{\numberline {2.2}The Particle Spawning Stage}{13}
 \contentsline {section}{\numberline {2.3}Some Basic Particle Attributes}{14}
-\contentsline {chapter}{\numberline {3}Application}{15}
-\contentsline {chapter}{\numberline {4}Conclusion}{16}
+\contentsline {section}{\numberline {2.4}What Makes a Particle Dynamic}{15}
+\contentsline {section}{\numberline {2.5}When to Kill a Particle}{16}
+\contentsline {section}{\numberline {2.6}The Particle Rendering Process}{16}
+\contentsline {chapter}{\numberline {3}Application}{17}
+\contentsline {chapter}{\numberline {4}Conclusion}{18}
