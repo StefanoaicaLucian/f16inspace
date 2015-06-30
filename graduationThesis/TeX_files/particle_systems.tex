@@ -1,12 +1,20 @@
-\section{How To Build Particle Systems}
-From an object-oriented programming point of view a \textbf{particle system} is a simple container object which manages all the particles inside it. This container has an interface which programmers can use to control the system and the particles inside it. But how would one design and implement such a container?\\
+\section{The Basic Structure of Particle Systems}
+From an object-oriented programming point of view a \textbf{particle system} is a simple container object which manages all the \textbf{particles} inside it. At first the container is completely empty. Very soon after the container starts to add particles to itself with each frame. This container has an interface which programmers can use to control the system and the particles inside it. But how would one design and implement such a container?\\
 
-Here are a few steps which can be carried out in order to obtain an object-oriented model of a problem. In order to highlight some of the base components of an object-oriented system a programmer should write down a detailed description of the problem which the system is supposed to solve (here the problem is how to "tell" a computer what a particle system is and how does it behave). After that, the programmer should iterate through the description and identify all the nouns, adjectives and verbs. The nouns represent potential class names, the verbs represent potential class attributes and the verbs represent potential class methods. The next step is to associate class names with class attributes and class methods.\\
-
-In the case of the particle systems problem, a particle could be a class, and also, the particle system itself could be a class. But these classes should only be generic classes, therefore they should only contain information which is common to all the particles and all the particle systems respectively. This classes will never be instantiated, instead they will serve as parent classes to other concrete classes which will hold specialized information about specific particles and specific particle systems. Some particles may move differently than others and some particle systems may emit more than one type of particles. But how do particle systems actually work? Every time a particle system is being rendered a few things happen. Being a simple container which manages its contained objects a particle system starts off by being completely empty. At each rendering cycle new particles are created and added to the particle system. The list of contained particles is checked for "dead" particles (these are particles that have exceeded their expected lifetime) in order to remove them from the list. Each particle in the system is first placed in the origin of the system and has its next position calculated with respect to its old position and other attributes like direction, speed or acceleration. After this all the particles in the system are finally being rendered.\\
+Here are three short steps which can be carried out in order to obtain an object-oriented model of the problem:
+\begin{enumerate}
+	\item In order to highlight some of the base components of an object-oriented system a programmer should write down a detailed description of the problem which the system is supposed to solve (here the problem is how to "tell" a computer what a particle system is and how does it behave).
+	
+	\item Iterate through the description and identify all the nouns, adjectives and verbs. The nouns represent potential class names, the verbs represent potential class attributes and the verbs represent potential class methods.
+	
+	\item Assign attributes and methods to classes.
+\end{enumerate}
 
 \newpage
-\section{The Particle Spawning Stage}
+In the case of the particle systems problem, a particle could be a class, and also, the particle system itself could be a class. But these classes should only be generic classes, therefore they should only contain information which is common to all the particles and all the particle systems respectively. This classes will never be instantiated, instead they will serve as parent classes to other concrete classes which will hold specialized information about specific particles and specific particle systems. Some particles may move differently than others and some particle systems may emit more than one type of particles. But how do particle systems actually work? Every time a particle system is being rendered a few things happen. Being a simple container which manages its contained objects a particle system starts off by being completely empty. At each rendering cycle new particles are created and added to the particle system. The list of contained particles is checked for "dead" particles (these are particles that have exceeded their life expectancy) in order to remove them from the list. Each particle in the system is first placed in the origin of the system and has its next position calculated with respect to its old position and other attributes like direction, speed or acceleration. After this all the particles in the system are finally being rendered.\\
+
+\newpage
+\subsection{The Particle Spawning Stage}
 In this stage of the particle systems rendering cycle new particles are created. The particle generation can be done in more than one way. The simplest way to do this is to generate a constant number of particles with each frame that gets rendered on the screen. But in order to improve the obtained results other particle generation methods can be used. These are just some example methods, one could invent quite a lot of such methods.\\
 
 One method could be to use a mean and a variance counter. The mean represents an average of the number of particles generated throughout a sequence of frames and the variance represents the largest difference between the average and the actual number of particles generated at a specific frame. The following formula shows exactly how the two constants can be used.\\
@@ -15,7 +23,7 @@ n = m + rv where n is the number of particles generated per frame, m is the mean
 Another method to generate particles could be to take the area of the screen covered by the particle system into consideration as well. In other words if the rendered particle system is very far away from the camera then it will appear to be very small thus the smaller number of particles will not affect the quality of the image. There is no need to use 10,000 particles to render a particle system which takes only one or two squared centimeters of the screen. This is how to achieve this improvement: n = (m + rv)s where n is the number of particles generated, m is the average number of particles generated over a period of time, v is the variance, r is a random number between -1 and 1 and s represents the consumption of screen area.\\
 
 \newpage
-\section{Some Basic Particle Attributes}
+\subsection{Some Basic Particle Attributes}
 While from a physics point of view a particle can be anything from a photon to a few water molecules or a even star, from an object oriented programming point of view a particle is a simple object which has a state and a behavior. The attributes of a particle represent its state and the methods of a particle represent a way to control its state. A particle can have, more or less, the following attributes: an initial position, an initial speed, an initial acceleration, an initial size, an initial color and a lifetime. The lifetime can be used as a transparency attribute as well. As the lifetime of a particle decreases its transparency increases, thus by the time a particle dies it should already be completely transparent (invisible).\\
 
 A particle texture attribute can also be added to this basic attributes. Actually, in order to improve the visual aspects of the particle system, a whole list of texture objects can be used. By using this method a particle can be implemented to have a variety of textures throughout its lifetime. The same technique can be used for the shape and color of a particle such that the particle can have a whole range of colors and shapes throughout its lifetime.\\
@@ -23,19 +31,19 @@ A particle texture attribute can also be added to this basic attributes. Actuall
 The attributes of a particle can be initialized using methods similar to the ones used to compute the number of particles created per frame. For example the initial speed can be computed using the following formula: s = m + rv where s is the computed speed, m is the average of the speed values over a period of time, r is a random number between -1 and 1 and v is the maximum difference between the average speed and the actual speed of a particle. Nearly all the other particle attributes can be initialized using this technique.\\
 
 \newpage
-\section{What Makes a Particle Dynamic}
+\subsection{What Makes a Particle Dynamic}
 Any particle that changes its state (if it moves, if it changes its color, its texture or any attribute whatsoever) is dynamic. A particle which keeps its state constant during its whole lifetime is a static particle. But how to make a particle move or change its color or its transparency?\\
 
 In order to change a particles position in three dimensional space one must add the speed vector to the old position vector. This is how the new position vector is obtained. This computation is performed with each frame. This is the basic particle movement mechanism. One could add other force vectors (gravity and wind are two good examples) to the position vector to make the movement of the particle more complex.\\
 
 \newpage
-\section{When to Kill a Particle}
+\subsection{When to Kill a Particle}
 There are a few methods which can be used to determine when to destroy particles from a system. One of these methods is to keep track of a lifetime value which is supposed to drop with each rendered frame. The distance between a particles current position and the origin of the particle system can also be used to determine when a particle leaves a certain region surrounding the origin of the system. If that distance exceeds a certain value, the particle will be removed from the particle system.\\
 
 With each frame that is rendered on the screen, all the particles from a specific particle system are checked to see if they satisfy their dying condition satisfied. All the particles which satisfy that condition are sequentially removed from the system.
 
-\section{The Particle Rendering Process}
+\newpage
+\subsection{The Particle Rendering Process}
 There are more than one methods which can be used to render particles. The particles which formed the Genesis Effect from Star Trek II: The Wrath of Khan implemented by William T. Reeves and a team of computer graphics developers were actually light sources which combined themselves with each other in an additive manner regarding their color and transparency values. This technique removed the hidden surface problem because the particles did not obscure each other but simply added more light to a certain pixel.\\
 
 A second method would be to use billboards to represent particles. A simple rectangle made out of two simple triangles can be a billboard. In fact any two dimensional element rendered in a there dimensional environment can be a billboard. The main difference between billboards and simple triangles is that a billboard always rotates itself around one or more axes in order to face the camera. There are advantages and disadvantages to using billboards instead of light sources. One advantage is that billboards can be textured with more than one texture over their lifetime. A disadvantage is that billboards may need to be decreasingly sorted according to their distance from the camera. In other words the billboards which are furthest from the camera need to be rendered before the billboards which are closer to the camera otherwise the blending effect will be spoiled.\\
-
