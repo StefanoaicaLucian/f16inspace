@@ -10,10 +10,29 @@ Here are three short steps which can be carried out in order to obtain an object
 	\item Assign attributes and methods to classes.
 \end{enumerate}
 
-Completing the above three steps should produce a basic but stable particle system structure.
-
 \newpage
-In the case of the particle systems problem, a particle could be a class, and also, the particle system itself could be a class. But these classes should only be generic classes, therefore they should only contain information which is common to all the particles and all the particle systems respectively. This classes will never be instantiated, instead they will serve as parent classes to other concrete classes which will hold specialized information about specific particles and specific particle systems. Some particles may move differently than others and some particle systems may emit more than one type of particles. But how do particle systems actually work? Every time a particle system is being rendered a few things happen. Being a simple container which manages its contained objects a particle system starts off by being completely empty. At each rendering cycle new particles are created and added to the particle system. The list of contained particles is checked for "dead" particles (these are particles that have exceeded their life expectancy) in order to remove them from the list. Each particle in the system is first placed in the origin of the system and has its next position calculated with respect to its old position and other attributes like direction, speed or acceleration. After this all the particles in the system are finally being rendered.\\
+
+Let us assume that we are asked to implement multiple particle effects using particle systems. Some particles may react to external forces in a different manner than others. For example some particles can be affected by gravity while others can not. Other particles can have a very high mass making their trajectory only slightly modifiable by an external wind force. Every particle should have a trajectory weather it is influenced by an external force or not.\\
+
+Some particle systems may emit more than one type of particles. For example a particle system which simulates the explosion of a nuclear bomb should emit both lightweight and heavy particles. The heavy particles will fall down to the ground while the lightweight particles will form a cloud of fire, smoke and dust. The fire will burn out but the smoke and dust will get carried away by external wind forces if they exist.\\
+
+A few basic components can be easily identified in the above problem description. This components are actually classes and they can be named as follows:
+
+\begin{itemize}
+	\item Particle
+	\item FireParticle
+	\item SmokeParticle
+	\item DustParticle
+	\item ParticleSystem
+	\item FireSystem
+	\item SmokeSystem
+	\item DustSystem
+\end{itemize}
+
+No matter how high is the difference between a particle system and another one there will still be state and behavior which is common to all particle systems. The same statement is valid for the Particle classes as well. The Particle class should be a class which the other particle classes (FireParticle, SmokeParticle, etc...) can use to inherit common functionality from. The ParticleSystem class should be
+the class which holds the functionality common to all the particle system classes (FireSystem, SmokeSystem, etc...).\\
+
+Every time a particle system is being rendered a few things happen. Being a simple container which manages its contained objects a particle system starts off by being completely empty. At each rendering cycle new particles are created and added to the particle system. The list of contained particles is checked for "dead" particles (these are particles that have exceeded their life expectancy) in order to remove them from the list. Each particle in the system is first placed in the origin of the system and has its next position calculated with respect to its old position and other attributes like direction, speed or acceleration. After this all the particles in the system are finally being rendered.\\
 
 \newpage
 \subsection{The Particle Spawning Stage}
