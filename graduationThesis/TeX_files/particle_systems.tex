@@ -10,6 +10,8 @@ Here are three short steps which can be carried out in order to obtain an object
 	\item Assign attributes and methods to classes.
 \end{enumerate}
 
+Following is a description of a particle based graphical effect.
+
 \newpage
 
 Let us assume that we are asked to implement multiple particle effects using particle systems. Some particles may react to external forces in a different manner than others. For example some particles can be affected by gravity while others can not. Other particles can have a very high mass making their trajectory only slightly modifiable by an external wind force. Every particle should have a trajectory weather it is influenced by an external force or not.\\
@@ -30,9 +32,17 @@ A few basic components can be easily identified in the above problem description
 \end{itemize}
 
 No matter how high is the difference between a particle system and another one there will still be state and behavior which is common to all particle systems. The same statement is valid for the Particle classes as well. The Particle class should be a class which the other particle classes (FireParticle, SmokeParticle, etc...) can use to inherit common functionality from. The ParticleSystem class should be
-the class which holds the functionality common to all the particle system classes (FireSystem, SmokeSystem, etc...).\\
+the class which holds the functionality common to all the particle system classes (FireSystem, SmokeSystem, etc...). But this is just a simple class structure which can be used to model particle systems. What is the actual mechanism which makes particle systems work? This is the algorithm used by most particle systems:\\
 
-Every time a particle system is being rendered a few things happen. Being a simple container which manages its contained objects a particle system starts off by being completely empty. At each rendering cycle new particles are created and added to the particle system. The list of contained particles is checked for "dead" particles (these are particles that have exceeded their life expectancy) in order to remove them from the list. Each particle in the system is first placed in the origin of the system and has its next position calculated with respect to its old position and other attributes like direction, speed or acceleration. After this all the particles in the system are finally being rendered.\\
+\begin{enumerate}
+	\item New particles are created in order to be added to the particle system which is initially completely empty.
+	\item All the attributes of the newly created particles are initialized.
+	\item The list of particles contained by the particle systems is scanned for dead particles in order to remove them from the list.
+	\item All the particles which still exist in the system will be moved to their new position. Each new position is computed with respect to the particles old position and attributes like direction, speed and acceleration.
+	\item Finally an image of the particle system is rendered on the screen.
+\end{enumerate}
+
+Each step of the algorithm is described in a more detailed manner in the following subsections.
 
 \newpage
 \subsection{The Particle Spawning Stage}
