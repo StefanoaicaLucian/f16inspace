@@ -32,7 +32,7 @@ A few basic components can be easily identified in the above problem description
 \end{itemize}
 
 No matter how high is the difference between a particle system and another one there will still be state and behavior which is common to all particle systems. The same statement is valid for the Particle classes as well. The Particle class should be a class which the other particle classes (FireParticle, SmokeParticle, etc...) can use to inherit common functionality from. The ParticleSystem class should be
-the class which holds the functionality common to all the particle system classes (FireSystem, SmokeSystem, etc...). But this is just a simple class structure which can be used to model particle systems. What is the actual mechanism which makes particle systems work? This is the algorithm used by most particle systems:\\
+the class which holds the functionality common to all the particle system classes (FireSystem, SmokeSystem, etc...). But this is just a simple class structure which can be used to model particle systems. What is the actual mechanism which makes particle systems work? These steps are executed whenever most particle systems get rendered on a screen:
 
 \begin{enumerate}
 	\item New particles are created in order to be added to the particle system which is initially completely empty.
@@ -42,16 +42,23 @@ the class which holds the functionality common to all the particle system classe
 	\item Finally an image of the particle system is rendered on the screen.
 \end{enumerate}
 
-Each step of the algorithm is described in a more detailed manner in the following subsections.
+Each step is described in a more detailed manner in the following subsections.
 
 \newpage
-\subsection{The Particle Spawning Stage}
-In this stage of the particle systems rendering cycle new particles are created. The particle generation can be done in more than one way. The simplest way to do this is to generate a constant number of particles with each frame that gets rendered on the screen. But in order to improve the obtained results other particle generation methods can be used. These are just some example methods, one could invent quite a lot of such methods.\\
+\subsection{The Particle Spawning Step}
+This is the first step in the rendering process of a particle system. This is when new particles are born. The number of particles generated per frame can contribute to the visual quality of a particle system. For example a real burning flame will not always have the same intensity meaning that it will not generate a constant number of fire particles. Using some kind of stochastic process to compute the number of particles generated per frame may make a simulated flame look more real, but for simplicity one can easily set the number of particles generated per frame to be constant.\\
 
-One method could be to use a mean and a variance counter. The mean represents an average of the number of particles generated throughout a sequence of frames and the variance represents the largest difference between the average and the actual number of particles generated at a specific frame. The following formula shows exactly how the two constants can be used.\\
-n = m + rv where n is the number of particles generated per frame, m is the mean, v is the variance and r is a random number between -1 and 1.\\
+One good example of a stochastic method which can be used to compute the number of particles generated per frame is to use a mean and a variance counter. The mean counter represents the average number of particles generated throughout a sequence of frames and the variance counter represents the largest possible difference between the average and the actual number of particles generated per one frame. The following formula shows exactly how this is supposed to work:
+\begin{center}
+	$n = m + r \cdot v$,
+\end{center}
+where $n$ is the number of particles generated per frame, $m$ is the mean, $v$ is the variance and $r$ is a random number between $-1$ and $1$.\\
 
-Another method to generate particles could be to take the area of the screen covered by the particle system into consideration as well. In other words if the rendered particle system is very far away from the camera then it will appear to be very small thus the smaller number of particles will not affect the quality of the image. There is no need to use 10,000 particles to render a particle system which takes only one or two squared centimeters of the screen. This is how to achieve this improvement: n = (m + rv)s where n is the number of particles generated, m is the average number of particles generated over a period of time, v is the variance, r is a random number between -1 and 1 and s represents the consumption of screen area.\\
+Depending on the number of particles generated per frame, the memory consumption of particle systems can be quite high. Fortunately there is a method which can sometimes reduce their memory consumption. This method requires the inclusion of the screen area covered by the particle system in the equation. In other words if a particle system is very far away from the camera then it will appear to be very small thus a smaller number of particles will not affect the quality of the rendered image. There is no need to use $100,000$ particles to render a particle system which takes only 1 to 2 squared centimeters of the screen. The formula looks as follows:
+\begin{center}
+	$n = (m + r \cdot v) \cdot s$,
+\end{center}
+where $n$ is the number of particles generated, $m$ is the average number of particles generated over a period of time, $v$ is the variance, $r$ is a random number between $-1$ and $1$ and $s$ represents the screen area covered by the particle system.\\
 
 \newpage
 \subsection{Some Basic Particle Attributes}
