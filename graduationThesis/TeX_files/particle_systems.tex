@@ -31,8 +31,7 @@ A few basic components can be easily identified in the above problem description
 	\item DustSystem
 \end{itemize}
 
-No matter how high is the difference between a particle system and another one there will still be state and behavior which is common to all particle systems. The same statement is valid for the Particle classes as well. The Particle class should be a class which the other particle classes (FireParticle, SmokeParticle, etc...) can use to inherit common functionality from. The ParticleSystem class should be
-the class which holds the functionality common to all the particle system classes (FireSystem, SmokeSystem, etc...). But this is just a simple class structure which can be used to model particle systems. What is the actual mechanism which makes particle systems work? These steps are executed whenever most particle systems get rendered on a screen:
+No matter how high is the difference between a particle system and another one there will still be state and behavior which is common to all particle systems. The same statement is valid for the Particle classes as well. The Particle class should be a class which the other particle classes (FireParticle, SmokeParticle, etc...) can use to inherit common functionality from. The ParticleSystem class should be the class which holds the functionality common to all the particle system classes (FireSystem, SmokeSystem, etc...). But this is just a simple class structure which can be used to model particle systems. What is the actual mechanism which makes particle systems work? These steps are executed whenever most particle systems get rendered on a screen:
 
 \begin{enumerate}
 	\item New particles are created in order to be added to the particle system which is initially completely empty.
@@ -61,12 +60,33 @@ Depending on the number of particles generated per frame, the memory consumption
 where $n$ is the number of particles generated, $m$ is the average number of particles generated over a period of time, $v$ is the variance, $r$ is a random number between $-1$ and $1$ and $s$ represents the screen area covered by the particle system.\\
 
 \newpage
-\subsection{Some Basic Particle Attributes}
-While from a physics point of view a particle can be anything from a photon to a few water molecules or a even star, from an object oriented programming point of view a particle is a simple object which has a state and a behavior. The attributes of a particle represent its state and the methods of a particle represent a way to control its state. A particle can have, more or less, the following attributes: an initial position, an initial speed, an initial acceleration, an initial size, an initial color and a lifetime. The lifetime can be used as a transparency attribute as well. As the lifetime of a particle decreases its transparency increases, thus by the time a particle dies it should already be completely transparent (invisible).\\
+\subsection{The Particle Initialization Step}
+While from a physics point of view a particle can be anything from a photon to a few water molecules or a even star, from an object oriented programming point of view a particle is a simple object which has a state and a behavior. The attributes of a particle represent its state and the methods of that particle represent a way to control its state. In this step all the particle attributes are initialized. Particles can have a very wide variety of different attributes but the most basic ones are listed bellow.
+\begin{itemize}
+	\item position
+	\item speed
+	\item acceleration
+	\item size
+	\item color
+	\item lifetime
+	\item texture
+\end{itemize}
 
-A particle texture attribute can also be added to this basic attributes. Actually, in order to improve the visual aspects of the particle system, a whole list of texture objects can be used. By using this method a particle can be implemented to have a variety of textures throughout its lifetime. The same technique can be used for the shape and color of a particle such that the particle can have a whole range of colors and shapes throughout its lifetime.\\
+The position attribute should be implemented as a two-dimensional or a three-dimensional vector variable depending on the coordinate system. This variable is usually initialized with the origin of the particle system. In order to move a particle to a new position one would have to execute various mathematical vector operations on this variable. \\
 
-The attributes of a particle can be initialized using methods similar to the ones used to compute the number of particles created per frame. For example the initial speed can be computed using the following formula: s = m + rv where s is the computed speed, m is the average of the speed values over a period of time, r is a random number between -1 and 1 and v is the maximum difference between the average speed and the actual speed of a particle. Nearly all the other particle attributes can be initialized using this technique.\\
+The speed attribute should also be implemented as a vector and it should be used together with the acceleration attribute in order to modify a particle's position. This formula shows how to do this:
+\begin{center}
+	$\vec{n} = \vec{o} + (\vec{s} + \vec{a}),$
+\end{center}
+where $\vec{n}$ is the new position vector, $\vec{o}$ is the old position vector, $\vec{s}$ is the speed vector and $\vec{a}$ is the acceleration vector. The magnitude of the speed vector can remain constant throughout the whole lifetime of a particle while the magnitude of its acceleration vector can get random values from a predefined range in order to give the particle a more complex movement.\\
+
+From a conceptual point of view a particle is a simple point in space. The downside to implementing particles as points is that points can not be textured. This is why particles are usually implemented with billboards. Billboards offer the possibility of obtaining textured particle effects. In the case of a square billboard the size attribute is actually the distance between the center of the billboard and one of its edges whereas in the case of a point implementation the size attribute represents the surface area covered by the point on the screen.\\
+
+The color attribute can be used to control the color tone of a particle. In other words even if a particle has a texture with blue accents by changing this attribute one can make its texture to have reddish accents.\\
+
+The lifetime attribute is used to decide when a particle is "dead" and needs to be removed from the particle system but this attribute can also be used to control a particle's opacity. A particle's opacity usually has values between $0.0$ and $1.0$. When a particle's opacity is at it's lowest bound the particle is completely transparent and when its opacity is at its highest bound the particle is completely opaque. If we make the particle's lifetime start with $1.0$ and decrease at each frame with a constant or variable amount we can control both the duration and the transparency of a particle with a single variable.\\
+
+The texture attribute controls the texture of a particle and it can be implemented with a single texture variable or with a texture array variable. When it is implemented with an array a particle instance will be more dynamic because it will have multiple different textures throughout its lifetime.\\
 
 \newpage
 \subsection{What Makes a Particle Dynamic}
