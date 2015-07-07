@@ -89,10 +89,14 @@ The lifetime attribute is used to decide when a particle is "dead" and needs to 
 The texture attribute controls the texture of a particle and it can be implemented with a single texture variable or with a texture array variable. When it is implemented with an array a particle instance will be more dynamic because it will have multiple different textures throughout its lifetime.\\
 
 \newpage
-\subsection{What Makes a Particle Dynamic}
-Any particle that changes its state (if it moves, if it changes its color, its texture or any attribute whatsoever) is dynamic. A particle which keeps its state constant during its whole lifetime is a static particle. But how to make a particle move or change its color or its transparency?\\
+\subsection{The Dead Particle Removal Step}
+In this step the list of particles managed by the particle system is scanned for "dead" particles. Whenever a "dead" particle is found it is quickly removed from the system. The scanning can be done starting from the beginning of the list or from the end.\\
 
-In order to change a particles position in three dimensional space one must add the speed vector to the old position vector. This is how the new position vector is obtained. This computation is performed with each frame. This is the basic particle movement mechanism. One could add other force vectors (gravity and wind are two good examples) to the position vector to make the movement of the particle more complex.\\
+When the scan is done starting from the beginning of the list a small glitch occurs at each pass. Whenever a particle is removed from the list, all the following particles in the list are moved to left with one position, this causes the pass to skip the verification of one particle. The skipped particle will be verified at the next pass but not having a particle removed when it is expected for it to be removed is not what we want.\\
+
+In order to avoid this glitch one should iterate through the list starting from the end of the list. This way when a particle is removed the subsequent particles are moved in front of the verification index not in the back of it.\\
+
+There may be times when we are unable to iterate backwards through a list. The is where \textbf(Iterator)s come in handy. Most programming languages (Java is one of these languages) offer these objects. When one uses an Iterator to scan a list of objects he does not need to worry about glitches like skipping an object because this matter is handled by the Iterator itself.\\
 
 \newpage
 \subsection{When to Kill a Particle}
