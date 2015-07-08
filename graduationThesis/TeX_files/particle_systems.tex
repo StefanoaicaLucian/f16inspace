@@ -103,6 +103,16 @@ What are the conditions which need to be satisfied by a particle in order for it
 The distance between a particle's current position and the origin of the particle system can also be used to determine when a particle leaves a certain region surrounding the origin of the system. If that distance exceeds a certain value, the particle will be removed from the particle system.\\
 
 \newpage
+\subsection{The Particle Update Step}
+In this step all the particles from a particle system are updated. Usually a particle update means moving it to a new position in space. But other particle attributes can also be affected by the update. Making the update affect other attributes will make the particle more dynamic.\\
+
+The texture attribute is one of the attributes which can be updated. When it comes to texturing a particle one can use a single texture or a texture atlas (a whole range of textures). The texture update may mean to change the current texture with a new texture from the texture atlas. Thus giving a fire particle effect a more realistic look because in real life fire particles have variable shapes and sizes.\\
+
+Let us assume that one wants to implement a particle effect that resembles a rainbow. This means that a particle from that particular particle system must morph through all the colors of the rainbow. This change of color can and should be done here in the update step.\\
+
+Another particle attribute that can be updated is the size of the particle. Updating the size of a particle means to make it grow or shrink throughout its lifetime. So a particle may start really small at the origin of the particle system and become really large by the time it dies or vice versa.
+
+\newpage
 \subsection{The Particle Rendering Process}
 There are more than one methods which can be used to render particles. The particles which formed the Genesis Effect from Star Trek II: The Wrath of Khan implemented by William T. Reeves and a team of computer graphics developers were actually light sources which combined themselves with each other in an additive manner regarding their color and transparency values. This technique removed the hidden surface problem because the particles did not obscure each other but simply added more light to a certain pixel.\\
 
