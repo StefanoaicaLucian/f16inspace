@@ -10,6 +10,6 @@
 \contentsline {subsection}{\numberline {2.1.2}The Particle Initialization Step}{15}
 \contentsline {subsection}{\numberline {2.1.3}The Dead Particle Removal Step}{17}
 \contentsline {subsection}{\numberline {2.1.4}The Particle Update Step}{18}
-\contentsline {subsection}{\numberline {2.1.5}The Particle Rendering Process}{19}
+\contentsline {subsection}{\numberline {2.1.5}The Particle Display Step}{19}
 \contentsline {chapter}{\numberline {3}Application}{20}
 \contentsline {chapter}{\numberline {4}Conclusion}{21}
