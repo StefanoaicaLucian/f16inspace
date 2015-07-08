@@ -37,7 +37,7 @@ No matter how high is the difference between a particle system and another one t
 	\item New particles are created in order to be added to the particle system which is initially completely empty.
 	\item All the attributes of the newly created particles are initialized.
 	\item The list of particles contained by the particle systems is scanned for dead particles in order to remove them from the list.
-	\item All the particles which still exist in the system will be moved to their new position. Each new position is computed with respect to the particles old position and attributes like direction, speed and acceleration.
+	\item All the particles which still exist in the system will be moved to their new position. Each new position is computed with respect to the old position of the particle and attributes like direction, speed and acceleration.
 	\item Finally an image of the particle system is rendered on the screen.
 \end{enumerate}
 
@@ -96,13 +96,11 @@ When the scan is done starting from the beginning of the list a small glitch occ
 
 In order to avoid this glitch one should iterate through the list starting from the end of the list. This way when a particle is removed the subsequent particles are moved in front of the verification index not in the back of it.\\
 
-There may be times when we are unable to iterate backwards through a list. The is where \textbf(Iterator)s come in handy. Most programming languages (Java is one of these languages) offer these objects. When one uses an Iterator to scan a list of objects he does not need to worry about glitches like skipping an object because this matter is handled by the Iterator itself.\\
+There may be times when we are unable to iterate backwards through a list. This is where \textbf{Iterator}s come in handy. Most programming languages (Java is one of these languages) offer these objects. When one uses an Iterator to scan a list of objects he does not need to worry about glitches like skipping an object because this matter is handled by the Iterator itself.\\
 
-\newpage
-\subsection{When to Kill a Particle}
-There are a few methods which can be used to determine when to destroy particles from a system. One of these methods is to keep track of a lifetime value which is supposed to drop with each rendered frame. The distance between a particles current position and the origin of the particle system can also be used to determine when a particle leaves a certain region surrounding the origin of the system. If that distance exceeds a certain value, the particle will be removed from the particle system.\\
+What are the conditions which need to be satisfied by a particle in order for it to be "dead"? One method of determining this is to keep track of a lifetime value which is supposed to drop with each rendered frame.\\
 
-With each frame that is rendered on the screen, all the particles from a specific particle system are checked to see if they satisfy their dying condition satisfied. All the particles which satisfy that condition are sequentially removed from the system.
+The distance between a particle's current position and the origin of the particle system can also be used to determine when a particle leaves a certain region surrounding the origin of the system. If that distance exceeds a certain value, the particle will be removed from the particle system.\\
 
 \newpage
 \subsection{The Particle Rendering Process}
