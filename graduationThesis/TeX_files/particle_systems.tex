@@ -84,13 +84,13 @@ From a conceptual point of view a particle is a simple point in space. The downs
 
 The color attribute can be used to control the color tone of a particle. In other words even if a particle has a texture with blue accents by changing this attribute one can make its texture to have reddish accents.\\
 
-The lifetime attribute is used to decide when a particle is "dead" and needs to be removed from the particle system but this attribute can also be used to control a particle's opacity. A particle's opacity usually has values between $0.0$ and $1.0$. When a particle's opacity is at it's lowest bound the particle is completely transparent and when its opacity is at its highest bound the particle is completely opaque. If we make the particle's lifetime start with $1.0$ and decrease at each frame with a constant or variable amount we can control both the duration and the transparency of a particle with a single variable.\\
+The lifetime attribute is used to decide when a particle is dead and needs to be removed from the particle system but this attribute can also be used to control a particle's opacity. A particle's opacity usually has values between $0.0$ and $1.0$. When a particle's opacity is at it's lowest bound the particle is completely transparent and when its opacity is at its highest bound the particle is completely opaque. If we make the particle's lifetime start with $1.0$ and decrease at each frame with a constant or variable amount we can control both the duration and the transparency of a particle with a single variable.\\
 
 The texture attribute controls the texture of a particle and it can be implemented with a single texture variable or with a texture array variable. When it is implemented with an array a particle instance will be more dynamic because it will have multiple different textures throughout its lifetime.\\
 
 \newpage
 \subsection{The Dead Particle Removal Step}
-In this step the list of particles managed by the particle system is scanned for "dead" particles. Whenever a "dead" particle is found it is quickly removed from the system. The scanning can be done starting from the beginning of the list or from the end.\\
+In this step the list of particles managed by the particle system is scanned for dead particles. Whenever a dead particle is found it is quickly removed from the system. The scanning can be done starting from the beginning of the list or from the end.\\
 
 When the scan is done starting from the beginning of the list a small glitch occurs at each pass. Whenever a particle is removed from the list, all the following particles in the list are moved to left with one position, this causes the pass to skip the verification of one particle. The skipped particle will be verified at the next pass but not having a particle removed when it is expected for it to be removed is not what we want.\\
 
@@ -98,7 +98,7 @@ In order to avoid this glitch one should iterate through the list starting from 
 
 There may be times when we are unable to iterate backwards through a list. This is where \textbf{Iterator}s come in handy. Most programming languages (Java is one of these languages) offer these objects. When one uses an Iterator to scan a list of objects he does not need to worry about glitches like skipping an object because this matter is handled by the Iterator itself.\\
 
-What are the conditions which need to be satisfied by a particle in order for it to be "dead"? One method of determining this is to keep track of a lifetime value which is supposed to drop with each rendered frame.\\
+What are the conditions which need to be satisfied by a particle in order for it to be dead? One method of determining this is to keep track of a lifetime value which is supposed to drop with each rendered frame.\\
 
 The distance between a particle's current position and the origin of the particle system can also be used to determine when a particle leaves a certain region surrounding the origin of the system. If that distance exceeds a certain value, the particle will be removed from the particle system.\\
 
@@ -119,3 +119,13 @@ A particle can be implemented in more than one way. For example the particles wh
 A second method would be to use billboards to represent particles. A simple rectangle made out of two simple triangles can be a billboard. In fact any two-dimensional element rendered in a there-dimensional environment can be a billboard. The main difference between billboards and simple triangles is that a billboard always rotates itself around one or more axes in order to face the camera. There are advantages and disadvantages to using billboards instead of light sources.\\
 
 One advantage is that billboards can be textured with more than one texture over their lifetime. A disadvantage is that billboards may need to be decreasingly sorted according to their distance from the camera. In other words the billboards which are furthest from the camera need to be rendered before the billboards which are closer to the camera otherwise the blending effect will be spoiled.\\
+
+\newpage
+\section{Billboards}
+Particles can be displayed as simple colored points or as fully textured billboards. The obvious advantage of billboards is that they can be textured offering programmers the possibility to implement a very wide variety of particle based graphical effects.\\
+
+A billboard is usually implemented with a quad made out of two triangles. So a particle can actually be a textured quad. Only there is a problem with plain old quads (which are usually two triangles welded together because graphic cards render triangles faster).\\
+
+Let us assume that a 3D graphics programmer implements a graphic application in which the user can move the camera in any possible position in the scene and that multiple particle systems exist in our scene. If our programmer used simple quads to display the particle in the scene the user can move the camera in the scene to positions where he would see only a part of a specific particle or no particles at all (when back-face culling is enabled and the user places the camera exactly in the back of the particle system).\\
+
+The simplest solution to this problem is to make the quads rotate in such a manner that they will always face the camera. This rotation is what differentiates a billboard from a simple quad and there are a few techniques which can be used to make a quad to rotate itself with the face to the camera.\\
