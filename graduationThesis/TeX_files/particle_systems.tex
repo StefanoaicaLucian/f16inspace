@@ -124,8 +124,26 @@ One advantage is that billboards can be textured with more than one texture over
 \section{Billboards}
 Particles can be displayed as simple colored points or as fully textured billboards. The obvious advantage of billboards is that they can be textured offering programmers the possibility to implement a very wide variety of particle based graphical effects.\\
 
-A billboard is usually implemented with a quad made out of two triangles. So a particle can actually be a textured quad. Only there is a problem with plain old quads (which are usually two triangles welded together because graphic cards render triangles faster).\\
+A billboard is usually implemented with a quad made out of two triangles. So a particle can actually be a textured quad. Only there is a problem with plain old quads (which are usually implemented as two triangles welded together because graphic cards render triangles faster).\\
 
-Let us assume that a 3D graphics programmer implements a graphic application in which the user can move the camera in any possible position in the scene and that multiple particle systems exist in our scene. If our programmer used simple quads to display the particle in the scene the user can move the camera in the scene to positions where he would see only a part of a specific particle or no particles at all (when back-face culling is enabled and the user places the camera exactly in the back of the particle system).\\
+Let us assume that a graphics programmer implements a graphic application in which the user can move the camera in any possible position in the scene and that multiple particle systems exist in our scene. If our programmer uses simple quads to display the particles in the scene the user can move the camera in the scene to positions where he would only see a part of a specific particle or no particles at all (when back-face culling is enabled and the user places the camera exactly in the back of the particle system).\\
 
-The simplest solution to this problem is to make the quads rotate in such a manner that they will always face the camera. This rotation is what differentiates a billboard from a simple quad and there are a few techniques which can be used to make a quad to rotate itself with the face to the camera.\\
+The simplest solution to this problem is to make the quads rotate in such a manner that they will always face the camera. This rotation is what differentiates a billboard from a simple quad and there are a few techniques which can be used to achieve it.\\
+
+The rotation of a billboard depends on the freedom of movement owned by the camera. If the camera can only move on the ground of the scene (here the ground of the scene is the XZ plane) then all the particles will not need to rotate themselves around more than one axis.\\
+
+The rotation axis of a particle from the scene described above is actually its up vector. This movement can be imagined as a cylindrical movement because if you rotate a billboard fast enough around its up vector the billboard the billboard will appear to be a cylinder to the naked eye.\\
+
+\newpage
+\subsection{Other Applicabilities of Billboards}
+Although billboards are useful for implementing textured particle systems they can also be used to reduce the triangle count of other three-dimensional objects.\\
+
+Let us take as an example a tree. If a programmer were to render a tree using triangles he would have to face a trade-off between detail and rendering speed. In other words if he would use a small number of triangles the rendering speed will be high but the detail level of the tree will be fairly low thus making the tree look unrealistic.\\
+
+On the other hand if our programmer were to use a very high triangle count the detail level of the tree will be high but the rendering speed would be lower. Actually the difference will not be that noticeable when rendering a single tree but when one renders a whole forest the difference will be far greater.\\
+
+Fortunately we have modern hardware which can handle rendering scenes with a high polygon count very well. But for the times when we do not have modern hardware or we simply want to optimize the rendering speed of a graphic application for no reason we have \textbf{billboards}.\\
+
+Billboards can easily be used to render a forest. In the rendering process of the forest we can use a billboard (one made out of two triangles not a few thousands) for each tree in the forest. This will increase the rendering speed of the graphic application without loosing that much on the detail side of the application.\\
+
+Billboards are perfect for the task of reducing the polygon count of graphic applications because a tree can be represented with only two triangles and they do not break the tree illusion because they always rotate their face towards the camera.\\
