@@ -122,17 +122,31 @@ One advantage is that billboards can be textured with more than one texture over
 
 \newpage
 \section{Billboards}
-Particles can be displayed as simple colored points or as fully textured billboards. The obvious advantage of billboards is that they can be textured offering programmers the possibility to implement a very wide variety of particle based graphical effects.\\
+Particles can be displayed as simple colored points or as fully textured billboards. The obvious advantage of billboards is that they can be textured offering programmers the possibility to implement a very wide variety of textured particle based graphical effects.\\
 
-A billboard is usually implemented with a quad made out of two triangles. So a particle can actually be a textured quad. Only there is a problem with plain old quads (which are usually implemented as two triangles welded together because graphic cards render triangles faster).\\
+A billboard is usually implemented with a quad made out of two triangles welded together because graphic cards render triangles faster. So a particle can be a simple textured quad. Only there is a problem with plain old quads.\\
 
-Let us assume that a graphics programmer implements a graphic application in which the user can move the camera in any possible position in the scene and that multiple particle systems exist in our scene. If our programmer uses simple quads to display the particles in the scene the user can move the camera in the scene to positions where he would only see a part of a specific particle or no particles at all (when back-face culling is enabled and the user places the camera exactly in the back of the particle system).\\
+Let us assume that a graphics programmer implements a graphic application which relies on particle systems and offers its users the possibility to change the camera position at will. If our programmer uses simple quads to render the particles the user can move the camera to positions from where he would only see a part of a specific particle or no particles at all (this can happen only when the back-face culling option is enabled and the camera is placed exactly in the back of the particles).\\
 
-The simplest solution to this problem is to make the quads rotate in such a manner that they will always face the camera. This rotation is what differentiates a billboard from a simple quad and there are a few techniques which can be used to achieve it.\\
+Imagine that we would like to see the particle effects from any position possible so having them visible only from some positions is unacceptable. We could disable the back-face culling option but then we would encounter other problems.\\
 
+Firstly we would have to texture all particles on both sides which, besides the performance downsides, can be a little difficult. The performance downsides of this approach are memory consumption and more calls to the underlying graphics API.\\
+
+And secondly there will still be positions from where the user will not be able to see the particles correctly. A particle watched from the sides will look like a vertical line. This might not be the desired result for most of us so this approach is a no-go.\\
+
+The simplest solution to this problem is to make the quads rotate in such a manner that they will always face the camera. This rotation is what differentiates a billboard from a simple quad and fortunately, there are a few techniques which can be used to achieve it.\\
+
+\newpage
 The rotation of a billboard depends on the freedom of movement owned by the camera. If the camera can only move on the ground of the scene (here the ground of the scene is the XZ plane) then all the particles will not need to rotate themselves around more than one axis.\\
 
-The rotation axis of a particle from the scene described above is actually its up vector. This movement can be imagined as a cylindrical movement because if you rotate a billboard fast enough around its up vector the billboard the billboard will appear to be a cylinder to the naked eye.\\
+The rotation axis of a particle from the scene described above is actually its up vector. This movement can be imagined as a cylindrical movement because if you rotate a billboard fast enough around its up vector the billboard will appear to be a cylinder to the naked eye.\\
+
+\newpage
+\subsection{How To Implement Particles as Quads}
+Implementing a particle as a simple quad is fairly easy. Let us start with the center of the particle. This point is supposed to be used to control the movement of the particle. When one changes the coordinates of this point the coordinates of the corners of the particle will also change. This is because the values of the corner coordinates depend on the value of the particle center coordinates.\\
+
+With these coordinates one can compute the corner coordinates of the particle but he can also move the particle by changing this coordinate.\\
+
 
 \newpage
 \subsection{Other Applicabilities of Billboards}
