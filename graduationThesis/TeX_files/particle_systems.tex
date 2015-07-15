@@ -137,9 +137,16 @@ And secondly there will still be positions from where the user will not be able 
 The simplest solution to this problem is to make the quads rotate in such a manner that they will always face the camera. This rotation is what differentiates a billboard from a simple quad and fortunately, there are a few techniques which can be used to achieve it.\\
 
 \newpage
-The rotation of a billboard depends on the freedom of movement owned by the camera. If the camera can only move on the ground of the scene (here the ground of the scene is the XZ plane) then all the particles will not need to rotate themselves around more than one axis.\\
+When it comes to billboard rotations the most basic and most used are the cylindrical and the spherical rotations. One can invent other different billboard rotation types according to his or her needs but the two basic rotation types solve most of the problems related to billboards.\\
 
-The rotation axis of a particle from the scene described above is actually its up vector. This movement can be imagined as a cylindrical movement because if you rotate a billboard fast enough around its up vector the billboard will appear to be a cylinder to the naked eye.\\
+The rotations of a billboard can be towards any object or point in the scene not just towards the camera. However rotating a billboard towards a certain point is not the only option. There is a technique which can be used to fake true billboarding.\\
+
+Let us take the simple case when a billboard has to rotate itself towards the camera. Instead of making it rotate exactly towards the point where the camera lies we can make it rotate towards a plane perpendicular to the cameras looking direction vector. This technique is sometimes called fake billboarding because it is an approximation of what a true billboard does. Tough it is just an approximation it might be perfect for some applications and sometimes easier to implement.\\
+
+The two basic billboard rotation mechanisms (the cylindrical and spherical rotation types) do true billboarding, meaning that both mechanisms make the quad rotate itself exactly towards the point where the camera lies.
+
+\newpage
+\subsection{The Cylindrical Rotation Mechanism}
 
 \newpage
 \subsection{How To Implement Particles as Quads}
