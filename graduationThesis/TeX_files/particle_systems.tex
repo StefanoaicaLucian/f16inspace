@@ -147,6 +147,19 @@ The two basic billboard rotation mechanisms (the cylindrical and spherical rotat
 
 \newpage
 \subsection{The Cylindrical Rotation Mechanism}
+When using this mechanism the rotation of the billboard is restricted by one axis. Figure 2.1 shows a billboard composed from two triangles. The red vertical line which intersects it represents its rotation axis and the two small arrows show the rotation direction.
+
+\begin{figure}[h]
+	\caption{Rotation axis of a billboard}
+	\centering
+	\includegraphics{billboard_axis.jpg}
+\end{figure}
+
+Notice that the billboard is a vertical slice of a cylinder. The slice goes exactly through the central axis of the cylinder. Actually the rotation axis of the billboard from Figure 2.1 and the axis of our hypothetical cylinder are one and the same.\\
+
+If we would rotate the billboard from Figure 2.1 fast enough it would appear to look exactly like a cylinder. This is why the billboards which are implemented with this techniques are sometimes referred to as cylindric billboards.\\
+
+
 
 \newpage
 \subsection{How To Implement Particles as Quads}
