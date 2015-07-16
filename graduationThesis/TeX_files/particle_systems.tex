@@ -147,7 +147,7 @@ The two basic billboard rotation mechanisms (the cylindrical and spherical rotat
 
 \newpage
 \subsection{The Cylindrical Rotation Mechanism}
-When using this mechanism the rotation of the billboard is restricted by one axis. Figure 2.1 shows a billboard composed from two triangles. The red vertical line which intersects it represents its rotation axis and the two small arrows show the rotation direction.
+When using this mechanism the rotation of the billboard is restricted by one axis. Figure 2.1 shows a billboard composed from two triangles. The red vertical line which intersects it represents its rotation axis and the two small arrows show one of the two possible rotation directions. This is its clockwise rotation and the other one is its counterclockwise rotation.
 
 \begin{figure}[h]
 	\caption{Rotation axis of a billboard}
@@ -158,8 +158,6 @@ When using this mechanism the rotation of the billboard is restricted by one axi
 Notice that the billboard is a vertical slice of a cylinder. The slice goes exactly through the central axis of the cylinder. Actually the rotation axis of the billboard from Figure 2.1 and the axis of our hypothetical cylinder are one and the same.\\
 
 If we would rotate the billboard from Figure 2.1 fast enough it would appear to look exactly like a cylinder. This is why the billboards which are implemented with this techniques are sometimes referred to as cylindric billboards.\\
-
-
 
 \newpage
 \subsection{How To Implement Particles as Quads}
@@ -174,10 +172,10 @@ Although billboards are useful for implementing textured particle systems they c
 
 Let us take as an example a tree. If a programmer were to render a tree using triangles he would have to face a trade-off between detail and rendering speed. In other words if he would use a small number of triangles the rendering speed will be high but the detail level of the tree will be fairly low thus making the tree look unrealistic.\\
 
-On the other hand if our programmer were to use a very high triangle count the detail level of the tree will be high but the rendering speed would be lower. Actually the difference will not be that noticeable when rendering a single tree but when one renders a whole forest the difference will be far greater.\\
+On the other hand if our programmer were to use a very high triangle count the detail level of the tree will be high but the rendering speed would be lower. Actually the difference will not be that noticeable when rendering a single tree but when one renders a whole forest the difference will be greater.\\
 
 Fortunately we have modern hardware which can handle rendering scenes with a high polygon count very well. But for the times when we do not have modern hardware or we simply want to optimize the rendering speed of a graphic application for no reason we have \textbf{billboards}.\\
 
-Billboards can easily be used to render a forest. In the rendering process of the forest we can use a billboard (one made out of two triangles not a few thousands) for each tree in the forest. This will increase the rendering speed of the graphic application without loosing that much on the detail side of the application.\\
+Billboards can be easily used to render a forest. In the rendering process of the forest we can use a billboard (one made out of two triangles not a few thousands) for each tree in the forest. This will increase the rendering speed of the graphic application without loosing that much on the detail side of the application.\\
 
 Billboards are perfect for the task of reducing the polygon count of graphic applications because a tree can be represented with only two triangles and they do not break the tree illusion because they always rotate their face towards the camera.\\
