@@ -16,4 +16,5 @@
 \contentsline {subsection}{\numberline {2.2.2}How To Implement Particles as Quads}{23}
 \contentsline {subsection}{\numberline {2.2.3}Other Applicabilities of Billboards}{24}
 \contentsline {chapter}{\numberline {3}Application}{25}
-\contentsline {chapter}{\numberline {4}Conclusion}{26}
+\contentsline {section}{\numberline {3.1}The Cone Shaped Particle System}{27}
+\contentsline {chapter}{\numberline {4}Conclusion}{28}

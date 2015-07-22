@@ -118,7 +118,7 @@ A particle can be implemented in more than one way. For example the particles wh
 
 A second method would be to use billboards to represent particles. A simple rectangle made out of two simple triangles can be a billboard. In fact any two-dimensional element rendered in a there-dimensional environment can be a billboard. The main difference between billboards and simple triangles is that a billboard always rotates itself around one or more axes in order to face the camera. There are advantages and disadvantages to using billboards instead of light sources.\\
 
-One advantage is that billboards can be textured with more than one texture over their lifetime. A disadvantage is that billboards may need to be decreasingly sorted according to their distance from the camera. In other words the billboards which are furthest from the camera need to be rendered before the billboards which are closer to the camera otherwise the blending effect will be spoiled.\\
+One advantage is that billboards can be textured with more than one texture over their lifetime. A disadvantage is that billboards may need to be decreasingly sorted according to their distance from the camera. In other words the billboards which are further from the camera need to be rendered before the billboards which are closer to the camera otherwise the blending effect will be spoiled.\\
 
 \newpage
 \section{Billboards}
@@ -132,7 +132,7 @@ Imagine that we would like to see the particle effects from any position possibl
 
 Firstly we would have to texture all particles on both sides which, besides the performance downsides, can be a little difficult. The performance downsides of this approach are memory consumption and more calls to the underlying graphics API.\\
 
-And secondly there will still be positions from where the user will not be able to see the particles correctly. A particle watched from the sides will look like a vertical line. This might not be the desired result for most of us so this approach is a no-go.\\
+And secondly there will still be positions from where the user will not be able to see the particles correctly. A particle watched from the sides will look like a vertical line. This might not be the desired result for most of us so this approach is a no-go. However there is an advantage to this approach, one can use two different textures for each of the sides of the particle. This might be useful at some point.\\
 
 The simplest solution to this problem is to make the quads rotate in such a manner that they will always face the camera. This rotation is what differentiates a billboard from a simple quad and fortunately, there are a few techniques which can be used to achieve it.\\
 
@@ -147,7 +147,7 @@ The two basic billboard rotation mechanisms (the cylindrical and spherical rotat
 
 \newpage
 \subsection{The Cylindrical Rotation Mechanism}
-When using this mechanism the rotation of the billboard is restricted by one axis. Figure 2.1 shows a billboard composed from two triangles. The red vertical line which intersects it represents its rotation axis and the two small arrows show one of the two possible rotation directions. This is its clockwise rotation and the other one is its counterclockwise rotation.
+When using this mechanism the rotation of the billboard is restricted by one axis. Figure 2.1 shows a billboard composed from two triangles. The red vertical line which intersects it represents its rotation axis.
 
 \begin{figure}[h]
 	\caption{Rotation axis of a billboard}
@@ -155,7 +155,7 @@ When using this mechanism the rotation of the billboard is restricted by one axi
 	\includegraphics{billboard_axis.jpg}
 \end{figure}
 
-Notice that the billboard is a vertical slice of a cylinder. The slice goes exactly through the central axis of the cylinder. Actually the rotation axis of the billboard from Figure 2.1 and the axis of our hypothetical cylinder are one and the same.\\
+Notice that the billboard is a vertical slice of a cylinder. The slice goes exactly through the central axis of the cylinder. Actually the rotation axis of the billboard and the axis of the cylinder are one and the same.\\
 
 If we would rotate the billboard from Figure 2.1 fast enough it would appear to look exactly like a cylinder. This is why the billboards which are implemented with this techniques are sometimes referred to as cylindric billboards.\\
 

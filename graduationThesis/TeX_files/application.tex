@@ -1,1 +1,27 @@
-This is the application chapter.
+The simple application programming interface (API in abbreviated form) for 3D applications around which this thesis revolves offers a total of four particle based graphical effects. It is a small number of graphical effects but I designed the API in such a manner that it is very easy to extend, in other words other effects can be easily added to the API.\\
+
+All the effects are enumerated bellow.
+
+\begin{enumerate}
+	\item Cone shaped particle system.
+	
+	\item Cylinder shaped particle system.
+	
+	\item Reversed cone shaped particle system.
+	
+	\item Fountain shaped particle system.
+\end{enumerate}
+
+The cone shaped particle system is a graphical effect in which all the particles are spawned exactly in the tip of the cone and each particle moves towards the base of the cone.\\
+
+In the case of the cylinder shaped particle system all the particles are spawned at one end of an imaginary cylinder and move towards the other end of it.\\
+
+The reversed cone shaped particle system is almost the same as the cone shaped particle system with the added difference that the particles are now spawned at the base of the cone and move towards the tip of the cone.\\
+
+\newpage
+The fountain particle system is somewhat based on the cone shaped particle system. The difference between the two of them is that in the case of the fountain particle system the particles are affected by gravity. In other words the fountain particle system sprays particles exactly like the cone shaped particle system does it only in the case of the fountain particle system the movement of the particle system is curved by a gravity force.\\
+
+The following sections describe exactly how the four particle system types were implemented.\\
+
+\newpage
+\section{The Cone Shaped Particle System}
