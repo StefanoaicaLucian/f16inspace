@@ -69,8 +69,21 @@ Two of the problems that I have encountered while implementing the cone shaped p
 
 Initially I wanted to implement the generation of random points inside or on the circle which forms the base of the cone but that proved to be more difficult to implement than the generation of points inside or on the surface of a sphere. I did however use the equation of the circle to verify the math for a simple case to see if I am on the right track.\\
 
+The equation of a circle is:
+\begin{center}
+	$(x - a) ^ 2 + (y - b) ^ 2 = r ^ 2$,
+\end{center}
+
+where $a$ and $b$ represent the two-dimensional coordinates of the center of the circle, $r$ represents the radius of the circle and $x$ and $y$ represent the coordinates of all the points on the circle.\\
+
 \begin{figure}[h]
 	\caption{Testing the borders of a circle}
 	\centering
 	\includegraphics{circle.jpg}
 \end{figure}
+
+For example the circle from Figure 3.2 has its center positioned in $C\big(8, 9\big)$ and its radius $r = 6$ so its equation will look like this:
+
+\begin{center}
+	$(x - 8) ^ 2 + (y - 9) ^ 2 = 36$
+\end{center}
