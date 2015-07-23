@@ -21,7 +21,7 @@ The reversed cone shaped particle system is almost the same as the cone shaped p
 \newpage
 The fountain particle system is somewhat based on the cone shaped particle system. The difference between the two of them is that in the case of the fountain particle system the particles are affected by gravity. In other words the fountain particle system sprays particles exactly like the cone shaped particle system does it only in the case of the fountain particle system the movement of the particle system is curved by a gravity force.\\
 
-The following sections describe exactly how the four particle system types were implemented.\\
+The following sections describe exactly how the four particle system types were conceived.\\
 
 \newpage
 \section{The Cone Shaped Particle System}
@@ -46,3 +46,21 @@ The sketch from Figure 3.1 shows how to conceive a cone shaped particle system. 
 	
 	\item $r$ represents the size of the radius of the sphere. This radius is also the radius of the circle which forms the base of the cone. The value of this radius is used to compute the destination position vectors ($\vec{s_1}, \vec{s_2}$, ...).
 \end{itemize}
+
+For every frame that gets rendered on the screen the following algorithm is executed:
+
+\begin{enumerate}
+	\item Generate a number of particles.
+	
+	\item Initialize their position attributes with $\vec{P}$ (the position vector which points to the tip of the cone)
+	
+	\item Generate a set $S = \{\vec{s_1}, \vec{s_2}, \vec{s_3}, \vec{s_4}, ...\}$ of random destination position vectors for each spawned particle which will lie inside or on the sphere with the center in $\vec{Q}$.
+	
+	\item Use all the previously generated position vectors (from the set $S$) to generate a set $U = \{\vec{u_1}, \vec{u_2}, \vec{u_3}, \vec{u_4}, ...\}$ of direction vectors for each spawned particle.
+	
+	\item Update the position attribute of each particle from the particle system by simply adding their corresponding direction vector (each particle will have its own $\vec{u}$ from the previously generated set $U$) to their current position vector.
+	
+	\item Remove all the "dead" particles from the particle system.
+	
+	\item Render the current image of the particle system.
+\end{enumerate}
