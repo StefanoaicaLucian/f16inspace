@@ -87,3 +87,36 @@ For example the circle from Figure 3.2 has its center positioned in $C\big(8, 9\
 \begin{center}
 	$(x - 8) ^ 2 + (y - 9) ^ 2 = 36$
 \end{center}
+
+\newpage
+Our concern here is how to generate points that are inside or on the circle with the previously mentioned equation. What we can do is to take three random points, one inside the circle, one exactly on the circle and one outside the circle substitute their coordinates in the equation and see how they verify the equation. Let us take for example $P(8, 14)$, $Q(8, 3)$ and $R(15, 9)$. As you can notice from Figure 3.2 $P$ is inside the circle, $Q$ is exactly on the circle and $R$ is outside the circle.\\
+
+For $P(8, 14)$ we get:
+\begin{align*}
+	(8 - 8) ^ 2 + (14 - 9) ^ 2 &= 36\\
+	0 ^ 2 + 5 ^ 2 &= 36\\
+	25 &= 36\ (F)
+\end{align*}
+
+For $Q(8, 3)$ we get:
+\begin{align*}
+(8 - 8) ^ 2 + (3 - 9) ^ 2 &= 36\\
+0 ^ 2 + (-6) ^ 2 &= 36\\
+36 &= 36\ (T)
+\end{align*}
+
+And for $R(15, 9)$ we get:
+\begin{align*}
+(15 - 8) ^ 2 + (9 - 9) ^ 2 &= 36\\
+7 ^ 2 + 0 ^ 2 &= 36\\
+49 &= 36\ (F)
+\end{align*}
+
+As you can see in the case of $P(8, 14)$ (the point inside the circle) the left side of the equation is smaller than the right side. In the case of $Q(8, 3)$ (the point exactly on the circle) the left side of the equation is equal with the right side and in the case of $R(15, 9)$ (the point outside the circle) the left side of the equation is greater than the right side.\\
+
+From this we can deduce that in order for a point to be inside or on a circle its coordinates must verify the following in-equation:
+
+\begin{center}
+	$(x_{point} - x_{circle}) ^ 2 + (y_{point} - y_{circle}) ^ 2 \le r ^ 2$,
+\end{center}
+where $x_{point}$, $y_{point}$ are the coordinates of the point, $x_{circle}, y_{circle}$ are the coordinates of the center of the circle and r is the radius of the circle.
