@@ -119,4 +119,26 @@ From this we can deduce that in order for a point to be inside or on a circle it
 \begin{center}
 	$(x_{point} - x_{circle}) ^ 2 + (y_{point} - y_{circle}) ^ 2 \le r ^ 2$,
 \end{center}
-where $x_{point}$, $y_{point}$ are the coordinates of the point, $x_{circle}, y_{circle}$ are the coordinates of the center of the circle and r is the radius of the circle.
+where $x_{point}$, $y_{point}$ are the coordinates of the point, $x_{circle}, y_{circle}$ are the coordinates of the center of the circle and r is the radius of the circle.\\
+
+\newpage
+If we apply a square root to the both sides of the in-equation we obtain the following:
+
+\begin{center}
+	$\sqrt{(x_{point} - x_{circle}) ^ 2 + (y_{point} - y_{circle}) ^ 2} \le r$
+\end{center}
+
+We can observe that the left side of the in-equation is actually the formula for computing the distance between two points in space. What this in-equation actually says is that the distance between the center of the circle and any point inside or on the circle must be at most equal with the radius of the circle. This means that we can use the following routine to generate every point inside or on the circle:
+
+\begin{enumerate}
+	\item Generate a pair of random values, let us call them $a$ and $b$, from the interval $\big[-r, r\big]$.
+	
+	\item Compute the coordinates of the randomly generated point (which will never be outside the circle) like this:\\
+	$(x_{point}, y_{point}) = (x_{circle}, y_{circle}) + (a, b)$
+\end{enumerate}
+
+I used a similar mechanism in the generation of destination position vectors for the cone shaped particle system. Only for the cone shaped particle system I used a sphere instead of a circle. I adapted the previously mentioned routine in order to fit the following in-equation:
+
+\begin{center}
+	$\sqrt{(x_{point} - x_{sphere}) ^ 2 + (y_{point} - y_{sphere}) ^ 2 + (z_{point} - z_{sphere}) ^ 2} \le r$
+\end{center}
