@@ -65,11 +65,9 @@ For every frame that gets rendered on the screen the following algorithm is exec
 	\item Render the current image of the particle system.
 \end{enumerate}
 \newpage
-Two of the problems that I have encountered while implementing the cone shaped particle system were how to generate random points inside a sphere (or on the surface of a sphere) and how to make the particles from the system move towards them.\\
+The greatest problem in the rendering process of a cone shaped particle system is how to generate destination position vectors that lie inside or on the surface of a sphere. Before tackling with this problem I reduced the sphere down to a circle and I tried to generate points inside or on the circle.\\
 
-Initially I wanted to implement the generation of random points inside or on the circle which forms the base of the cone but that proved to be more difficult to implement than the generation of points inside or on the surface of a sphere. I did however use the equation of the circle to verify the math for a simple case to see if I am on the right track.\\
-
-The equation of a circle is:
+This is the equation of the circle:
 \begin{center}
 	$(x - a) ^ 2 + (y - b) ^ 2 = r ^ 2$,
 \end{center}
