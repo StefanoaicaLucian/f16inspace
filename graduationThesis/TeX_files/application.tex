@@ -1,24 +1,23 @@
 Particle systems can have many different movement mechanisms and the best way to truly understand them is through design and implementation. This is what I did, I designed four different particle systems and packaged their implementations in a simple API for later use. This API (API is the acronym for "Aplication Programming Interface") is designed with extensibility in mind meaning that new particle based graphical effects can be easily added to the next versions of the API.\\
 
-All the effects offered by the current version are listed bellow.
+The following particle based graphical effects are offered by the current version of the API:
 
 \begin{itemize}
-	\item Cone shaped particle system.
+	\item the conic flame effect.
 	
-	\item Cylinder shaped particle system.
+	\item the cylindrical flame effect.
 	
-	\item Reversed cone shaped particle system.
+	\item the conic flame effect (reversed).
 	
-	\item Fountain shaped particle system.
+	\item the fountain effect.
 \end{itemize}
 
-The cone shaped particle system is a graphical effect in which all the particles are spawned exactly in the tip of the cone and each particle moves towards the base of the cone.\\
+In order to obtain the conic flame effect one must use a particle system in which all the particles are spawned exactly at the tip of an imaginary cone and move towards the base of it.\\
 
-In the case of the cylinder shaped particle system all the particles are spawned at one end of an imaginary cylinder and move towards the other end of it.\\
+To obtain the cylindrical flame effect one must use a particle system in which all the particles are spawned at one end of an imaginary cylinder and move towards the other end of it.\\
 
-The reversed cone shaped particle system is almost the same as the cone shaped particle system with the added difference that the particles are now spawned at the base of the cone and move towards the tip of the cone.\\
+The reversed conic flame effect is basically a conic flame effect in which the particles are spawned at the base of an imaginary cone and move towards the tip of it.
 
-\newpage
 The fountain particle system is somewhat based on the cone shaped particle system. The difference between the two of them is that in the case of the fountain particle system the particles are affected by gravity. In other words the fountain particle system sprays particles exactly like the cone shaped particle system does it only in the case of the fountain particle system the movement of the particle system is curved by a gravity force.\\
 
 The following sections describe exactly how the four particle system types were conceived.\\
