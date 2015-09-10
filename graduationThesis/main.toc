@@ -17,4 +17,5 @@
 \contentsline {subsection}{\numberline {2.2.3}Other Applicabilities of Billboards}{24}
 \contentsline {chapter}{\numberline {3}Application}{25}
 \contentsline {section}{\numberline {3.1}The Cone Shaped Particle System}{27}
-\contentsline {chapter}{\numberline {4}Conclusion}{32}
+\contentsline {section}{\numberline {3.2}The Cylindrical Flame Effect}{32}
+\contentsline {chapter}{\numberline {4}Conclusion}{33}
