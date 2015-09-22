@@ -1,10 +1,7 @@
 
 package ro.uvt.space.main;
 
-import static java.awt.event.KeyEvent.VK_DOWN;
-import static java.awt.event.KeyEvent.VK_LEFT;
-import static java.awt.event.KeyEvent.VK_RIGHT;
-import static java.awt.event.KeyEvent.VK_UP;
+import static java.awt.event.KeyEvent.*;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -26,6 +23,8 @@ public class KeyboardListener implements KeyListener, Subject {
   private double fraction = 0.1f;
 
   private List<Observer> observers = new ArrayList<>();
+
+  private Renderer associatedRenderer;
 
   @Override
   public void keyPressed(KeyEvent e) {
@@ -54,6 +53,18 @@ public class KeyboardListener implements KeyListener, Subject {
         cameraPosition.setX(cameraPosition.getX() - (float) (targetPosition.getX() * fraction));
         cameraPosition.setZ(cameraPosition.getZ() - (float) (targetPosition.getZ() * fraction));
         notifyObservers();
+        break;
+
+      case VK_1:
+        associatedRenderer.changeParticleSystem(1);
+        break;
+
+      case VK_2:
+        associatedRenderer.changeParticleSystem(2);
+        break;
+
+      case VK_3:
+        associatedRenderer.changeParticleSystem(3);
         break;
     }
   }
@@ -92,5 +103,9 @@ public class KeyboardListener implements KeyListener, Subject {
     state.put("camera_angle", cameraAngle);
 
     return state;
+  }
+
+  public void registerRenderer(Renderer aRenderer) {
+    associatedRenderer = aRenderer;
   }
 }
