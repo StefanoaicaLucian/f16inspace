@@ -33,6 +33,7 @@ import ro.uvt.api.particles.CylindricalFireSystem;
 import ro.uvt.api.particles.FountainSystem;
 import ro.uvt.api.particles.Material;
 import ro.uvt.api.particles.ParticleSystem;
+import ro.uvt.api.particles.ReversedConeFireSystem;
 import ro.uvt.api.particles.SprayedFireSystem;
 import ro.uvt.api.particles.Trio;
 import ro.uvt.api.util.Observer;
@@ -109,9 +110,9 @@ public class Renderer implements GLEventListener, Observer {
 
     particleSystemTexture = new TextureReader(gl, "res/").readTexture("particle.png", ".png");
 
-    float[] ambient = {0.3f, 0.3f, 0.3f};
-    float[] diffuse = {0.3f, 0.3f, 0.3f};
-    float[] specular = {0.3f, 0.3f, 0.3f};
+    float[] ambient = {0.1f, 0.4f, 0.5f};
+    float[] diffuse = {0.1f, 0.4f, 0.5f};
+    float[] specular = {0.1f, 0.4f, 0.5f};
     float[] shine = {120.078431f};
 
     particleSystemMaterial = new Material(ambient, diffuse, specular, shine);
@@ -119,13 +120,8 @@ public class Renderer implements GLEventListener, Observer {
     keyListener.registerRenderer(this);
 
     fireSystem =
-      new SprayedFireSystem(gl, new Trio(2.5f, 1.7f, -6.8f), new Trio(10.0f, 1.7f, -6.8f), cameraPosition, particleSystemTexture, particleSystemMaterial);
-
-    fireSystem.setParticlesPerSpawn(100);
-    fireSystem.setParticleRadius(0.1f);
-    fireSystem.setFadeUnit(0.05f);
-
-    keyListener.registerObserver(fireSystem);
+      new SprayedFireSystem(gl, new Trio(2.5f, 1.7f, -6.8f), new Trio(10.0f, 1.7f, -6.8f), 3.0f, cameraPosition, particleSystemTexture, particleSystemMaterial);
+    initParticleSystem(fireSystem);
   }
 
   @Override
@@ -217,6 +213,14 @@ public class Renderer implements GLEventListener, Observer {
     gl.glPopMatrix();
   }
 
+  private void initParticleSystem(ParticleSystem system) {
+    fireSystem.setParticlesPerSpawn(100);
+    fireSystem.setParticleRadius(0.15f);
+    fireSystem.setFadeUnit(0.035f);
+
+    keyListener.registerObserver(fireSystem);
+  }
+
   public KeyboardListener getKeyListener() {
     return keyListener;
   }
@@ -225,48 +229,49 @@ public class Renderer implements GLEventListener, Observer {
     switch (particleSystemID) {
       case 1:
         keyListener.removeObserver(fireSystem);
-
         fireSystem =
-          new SprayedFireSystem(gl, new Trio(2.5f, 1.7f, -6.8f), new Trio(10.0f, 1.7f, -6.8f), cameraPosition, particleSystemTexture, particleSystemMaterial);
-        fireSystem.setParticlesPerSpawn(100);
-        fireSystem.setParticleRadius(0.1f);
-        fireSystem.setFadeUnit(0.05f);
-
-        keyListener.registerObserver(fireSystem);
+          new SprayedFireSystem(gl,
+                                new Trio(2.5f, 1.7f, -6.8f),
+                                new Trio(10.0f, 1.7f, -6.8f),
+                                3.0f,
+                                cameraPosition,
+                                particleSystemTexture,
+                                particleSystemMaterial);
+        initParticleSystem(fireSystem);
         break;
 
       case 2:
         keyListener.removeObserver(fireSystem);
-
         fireSystem =
           new CylindricalFireSystem(gl,
-                                    new Trio(0.0f, 0.0f, 0.0f),
-                                    new Trio(5.0f, 0.0f, 0.0f),
-                                    3.0f,
+                                    new Trio(2.0f, 2.0f, 0.0f),
+                                    new Trio(7.0f, 2.0f, 0.0f),
+                                    1.0f,
                                     cameraPosition,
                                     particleSystemTexture,
                                     particleSystemMaterial);
-
-        fireSystem.setParticlesPerSpawn(100);
-        fireSystem.setParticleRadius(0.1f);
-        fireSystem.setFadeUnit(0.05f);
-
-        keyListener.registerObserver(fireSystem);
+        initParticleSystem(fireSystem);
         break;
 
       case 3:
 
         keyListener.removeObserver(fireSystem);
-
         fireSystem =
-          new FountainSystem(gl, new Trio(0.0f, 0.0f, 0.0f), new Trio(0.0f, 27.0f, 0.0), cameraPosition, particleSystemTexture, particleSystemMaterial);
+          new FountainSystem(gl, new Trio(2.0f, 1.0f, 0.0f), new Trio(2.0f, 27.0f, 0.0), 3.0f, cameraPosition, particleSystemTexture, particleSystemMaterial);
+        initParticleSystem(fireSystem);
+        break;
 
-        fireSystem.setParticlesPerSpawn(100);
-        fireSystem.setParticleRadius(0.1f);
-        fireSystem.setFadeUnit(0.05f);
-
-        keyListener.registerObserver(fireSystem);
-
+      case 4:
+        keyListener.removeObserver(fireSystem);
+        fireSystem =
+          new ReversedConeFireSystem(gl,
+                                     new Trio(2.0f, 3.0f, 0.0f),
+                                     new Trio(11.0f, 3.0f, 0.0f),
+                                     1.5f,
+                                     cameraPosition,
+                                     particleSystemTexture,
+                                     particleSystemMaterial);
+        initParticleSystem(fireSystem);
         break;
     }
   }

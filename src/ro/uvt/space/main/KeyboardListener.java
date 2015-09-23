@@ -57,15 +57,24 @@ public class KeyboardListener implements KeyListener, Subject {
 
       case VK_1:
         associatedRenderer.changeParticleSystem(1);
+        notifyObservers();
         break;
 
       case VK_2:
         associatedRenderer.changeParticleSystem(2);
+        notifyObservers();
         break;
 
       case VK_3:
         associatedRenderer.changeParticleSystem(3);
+        notifyObservers();
         break;
+
+      case VK_4:
+        associatedRenderer.changeParticleSystem(4);
+        notifyObservers();
+        break;
+
     }
   }
 
