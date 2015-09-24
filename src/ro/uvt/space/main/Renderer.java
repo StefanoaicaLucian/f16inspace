@@ -266,8 +266,8 @@ public class Renderer implements GLEventListener, Observer {
         fireSystem =
           new ReversedConeFireSystem(gl,
                                      new Trio(2.0f, 3.0f, 0.0f),
-                                     new Trio(11.0f, 3.0f, 0.0f),
-                                     1.5f,
+                                     new Trio(10f, 3.0f, 0.0f),
+                                     2f,
                                      cameraPosition,
                                      particleSystemTexture,
                                      particleSystemMaterial);
