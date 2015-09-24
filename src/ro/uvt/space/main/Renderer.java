@@ -120,7 +120,7 @@ public class Renderer implements GLEventListener, Observer {
     keyListener.registerRenderer(this);
 
     fireSystem =
-      new SprayedFireSystem(gl, new Trio(2.5f, 1.7f, -6.8f), new Trio(10.0f, 1.7f, -6.8f), 3.0f, cameraPosition, particleSystemTexture, particleSystemMaterial);
+      new SprayedFireSystem(gl, new Trio(2.5f, 1.7f, -6.8f), new Trio(10.0f, 1.7f, -6.8f), 1.5f, cameraPosition, particleSystemTexture, particleSystemMaterial);
     initParticleSystem(fireSystem);
   }
 
@@ -215,7 +215,7 @@ public class Renderer implements GLEventListener, Observer {
 
   private void initParticleSystem(ParticleSystem system) {
     fireSystem.setParticlesPerSpawn(100);
-    fireSystem.setParticleRadius(0.15f);
+    fireSystem.setParticleRadius(0.2f);
     fireSystem.setFadeUnit(0.035f);
 
     keyListener.registerObserver(fireSystem);
@@ -233,7 +233,7 @@ public class Renderer implements GLEventListener, Observer {
           new SprayedFireSystem(gl,
                                 new Trio(2.5f, 1.7f, -6.8f),
                                 new Trio(10.0f, 1.7f, -6.8f),
-                                3.0f,
+                                1.5f,
                                 cameraPosition,
                                 particleSystemTexture,
                                 particleSystemMaterial);
