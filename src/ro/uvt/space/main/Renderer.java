@@ -47,23 +47,14 @@ import com.jogamp.opengl.util.texture.Texture;
 public class Renderer implements GLEventListener, Observer {
 
   private LightKeeper lighter;
-
   private GLU glu;
-
   private GL2 gl;
-
   private Trio cameraPosition;
-
   private Trio targetPosition;
-
   private List<GraphicObject> objects = new ArrayList<>();
-
   private ParticleSystem fireSystem;
-
   private KeyboardListener keyListener = new KeyboardListener();
-
   private Material particleSystemMaterial;
-
   private Texture particleSystemTexture;
 
   public Renderer() {
@@ -119,8 +110,9 @@ public class Renderer implements GLEventListener, Observer {
 
     keyListener.registerRenderer(this);
 
-    fireSystem =
-      new SprayedFireSystem(gl, new Trio(2.5f, 1.7f, -6.8f), new Trio(10.0f, 1.7f, -6.8f), 1.5f, cameraPosition, particleSystemTexture, particleSystemMaterial);
+    Trio[] positions = {new Trio(2.5f, 1.7f, -6.8f), new Trio(10.0f, 1.7f, -6.8f), cameraPosition};
+
+    fireSystem = new SprayedFireSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 1.5f);
     initParticleSystem(fireSystem);
   }
 
@@ -226,51 +218,41 @@ public class Renderer implements GLEventListener, Observer {
   }
 
   public void changeParticleSystem(int particleSystemID) {
+    Trio[] positions = new Trio[3];
     switch (particleSystemID) {
       case 1:
         keyListener.removeObserver(fireSystem);
-        fireSystem =
-          new SprayedFireSystem(gl,
-                                new Trio(2.5f, 1.7f, -6.8f),
-                                new Trio(10.0f, 1.7f, -6.8f),
-                                1.5f,
-                                cameraPosition,
-                                particleSystemTexture,
-                                particleSystemMaterial);
+        positions[0] = new Trio(2.5f, 1.7f, -6.8f);
+        positions[1] = new Trio(10.0f, 1.7f, -6.8f);
+        positions[2] = cameraPosition;
+        fireSystem = new SprayedFireSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 1.5f);
         initParticleSystem(fireSystem);
         break;
 
       case 2:
         keyListener.removeObserver(fireSystem);
-        fireSystem =
-          new CylindricalFireSystem(gl,
-                                    new Trio(2.0f, 2.0f, 0.0f),
-                                    new Trio(7.0f, 2.0f, 0.0f),
-                                    1.0f,
-                                    cameraPosition,
-                                    particleSystemTexture,
-                                    particleSystemMaterial);
+        positions[0] = new Trio(2.0f, 2.0f, 0.0f);
+        positions[1] = new Trio(7.0f, 2.0f, 0.0f);
+        positions[2] = cameraPosition;
+        fireSystem = new CylindricalFireSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 1.0f);
         initParticleSystem(fireSystem);
         break;
 
       case 3:
-
         keyListener.removeObserver(fireSystem);
-        fireSystem =
-          new FountainSystem(gl, new Trio(2.0f, 1.0f, 0.0f), new Trio(2.0f, 27.0f, 0.0), 3.0f, cameraPosition, particleSystemTexture, particleSystemMaterial);
+        positions[0] = new Trio(2.0f, 1.0f, 0.0f);
+        positions[1] = new Trio(2.0f, 27.0f, 0.0);
+        positions[2] = cameraPosition;
+        fireSystem = new FountainSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 3.0f);
         initParticleSystem(fireSystem);
         break;
 
       case 4:
         keyListener.removeObserver(fireSystem);
-        fireSystem =
-          new ReversedConeFireSystem(gl,
-                                     new Trio(2.0f, 3.0f, 0.0f),
-                                     new Trio(10f, 3.0f, 0.0f),
-                                     2f,
-                                     cameraPosition,
-                                     particleSystemTexture,
-                                     particleSystemMaterial);
+        positions[0] = new Trio(2.0f, 3.0f, 0.0f);
+        positions[1] = new Trio(10f, 3.0f, 0.0f);
+        positions[2] = cameraPosition;
+        fireSystem = new ReversedConeFireSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 2.0f);
         initParticleSystem(fireSystem);
         break;
     }
