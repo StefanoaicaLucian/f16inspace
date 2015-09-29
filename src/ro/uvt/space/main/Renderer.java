@@ -112,7 +112,7 @@ public class Renderer implements GLEventListener, Observer {
 
     Trio[] positions = {new Trio(2.5f, 1.7f, -6.8f), new Trio(10.0f, 1.7f, -6.8f), cameraPosition};
 
-    fireSystem = new SprayedFireSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 1.5f);
+    fireSystem = new SprayedFireSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 2.0f);
     initParticleSystem(fireSystem);
   }
 
@@ -207,8 +207,9 @@ public class Renderer implements GLEventListener, Observer {
 
   private void initParticleSystem(ParticleSystem system) {
     fireSystem.setParticlesPerSpawn(100);
-    fireSystem.setParticleRadius(0.2f);
-    fireSystem.setFadeUnit(0.035f);
+    fireSystem.setParticleRadius(0.15f);
+    fireSystem.setFadeUnit(0.04f);
+    fireSystem.setDirectionVectorScalar(600f);
 
     keyListener.registerObserver(fireSystem);
   }
@@ -225,16 +226,16 @@ public class Renderer implements GLEventListener, Observer {
         positions[0] = new Trio(2.5f, 1.7f, -6.8f);
         positions[1] = new Trio(10.0f, 1.7f, -6.8f);
         positions[2] = cameraPosition;
-        fireSystem = new SprayedFireSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 1.5f);
+        fireSystem = new SprayedFireSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 2.0f);
         initParticleSystem(fireSystem);
         break;
 
       case 2:
         keyListener.removeObserver(fireSystem);
-        positions[0] = new Trio(2.0f, 2.0f, 0.0f);
-        positions[1] = new Trio(7.0f, 2.0f, 0.0f);
+        positions[0] = new Trio(2.5f, 1.7f, -6.8f);
+        positions[1] = new Trio(10.0f, 1.7f, -6.8f);
         positions[2] = cameraPosition;
-        fireSystem = new CylindricalFireSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 1.0f);
+        fireSystem = new CylindricalFireSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 0.2f);
         initParticleSystem(fireSystem);
         break;
 
@@ -249,10 +250,10 @@ public class Renderer implements GLEventListener, Observer {
 
       case 4:
         keyListener.removeObserver(fireSystem);
-        positions[0] = new Trio(2.0f, 3.0f, 0.0f);
-        positions[1] = new Trio(10f, 3.0f, 0.0f);
+        positions[0] = new Trio(2.5f, 1.7f, -6.8f);
+        positions[1] = new Trio(10.0f, 1.7f, -6.8f);
         positions[2] = cameraPosition;
-        fireSystem = new ReversedConeFireSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 2.0f);
+        fireSystem = new ReversedConeFireSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 0.2f);
         initParticleSystem(fireSystem);
         break;
     }
