@@ -208,7 +208,7 @@ public class Renderer implements GLEventListener, Observer {
   private void initParticleSystem(ParticleSystem system) {
     fireSystem.setParticlesPerSpawn(100);
     fireSystem.setParticleRadius(0.15f);
-    fireSystem.setFadeUnit(0.04f);
+    fireSystem.setFadeUnit(0.03f);
     fireSystem.setDirectionVectorScalar(600f);
 
     keyListener.registerObserver(fireSystem);
@@ -232,10 +232,10 @@ public class Renderer implements GLEventListener, Observer {
 
       case 2:
         keyListener.removeObserver(fireSystem);
-        positions[0] = new Trio(2.5f, 1.7f, -6.8f);
-        positions[1] = new Trio(10.0f, 1.7f, -6.8f);
+        positions[0] = new Trio(2.5f, 1.7f, 0.0f);
+        positions[1] = new Trio(10.0f, 1.7f, 0.0f);
         positions[2] = cameraPosition;
-        fireSystem = new CylindricalFireSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 0.2f);
+        fireSystem = new CylindricalFireSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 1f);
         initParticleSystem(fireSystem);
         break;
 
@@ -250,10 +250,10 @@ public class Renderer implements GLEventListener, Observer {
 
       case 4:
         keyListener.removeObserver(fireSystem);
-        positions[0] = new Trio(2.5f, 1.7f, -6.8f);
-        positions[1] = new Trio(10.0f, 1.7f, -6.8f);
+        positions[0] = new Trio(2.5f, 1.7f, 0.0f);
+        positions[1] = new Trio(10.0f, 1.7f, 0.0f);
         positions[2] = cameraPosition;
-        fireSystem = new ReversedConeFireSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 0.2f);
+        fireSystem = new ReversedConeFireSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 2.0f);
         initParticleSystem(fireSystem);
         break;
     }
