@@ -208,8 +208,8 @@ public class Renderer implements GLEventListener, Observer {
   private void initParticleSystem(ParticleSystem system) {
     fireSystem.setParticlesPerSpawn(100);
     fireSystem.setParticleRadius(0.15f);
-    fireSystem.setFadeUnit(0.03f);
-    fireSystem.setDirectionVectorScalar(600f);
+    fireSystem.setFadeUnit(0.04f);
+    fireSystem.setDirectionVectorScalar(400f);
 
     keyListener.registerObserver(fireSystem);
   }
@@ -245,6 +245,7 @@ public class Renderer implements GLEventListener, Observer {
         positions[1] = new Trio(2.0f, 27.0f, 0.0);
         positions[2] = cameraPosition;
         fireSystem = new FountainSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 3.0f);
+        ((FountainSystem)fireSystem).setGravityVector(new Trio(0.0f, -0.01, 0.0f));
         initParticleSystem(fireSystem);
         break;
 
