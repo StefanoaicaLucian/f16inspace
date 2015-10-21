@@ -206,10 +206,10 @@ public class Renderer implements GLEventListener, Observer {
   }
 
   private void initParticleSystem(ParticleSystem system) {
-    fireSystem.setParticlesPerSpawn(100);
-    fireSystem.setParticleRadius(0.15f);
-    fireSystem.setFadeUnit(0.04f);
-    fireSystem.setDirectionVectorScalar(400f);
+    fireSystem.setParticlesPerSpawn(10);
+    fireSystem.setParticleRadius(0.01f);
+    fireSystem.setFadeUnit(0.02f);
+    fireSystem.setDirectionVectorScalar(150f);
 
     keyListener.registerObserver(fireSystem);
   }
