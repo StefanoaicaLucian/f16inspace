@@ -33,7 +33,9 @@ public class Parser {
         lines.add(line);
         line = bufferedReader.readLine();
       }
-
+      
+      bufferedReader.close();
+      
     } catch (Exception e) {
       System.err.println(e.toString());
     }
