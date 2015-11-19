@@ -1,5 +1,5 @@
 
-package ro.uvt.space.build;
+package ro.uvt.space.graphic_objects;
 
 import static javax.media.opengl.GL.GL_FRONT;
 import static javax.media.opengl.GL.GL_TRIANGLES;
@@ -13,7 +13,8 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL2;
 
-import ro.uvt.api.particles.Material;
+import ro.uvt.api.util.MaterialProperties;
+import ro.uvt.space.build.GraphicComponent;
 
 public abstract class GraphicObject {
 
@@ -29,6 +30,16 @@ public abstract class GraphicObject {
     components.add(component);
   }
 
+  public abstract void draw();
+
+  protected void enableMaterial(MaterialProperties theMaterial) {
+
+    gl.glMaterialfv(GL_FRONT, GL_DIFFUSE, theMaterial.getDiffuse(), 0);
+    gl.glMaterialfv(GL_FRONT, GL_SPECULAR, theMaterial.getSpecular(), 0);
+    gl.glMaterialfv(GL_FRONT, GL_AMBIENT, theMaterial.getAmbient(), 0);
+    gl.glMaterialfv(GL_FRONT, GL_SHININESS, theMaterial.getShine(), 0);
+  }
+
   protected void commonDraw() {
     for (GraphicComponent component : components) {
       enableMaterial(component.getMaterial());
@@ -36,15 +47,5 @@ public abstract class GraphicObject {
       gl.glBindVertexArray(component.getVertexArrayObjectId());
       gl.glDrawElements(GL_TRIANGLES, component.getTotalElements(), GL_UNSIGNED_INT, 0);
     }
-  }
-
-  public abstract void draw();
-
-  protected void enableMaterial(Material theMaterial) {
-
-    gl.glMaterialfv(GL_FRONT, GL_DIFFUSE, theMaterial.getKd(), 0);
-    gl.glMaterialfv(GL_FRONT, GL_SPECULAR, theMaterial.getKs(), 0);
-    gl.glMaterialfv(GL_FRONT, GL_AMBIENT, theMaterial.getKa(), 0);
-    gl.glMaterialfv(GL_FRONT, GL_SHININESS, theMaterial.getNs(), 0);
   }
 }

@@ -1,5 +1,5 @@
 
-package ro.uvt.space.build;
+package ro.uvt.space.graphic_objects;
 
 import javax.media.opengl.GL2;
 

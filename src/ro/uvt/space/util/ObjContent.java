@@ -22,96 +22,97 @@ public class ObjContent {
 
   private String mtlFileName;
 
-  public int getVaoID() {
-    return vaoID;
-  }
-
-  public int getVertexBufferID() {
-    return vertexBufferID;
-  }
-
-  public int getTextureBufferID() {
-    return textureBufferID;
-  }
-
-  public int getNormalBufferID() {
-    return normalBufferID;
-  }
-
-  public int getElementBufferID() {
-    return elementBufferID;
-  }
-
-  public FloatBuffer getVertexBufferData() {
-    return vertexBufferData;
-  }
-
-  public void setVertexBufferData(float[] vertices) {
-    this.vertexBufferData = Buffers.newDirectFloatBuffer(vertices);
-  }
-
-  public FloatBuffer getTextureBufferData() {
-    return textureBufferData;
-  }
-
-  public void setTextureBufferData(float[] textureCoords) {
-    this.textureBufferData = Buffers.newDirectFloatBuffer(textureCoords);
-  }
-
-  public FloatBuffer getNormalBufferData() {
-    return normalBufferData;
-  }
-
-  public void setNormalBufferData(float[] normals) {
-    this.normalBufferData = Buffers.newDirectFloatBuffer(normals);
-  }
-
-  public IntBuffer getElementBufferData() {
-    return elementBufferData;
-  }
-
-  public void setElementBufferData(int[] drawOrder) {
-    this.elementBufferData = Buffers.newDirectIntBuffer(drawOrder);
-  }
-
-  public int getVertexBufferSize() {
+  public int computeVertexBufferSize() {
     return vertexBufferData.capacity() * Buffers.SIZEOF_FLOAT;
   }
 
-  public int getTextureBufferSize() {
-    return textureBufferData.capacity() * Buffers.SIZEOF_FLOAT;
-  }
-
-  public int getTotalElements() {
-    return elementBufferData.capacity();
-  }
-
-  public int getNormalBufferSize() {
+  public int computeNormalBufferSize() {
     return normalBufferData.capacity() * Buffers.SIZEOF_FLOAT;
   }
 
-  public int getElementBufferSize() {
+  public int computeTextureBufferSize() {
+    return textureBufferData.capacity() * Buffers.SIZEOF_FLOAT;
+  }
+
+  public int computeElementBufferSize() {
     return elementBufferData.capacity() * Buffers.SIZEOF_INT;
+  }
+
+  public int computeTotalElements() {
+    return elementBufferData.capacity();
+  }
+
+  // getters & setters
+  public int getVaoID() {
+    return vaoID;
   }
 
   public void setVaoID(int vaoID) {
     this.vaoID = vaoID;
   }
 
+  public int getVertexBufferID() {
+    return vertexBufferID;
+  }
+
   public void setVertexBufferID(int vertexBufferID) {
     this.vertexBufferID = vertexBufferID;
+  }
+
+  public int getTextureBufferID() {
+    return textureBufferID;
   }
 
   public void setTextureBufferID(int textureBufferID) {
     this.textureBufferID = textureBufferID;
   }
 
+  public int getNormalBufferID() {
+    return normalBufferID;
+  }
+
   public void setNormalBufferID(int normalBufferID) {
     this.normalBufferID = normalBufferID;
   }
 
+  public int getElementBufferID() {
+    return elementBufferID;
+  }
+
   public void setElementBufferID(int elementBufferID) {
     this.elementBufferID = elementBufferID;
+  }
+
+  public FloatBuffer getVertexBufferData() {
+    return vertexBufferData;
+  }
+
+  public void setVertexBufferData(FloatBuffer vertexBufferData) {
+    this.vertexBufferData = vertexBufferData;
+  }
+
+  public FloatBuffer getTextureBufferData() {
+    return textureBufferData;
+  }
+
+  public void setTextureBufferData(FloatBuffer textureBufferData) {
+    this.textureBufferData = textureBufferData;
+  }
+
+  public FloatBuffer getNormalBufferData() {
+    return normalBufferData;
+  }
+
+  public void setNormalBufferData(FloatBuffer normalBufferData) {
+    this.normalBufferData = normalBufferData;
+  }
+
+  public IntBuffer getElementBufferData() {
+    return elementBufferData;
+  }
+
+  public void setElementBufferData(IntBuffer elementBufferData) {
+    this.elementBufferData = elementBufferData;
   }
 
   public String getMtlFileName() {

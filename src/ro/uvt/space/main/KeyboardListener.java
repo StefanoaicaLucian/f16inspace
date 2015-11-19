@@ -9,14 +9,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import ro.uvt.api.particles.Trio;
+import ro.uvt.api.util.Vertex;
 import ro.uvt.api.util.Observer;
 import ro.uvt.api.util.Subject;
 
 public class KeyboardListener implements KeyListener, Subject {
 
-  private Trio cameraPosition = new Trio(0.0f, 1.0f, 0.0f);
-  private Trio targetPosition = new Trio(0.0f, 1.0f, -1.0f);
+  private Vertex cameraPosition = new Vertex(0.0f, 1.0f, 0.0f);
+  private Vertex targetPosition = new Vertex(0.0f, 1.0f, -1.0f);
   private double cameraAngle;
 
   private double angleStep = 0.1f;
@@ -31,27 +31,27 @@ public class KeyboardListener implements KeyListener, Subject {
     switch (e.getKeyCode()) {
       case VK_LEFT:
         cameraAngle -= angleStep;
-        targetPosition.setX((float) Math.sin(cameraAngle));
-        targetPosition.setZ((float) -Math.cos(cameraAngle));
+        targetPosition.setPositionX((float) Math.sin(cameraAngle));
+        targetPosition.setPositionZ((float) -Math.cos(cameraAngle));
         notifyObservers();
         break;
 
       case VK_RIGHT:
         cameraAngle += angleStep;
-        targetPosition.setX((float) Math.sin(cameraAngle));
-        targetPosition.setZ((float) -Math.cos(cameraAngle));
+        targetPosition.setPositionX((float) Math.sin(cameraAngle));
+        targetPosition.setPositionZ((float) -Math.cos(cameraAngle));
         notifyObservers();
         break;
 
       case VK_UP:
-        cameraPosition.setX(cameraPosition.getX() + (float) (targetPosition.getX() * fraction));
-        cameraPosition.setZ(cameraPosition.getZ() + (float) (targetPosition.getZ() * fraction));
+        cameraPosition.setPositionX(cameraPosition.getPositionX() + (float) (targetPosition.getPositionX() * fraction));
+        cameraPosition.setPositionZ(cameraPosition.getPositionZ() + (float) (targetPosition.getPositionZ() * fraction));
         notifyObservers();
         break;
 
       case VK_DOWN:
-        cameraPosition.setX(cameraPosition.getX() - (float) (targetPosition.getX() * fraction));
-        cameraPosition.setZ(cameraPosition.getZ() - (float) (targetPosition.getZ() * fraction));
+        cameraPosition.setPositionX(cameraPosition.getPositionX() - (float) (targetPosition.getPositionX() * fraction));
+        cameraPosition.setPositionZ(cameraPosition.getPositionZ() - (float) (targetPosition.getPositionZ() * fraction));
         notifyObservers();
         break;
 

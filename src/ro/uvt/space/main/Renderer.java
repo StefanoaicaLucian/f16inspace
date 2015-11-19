@@ -15,7 +15,14 @@ import static javax.media.opengl.GL.GL_ONE;
 import static javax.media.opengl.GL.GL_VERSION;
 import static javax.media.opengl.GL2ES1.GL_PERSPECTIVE_CORRECTION_HINT;
 import static javax.media.opengl.GL2ES1.GL_POINT_SMOOTH_HINT;
+import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_AMBIENT;
+import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_DIFFUSE;
+import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_LIGHT0;
+import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_LIGHT1;
+import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_LIGHTING;
+import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_POSITION;
 import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_SMOOTH;
+import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_SPECULAR;
 import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
 import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
 
@@ -29,16 +36,16 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
 
-import ro.uvt.api.particles.CylindricalFireSystem;
-import ro.uvt.api.particles.FountainSystem;
-import ro.uvt.api.particles.Material;
-import ro.uvt.api.particles.ParticleSystem;
-import ro.uvt.api.particles.ReversedConeFireSystem;
-import ro.uvt.api.particles.SprayedFireSystem;
-import ro.uvt.api.particles.Trio;
+import ro.uvt.api.systems.CylindricalSystem;
+import ro.uvt.api.systems.FountainSystem;
+import ro.uvt.api.util.MaterialProperties;
+import ro.uvt.api.systems.ParticleSystem;
+import ro.uvt.api.systems.ReversedSystem;
+import ro.uvt.api.systems.SprayedSystem;
+import ro.uvt.api.util.Vertex;
 import ro.uvt.api.util.Observer;
 import ro.uvt.api.util.Subject;
-import ro.uvt.space.build.GraphicObject;
+import ro.uvt.space.graphic_objects.GraphicObject;
 import ro.uvt.space.build.GraphicObjectBuilder;
 import ro.uvt.space.util.TextureReader;
 
@@ -46,20 +53,19 @@ import com.jogamp.opengl.util.texture.Texture;
 
 public class Renderer implements GLEventListener, Observer {
 
-  private LightKeeper lighter;
   private GLU glu;
   private GL2 gl;
-  private Trio cameraPosition;
-  private Trio targetPosition;
+  private Vertex cameraPosition;
+  private Vertex targetPosition;
   private List<GraphicObject> objects = new ArrayList<>();
   private ParticleSystem fireSystem;
   private KeyboardListener keyListener = new KeyboardListener();
-  private Material particleSystemMaterial;
+  private MaterialProperties particleSystemMaterial;
   private Texture particleSystemTexture;
 
   public Renderer() {
-    cameraPosition = (Trio) keyListener.getState().get("camera_position");
-    targetPosition = (Trio) keyListener.getState().get("target_position");
+    cameraPosition = (Vertex) keyListener.getState().get("camera_position");
+    targetPosition = (Vertex) keyListener.getState().get("target_position");
 
     keyListener.registerObserver(this);
   }
@@ -91,14 +97,14 @@ public class Renderer implements GLEventListener, Observer {
 
     gl.glEnable(GL_LINE_SMOOTH);
 
-    lighter = new LightKeeper(gl);
-    lighter.lightTheWay();
+    lightTheWay();
 
     GraphicObjectBuilder objectBuilder = new GraphicObjectBuilder(gl);
 
     objects.add(objectBuilder.buildJetPlane());
     objects.add(objectBuilder.buildFloor());
 
+    // no need to use a new texture for each particle... just use the same for all... or maybe that will be an interesting effect.
     particleSystemTexture = new TextureReader(gl, "res/").readTexture("particle.png", ".png");
 
     float[] ambient = {0.1f, 0.4f, 0.5f};
@@ -106,13 +112,13 @@ public class Renderer implements GLEventListener, Observer {
     float[] specular = {0.1f, 0.4f, 0.5f};
     float[] shine = {120.078431f};
 
-    particleSystemMaterial = new Material(ambient, diffuse, specular, shine);
+    particleSystemMaterial = new MaterialProperties(ambient, diffuse, specular, shine);
 
     keyListener.registerRenderer(this);
 
-    Trio[] positions = {new Trio(2.5f, 1.7f, -6.8f), new Trio(10.0f, 1.7f, -6.8f), cameraPosition};
+    Vertex[] positions = {new Vertex(2.5f, 1.7f, -6.8f), new Vertex(10.0f, 1.7f, -6.8f), cameraPosition};
 
-    fireSystem = new SprayedFireSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 2.0f);
+    fireSystem = new SprayedSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 2.0f);
     initParticleSystem(fireSystem);
   }
 
@@ -141,12 +147,12 @@ public class Renderer implements GLEventListener, Observer {
 
     gl.glLoadIdentity();
 
-    glu.gluLookAt(cameraPosition.getX(),
-                  cameraPosition.getY(),
-                  cameraPosition.getZ(),
-                  cameraPosition.getX() + targetPosition.getX(),
-                  targetPosition.getY(),
-                  cameraPosition.getZ() + targetPosition.getZ(),
+    glu.gluLookAt(cameraPosition.getPositionX(),
+                  cameraPosition.getPositionY(),
+                  cameraPosition.getPositionZ(),
+                  cameraPosition.getPositionX() + targetPosition.getPositionX(),
+                  targetPosition.getPositionY(),
+                  cameraPosition.getPositionZ() + targetPosition.getPositionZ(),
                   0.0f,
                   1.0f,
                   0.0f);
@@ -171,8 +177,77 @@ public class Renderer implements GLEventListener, Observer {
   @Override
   public void update(Subject toObserve) {
     Map<String, Object> subjectState = toObserve.getState();
-    cameraPosition = (Trio) subjectState.get("camera_position");
-    targetPosition = (Trio) subjectState.get("target_position");
+    cameraPosition = (Vertex) subjectState.get("camera_position");
+    targetPosition = (Vertex) subjectState.get("target_position");
+  }
+
+  public KeyboardListener getKeyListener() {
+    return keyListener;
+  }
+
+  public void changeParticleSystem(int particleSystemID) {
+    Vertex[] positions = new Vertex[3];
+    switch (particleSystemID) {
+      case 1:
+        keyListener.removeObserver(fireSystem);
+        positions[0] = new Vertex(2.5f, 1.7f, -6.8f);
+        positions[1] = new Vertex(10.0f, 1.7f, -6.8f);
+        positions[2] = cameraPosition;
+        fireSystem = new SprayedSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 2.0f);
+        initParticleSystem(fireSystem);
+        break;
+
+      case 2:
+        keyListener.removeObserver(fireSystem);
+        positions[0] = new Vertex(2.5f, 1.7f, 0.0f);
+        positions[1] = new Vertex(10.0f, 1.7f, 0.0f);
+        positions[2] = cameraPosition;
+        fireSystem = new CylindricalSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 1f);
+        initParticleSystem(fireSystem);
+        break;
+
+      case 3:
+        keyListener.removeObserver(fireSystem);
+        positions[0] = new Vertex(2.0f, 1.0f, 0.0f);
+        positions[1] = new Vertex(2.0f, 27.0f, 0.0f);
+        positions[2] = cameraPosition;
+        fireSystem = new FountainSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 3.0f);
+        ((FountainSystem) fireSystem).setGravityVector(new Vertex(0.0f, -0.01f, 0.0f));
+        initParticleSystem(fireSystem);
+        break;
+
+      case 4:
+        keyListener.removeObserver(fireSystem);
+        positions[0] = new Vertex(2.5f, 1.7f, 0.0f);
+        positions[1] = new Vertex(10.0f, 1.7f, 0.0f);
+        positions[2] = cameraPosition;
+        fireSystem = new ReversedSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 2.0f);
+        initParticleSystem(fireSystem);
+        break;
+    }
+  }
+
+  public void lightTheWay() {
+    float firstLightPosition[] = {20f, 20f, 20f, 1f};
+    float secondLightPosition[] = {20f, 20f, -20f, 1f};
+
+    float lightDiffuse[] = {1.0f, 1.0f, 1.0f, 1.0f};
+    float lightSpecular[] = {1.0f, 1.0f, 1.0f, 1.0f};
+    float lightAmbient[] = {0.6f, 0.6f, 0.6f, 1.0f};
+
+    gl.glLightfv(GL_LIGHT0, GL_POSITION, firstLightPosition, 0);
+    gl.glLightfv(GL_LIGHT0, GL_DIFFUSE, lightDiffuse, 0);
+    gl.glLightfv(GL_LIGHT0, GL_SPECULAR, lightSpecular, 0);
+    gl.glLightfv(GL_LIGHT0, GL_AMBIENT, lightAmbient, 0);
+
+    gl.glLightfv(GL_LIGHT1, GL_POSITION, secondLightPosition, 0);
+    gl.glLightfv(GL_LIGHT1, GL_DIFFUSE, lightDiffuse, 0);
+    gl.glLightfv(GL_LIGHT1, GL_SPECULAR, lightSpecular, 0);
+    gl.glLightfv(GL_LIGHT1, GL_AMBIENT, lightAmbient, 0);
+
+    gl.glEnable(GL_LIGHTING);
+    gl.glEnable(GL_LIGHT0);
+    gl.glEnable(GL_LIGHT1);
   }
 
   private void catchGLError() {
@@ -212,51 +287,5 @@ public class Renderer implements GLEventListener, Observer {
     fireSystem.setDirectionVectorScalar(150f);
 
     keyListener.registerObserver(fireSystem);
-  }
-
-  public KeyboardListener getKeyListener() {
-    return keyListener;
-  }
-
-  public void changeParticleSystem(int particleSystemID) {
-    Trio[] positions = new Trio[3];
-    switch (particleSystemID) {
-      case 1:
-        keyListener.removeObserver(fireSystem);
-        positions[0] = new Trio(2.5f, 1.7f, -6.8f);
-        positions[1] = new Trio(10.0f, 1.7f, -6.8f);
-        positions[2] = cameraPosition;
-        fireSystem = new SprayedFireSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 2.0f);
-        initParticleSystem(fireSystem);
-        break;
-
-      case 2:
-        keyListener.removeObserver(fireSystem);
-        positions[0] = new Trio(2.5f, 1.7f, 0.0f);
-        positions[1] = new Trio(10.0f, 1.7f, 0.0f);
-        positions[2] = cameraPosition;
-        fireSystem = new CylindricalFireSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 1f);
-        initParticleSystem(fireSystem);
-        break;
-
-      case 3:
-        keyListener.removeObserver(fireSystem);
-        positions[0] = new Trio(2.0f, 1.0f, 0.0f);
-        positions[1] = new Trio(2.0f, 27.0f, 0.0);
-        positions[2] = cameraPosition;
-        fireSystem = new FountainSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 3.0f);
-        ((FountainSystem)fireSystem).setGravityVector(new Trio(0.0f, -0.01, 0.0f));
-        initParticleSystem(fireSystem);
-        break;
-
-      case 4:
-        keyListener.removeObserver(fireSystem);
-        positions[0] = new Trio(2.5f, 1.7f, 0.0f);
-        positions[1] = new Trio(10.0f, 1.7f, 0.0f);
-        positions[2] = cameraPosition;
-        fireSystem = new ReversedConeFireSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 2.0f);
-        initParticleSystem(fireSystem);
-        break;
-    }
   }
 }
