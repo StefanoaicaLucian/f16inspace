@@ -107,9 +107,9 @@ public class Renderer implements GLEventListener, Observer {
     // no need to use a new texture for each particle... just use the same for all... or maybe that will be an interesting effect.
     particleSystemTexture = new TextureReader(gl, "res/").readTexture("particle.png", ".png");
 
-    float[] ambient = {0.1f, 0.4f, 0.5f};
-    float[] diffuse = {0.1f, 0.4f, 0.5f};
-    float[] specular = {0.1f, 0.4f, 0.5f};
+    float[] ambient = {0.3f, 0.1f, 0.5f};
+    float[] diffuse = {0.3f, 0.1f, 0.5f};
+    float[] specular = {0.3f, 0.1f, 0.5f};
     float[] shine = {120.078431f};
 
     particleSystemMaterial = new MaterialProperties(ambient, diffuse, specular, shine);
@@ -211,9 +211,10 @@ public class Renderer implements GLEventListener, Observer {
         positions[0] = new Vertex(2.0f, 1.0f, 0.0f);
         positions[1] = new Vertex(2.0f, 27.0f, 0.0f);
         positions[2] = cameraPosition;
-        fireSystem = new FountainSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 3.0f);
-        ((FountainSystem) fireSystem).setGravityVector(new Vertex(0.0f, -0.01f, 0.0f));
+        fireSystem = new FountainSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 5.0f);
+        ((FountainSystem) fireSystem).setGravityVector(new Vertex(0.0f, -0.0024f, 0.0f));
         initParticleSystem(fireSystem);
+        // the fountain particles will start off a lot smaller than the others
         break;
 
       case 4:
@@ -247,7 +248,7 @@ public class Renderer implements GLEventListener, Observer {
 
     gl.glEnable(GL_LIGHTING);
     gl.glEnable(GL_LIGHT0);
-    gl.glEnable(GL_LIGHT1);
+    // gl.glEnable(GL_LIGHT1);
   }
 
   private void catchGLError() {
@@ -282,8 +283,8 @@ public class Renderer implements GLEventListener, Observer {
 
   private void initParticleSystem(ParticleSystem system) {
     fireSystem.setParticlesPerSpawn(10);
-    fireSystem.setParticleRadius(0.01f);
-    fireSystem.setFadeUnit(0.02f);
+    fireSystem.setParticleRadius(0.2f);
+    fireSystem.setFadeUnit(0.007f);
     fireSystem.setDirectionVectorScalar(150f);
 
     keyListener.registerObserver(fireSystem);
