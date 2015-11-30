@@ -30,16 +30,18 @@ public class KeyboardListener implements KeyListener, Subject {
   public void keyPressed(KeyEvent e) {
     switch (e.getKeyCode()) {
       case VK_LEFT:
-        cameraAngle -= angleStep;
-        targetPosition.setPositionX((float) Math.sin(cameraAngle));
-        targetPosition.setPositionZ((float) -Math.cos(cameraAngle));
+        cameraAngle += angleStep;
+        System.out.println("cameraAngle: " + cameraAngle + " / sin: " + Math.sin(cameraAngle) + " / cos: " + Math.cos(cameraAngle));
+        targetPosition.setPositionX((float) Math.cos(cameraAngle + Math.PI / 2));
+        targetPosition.setPositionZ(-1.0f * (float) Math.sin(cameraAngle + Math.PI / 2));
         notifyObservers();
         break;
 
       case VK_RIGHT:
-        cameraAngle += angleStep;
-        targetPosition.setPositionX((float) Math.sin(cameraAngle));
-        targetPosition.setPositionZ((float) -Math.cos(cameraAngle));
+        cameraAngle -= angleStep;
+        System.out.println("cameraAngle: " + cameraAngle + " / sin: " + Math.sin(cameraAngle) + " / cos: " + Math.cos(cameraAngle));
+        targetPosition.setPositionX((float) Math.cos(cameraAngle + Math.PI / 2));
+        targetPosition.setPositionZ(-1.0f * (float) Math.sin(cameraAngle + Math.PI / 2));
         notifyObservers();
         break;
 
@@ -74,7 +76,6 @@ public class KeyboardListener implements KeyListener, Subject {
         associatedRenderer.changeParticleSystem(4);
         notifyObservers();
         break;
-
     }
   }
 
