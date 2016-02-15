@@ -9,6 +9,8 @@ import static javax.media.opengl.GL.GL_TEXTURE_MIN_FILTER;
 import static javax.media.opengl.GL.GL_TEXTURE_WRAP_S;
 import static javax.media.opengl.GL.GL_TEXTURE_WRAP_T;
 
+import java.io.BufferedReader;
+import java.io.File;
 import java.net.URL;
 
 import javax.media.opengl.GL2;
@@ -34,7 +36,9 @@ public class TextureReader {
 
       URL texturePicture = getClass().getClassLoader().getResource(filePath);
 
-      Texture resultTexture = TextureIO.newTexture(texturePicture, false, fileType);
+      // Texture resultTexture = TextureIO.newTexture(texturePicture, false, fileType);
+
+      Texture resultTexture = TextureIO.newTexture(new File("textures/" + fileName), true);
 
       resultTexture.enable(gl);
 

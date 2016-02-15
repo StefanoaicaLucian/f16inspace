@@ -108,7 +108,7 @@ public class Renderer implements GLEventListener, Observer {
     objects.add(objectBuilder.buildFloor());
 
     // no need to use a new texture for each particle... just use the same for all... or maybe that will be an interesting effect.
-    particleSystemTexture = new TextureReader(gl, "res/").readTexture("particle.png", ".png");
+    particleSystemTexture = new TextureReader(gl, "textures/").readTexture("particle.png", ".png");
 
     float[] ambient = {0.3f, 0.1f, 0.5f, 1.0f};
     float[] diffuse = {0.3f, 0.1f, 0.5f, 1.0f};
