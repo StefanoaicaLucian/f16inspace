@@ -4,14 +4,14 @@ package ro.uvt.space.main;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import com.jogamp.opengl.util.Animator;
+import com.jogamp.opengl.util.FPSAnimator;
 
 public class WindowEventListener extends WindowAdapter {
 
-  private Animator mAnimator;
+  private FPSAnimator animator;
 
-  public WindowEventListener(Animator animator) {
-    mAnimator = animator;
+  public WindowEventListener(FPSAnimator animator) {
+    this.animator = animator;
   }
 
   @Override
@@ -19,11 +19,10 @@ public class WindowEventListener extends WindowAdapter {
     Thread thread = new Thread() {
 
       public void run() {
-        mAnimator.stop();
+        animator.stop();
         System.exit(0);
       }
     };
-
     thread.start();
   }
 }

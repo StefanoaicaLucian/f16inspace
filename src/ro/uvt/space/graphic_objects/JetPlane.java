@@ -21,7 +21,7 @@ public class JetPlane extends GraphicObject {
 
     gl.glPushMatrix();
 
-    gl.glTranslatef(-3.0f, -2.0f, -5.0f);
+    gl.glTranslatef(-3.0f, -2.0f, -2.5f);
     gl.glRotatef(rotationAngle, 0.0f, 1.0f, 0.0f);
     commonDraw();
 

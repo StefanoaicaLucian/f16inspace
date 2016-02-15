@@ -76,6 +76,10 @@ public class KeyboardListener implements KeyListener, Subject {
         associatedRenderer.changeParticleSystem(4);
         notifyObservers();
         break;
+
+      default:
+        System.out.println("Unsupported key...");
+        break;
     }
   }
 

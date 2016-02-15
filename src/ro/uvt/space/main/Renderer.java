@@ -12,6 +12,7 @@ import static javax.media.opengl.GL.GL_LINE_SMOOTH;
 import static javax.media.opengl.GL.GL_NICEST;
 import static javax.media.opengl.GL.GL_NO_ERROR;
 import static javax.media.opengl.GL.GL_ONE;
+import static javax.media.opengl.GL.GL_SRC_ALPHA;
 import static javax.media.opengl.GL.GL_VERSION;
 import static javax.media.opengl.GL2ES1.GL_PERSPECTIVE_CORRECTION_HINT;
 import static javax.media.opengl.GL2ES1.GL_POINT_SMOOTH_HINT;
@@ -38,15 +39,15 @@ import javax.media.opengl.glu.GLU;
 
 import ro.uvt.api.systems.CylindricalSystem;
 import ro.uvt.api.systems.FountainSystem;
-import ro.uvt.api.util.MaterialProperties;
 import ro.uvt.api.systems.ParticleSystem;
 import ro.uvt.api.systems.ReversedSystem;
 import ro.uvt.api.systems.SprayedSystem;
-import ro.uvt.api.util.Vertex;
+import ro.uvt.api.util.MaterialProperties;
 import ro.uvt.api.util.Observer;
 import ro.uvt.api.util.Subject;
-import ro.uvt.space.graphic_objects.GraphicObject;
+import ro.uvt.api.util.Vertex;
 import ro.uvt.space.build.GraphicObjectBuilder;
+import ro.uvt.space.graphic_objects.GraphicObject;
 import ro.uvt.space.util.TextureReader;
 
 import com.jogamp.opengl.util.texture.Texture;
@@ -78,7 +79,7 @@ public class Renderer implements GLEventListener, Observer {
 
     glu = new GLU();
 
-    gl.glClearColor(0.0f, 0.0f, 0.2f, 0.0f);
+    gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
     gl.glEnable(GL_CULL_FACE);
     gl.glCullFace(GL_BACK);
@@ -92,8 +93,10 @@ public class Renderer implements GLEventListener, Observer {
 
     gl.glShadeModel(GL_SMOOTH);
 
-    gl.glBlendEquation(GL_FUNC_ADD);
-    gl.glBlendFunc(GL_ONE, GL_ONE);
+    gl.glBlendEquation(GL_FUNC_ADD); // it is GL_FUNC_ADD by default...
+    // to make it back the way it was set to GL_ONE
+
+    gl.glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 
     gl.glEnable(GL_LINE_SMOOTH);
 
@@ -107,16 +110,16 @@ public class Renderer implements GLEventListener, Observer {
     // no need to use a new texture for each particle... just use the same for all... or maybe that will be an interesting effect.
     particleSystemTexture = new TextureReader(gl, "res/").readTexture("particle.png", ".png");
 
-    float[] ambient = {0.3f, 0.1f, 0.5f};
-    float[] diffuse = {0.3f, 0.1f, 0.5f};
-    float[] specular = {0.3f, 0.1f, 0.5f};
-    float[] shine = {120.078431f};
+    float[] ambient = {0.3f, 0.1f, 0.5f, 1.0f};
+    float[] diffuse = {0.3f, 0.1f, 0.5f, 1.0f};
+    float[] specular = {0.3f, 0.1f, 0.5f, 1.0f};
+    float[] shine = {100.0f};
 
     particleSystemMaterial = new MaterialProperties(ambient, diffuse, specular, shine);
 
     keyListener.registerRenderer(this);
 
-    Vertex[] positions = {new Vertex(2.5f, 1.7f, -6.8f), new Vertex(10.0f, 1.7f, -6.8f), cameraPosition};
+    Vertex[] positions = {new Vertex(2.5f, 1.7f, -4.4f), new Vertex(10.0f, 1.7f, -4.4f), cameraPosition};
 
     fireSystem = new SprayedSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 2.0f);
     initParticleSystem(fireSystem);
@@ -124,11 +127,9 @@ public class Renderer implements GLEventListener, Observer {
 
   @Override
   public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
-
     if (height == 0) {
       height = 1;
     }
-
     gl.glViewport(0, 0, width, height);
 
     gl.glMatrixMode(GL_PROJECTION);
@@ -165,9 +166,9 @@ public class Renderer implements GLEventListener, Observer {
 
     drawAxes();
 
-    catchGLError();
-
     gl.glFlush();
+    
+    queryForErrors();
   }
 
   @Override
@@ -190,8 +191,8 @@ public class Renderer implements GLEventListener, Observer {
     switch (particleSystemID) {
       case 1:
         keyListener.removeObserver(fireSystem);
-        positions[0] = new Vertex(2.5f, 1.7f, -6.8f);
-        positions[1] = new Vertex(10.0f, 1.7f, -6.8f);
+        positions[0] = new Vertex(2.5f, 1.7f, -4.4f);
+        positions[1] = new Vertex(10.0f, 1.7f, -4.4f);
         positions[2] = cameraPosition;
         fireSystem = new SprayedSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 2.0f);
         initParticleSystem(fireSystem);
@@ -232,9 +233,9 @@ public class Renderer implements GLEventListener, Observer {
     float firstLightPosition[] = {20f, 20f, 20f, 1f};
     float secondLightPosition[] = {20f, 20f, -20f, 1f};
 
-    float lightDiffuse[] = {1.0f, 1.0f, 1.0f, 1.0f};
-    float lightSpecular[] = {1.0f, 1.0f, 1.0f, 1.0f};
-    float lightAmbient[] = {0.6f, 0.6f, 0.6f, 1.0f};
+    float lightDiffuse[] = {1.0f, 1.0f, 1.0f, 0.6f};
+    float lightSpecular[] = {1.0f, 1.0f, 1.0f, 1.6f};
+    float lightAmbient[] = {0.6f, 0.6f, 0.6f, 0.6f};
 
     gl.glLightfv(GL_LIGHT0, GL_POSITION, firstLightPosition, 0);
     gl.glLightfv(GL_LIGHT0, GL_DIFFUSE, lightDiffuse, 0);
@@ -250,17 +251,16 @@ public class Renderer implements GLEventListener, Observer {
     gl.glEnable(GL_LIGHT0);
     // gl.glEnable(GL_LIGHT1);
   }
-
-  private void catchGLError() {
-    int errCode;
-    String errString;
-
-    while ((errCode = gl.glGetError()) != GL_NO_ERROR) {
-      errString = glu.gluErrorString(errCode);
-      System.err.println("OpenGL Error:" + errString);
+  
+  private void queryForErrors() {
+    int errorCode;
+    String errorString = null;
+    while ((errorCode = gl.glGetError()) != GL_NO_ERROR) {
+      errorString = glu.gluErrorString(errorCode);
+      System.out.println("OpenGL Error: " + errorString);
     }
   }
-
+  
   private void drawAxes() {
     gl.glDisable(GL.GL_BLEND);
 
@@ -285,7 +285,7 @@ public class Renderer implements GLEventListener, Observer {
     fireSystem.setParticlesPerSpawn(10);
     fireSystem.setParticleRadius(0.2f);
     fireSystem.setFadeUnit(0.007f);
-    fireSystem.setDirectionVectorScalar(150f);
+    fireSystem.setScalar(150f);
 
     keyListener.registerObserver(fireSystem);
   }
