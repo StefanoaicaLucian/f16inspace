@@ -33,7 +33,7 @@ public class GraphicObjectBuilder {
 
   public GraphicObjectBuilder(GL2 gl) {
     this.gl = gl;
-    textureParser = new TextureReader(gl, "textures/");
+    textureParser = new TextureReader(gl);
   }
 
   public JetPlane buildJetPlane() {
