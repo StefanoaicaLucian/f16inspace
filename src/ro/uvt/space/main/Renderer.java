@@ -1,7 +1,32 @@
 
 package ro.uvt.space.main;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import javax.media.opengl.GL2;
+import javax.media.opengl.GLAutoDrawable;
+import javax.media.opengl.GLEventListener;
+import javax.media.opengl.glu.GLU;
+import ro.uvt.api.systems.CylindricalSystem;
+import ro.uvt.api.systems.FountainSystem;
+import ro.uvt.api.systems.ParticleSystem;
+import ro.uvt.api.systems.ReversedSystem;
+import ro.uvt.api.systems.SprayedSystem;
+import ro.uvt.api.util.MaterialProperties;
+import ro.uvt.api.util.Observer;
+import ro.uvt.api.util.Subject;
+import ro.uvt.api.util.Vertex;
+import ro.uvt.gol.GOL;
+import ro.uvt.gol.GraphicObject;
+
+import com.jogamp.opengl.util.FPSAnimator;
+import com.jogamp.opengl.util.texture.Texture;
+
 import static javax.media.opengl.GL.GL_BACK;
+import static javax.media.opengl.GL.GL_BLEND;
 import static javax.media.opengl.GL.GL_COLOR_BUFFER_BIT;
 import static javax.media.opengl.GL.GL_CULL_FACE;
 import static javax.media.opengl.GL.GL_DEPTH_BUFFER_BIT;
@@ -27,47 +52,26 @@ import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_SPECULAR;
 import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
 import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import javax.media.opengl.GL;
-import javax.media.opengl.GL2;
-import javax.media.opengl.GLAutoDrawable;
-import javax.media.opengl.GLEventListener;
-import javax.media.opengl.glu.GLU;
-
-import ro.uvt.api.systems.CylindricalSystem;
-import ro.uvt.api.systems.FountainSystem;
-import ro.uvt.api.systems.ParticleSystem;
-import ro.uvt.api.systems.ReversedSystem;
-import ro.uvt.api.systems.SprayedSystem;
-import ro.uvt.api.util.MaterialProperties;
-import ro.uvt.api.util.Observer;
-import ro.uvt.api.util.Subject;
-import ro.uvt.api.util.Vertex;
-import ro.uvt.space.build.GraphicObjectBuilder;
-import ro.uvt.space.graphic_objects.GraphicObject;
-import ro.uvt.space.util.TextureReader;
-
-import com.jogamp.opengl.util.texture.Texture;
-
-public class Renderer implements GLEventListener, Observer {
+public class Renderer extends WindowAdapter implements GLEventListener, Observer {
 
   private GLU glu;
   private GL2 gl;
   private Vertex cameraPosition;
   private Vertex targetPosition;
-  private List<GraphicObject> objects = new ArrayList<>();
   private ParticleSystem fireSystem;
   private KeyboardListener keyListener = new KeyboardListener();
   private MaterialProperties particleSystemMaterial;
   private Texture particleSystemTexture;
+  private FPSAnimator animator;
 
-  public Renderer() {
+  private GOL gol;
+  private List<GraphicObject> jetPlane = new ArrayList<GraphicObject>();
+  private GraphicObject floor;
+
+  public Renderer(FPSAnimator animator) {
+    this.animator = animator;
     cameraPosition = (Vertex) keyListener.getState().get("camera_position");
     targetPosition = (Vertex) keyListener.getState().get("target_position");
-
     keyListener.registerObserver(this);
   }
 
@@ -76,8 +80,8 @@ public class Renderer implements GLEventListener, Observer {
     System.out.println("OpenGL version: " + drawable.getGL().glGetString(GL_VERSION));
 
     gl = drawable.getGL().getGL2();
-
     glu = new GLU();
+    gol = new GOL(gl, "objFiles/", "mtlFiles/", "textureFiles/");
 
     gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
@@ -102,13 +106,14 @@ public class Renderer implements GLEventListener, Observer {
 
     lightTheWay();
 
-    GraphicObjectBuilder objectBuilder = new GraphicObjectBuilder(gl);
+    jetPlane.add(gol.golLoad("bodyMat.obj", "camo.png"));
+    jetPlane.add(gol.golLoad("bombsMat.obj", "metal.png"));
+    jetPlane.add(gol.golLoad("glassMat.obj", "glass.png"));
 
-    objects.add(objectBuilder.buildJetPlane());
-    objects.add(objectBuilder.buildFloor());
+    floor = gol.golLoad("floor.obj", "floor.png");
 
     // no need to use a new texture for each particle... just use the same for all... or maybe that will be an interesting effect.
-    particleSystemTexture = new TextureReader(gl).readTexture("particle.png", ".png");
+    particleSystemTexture = gol.readTexture("particle.png");
 
     float[] ambient = {0.3f, 0.1f, 0.5f, 1.0f};
     float[] diffuse = {0.3f, 0.1f, 0.5f, 1.0f};
@@ -158,15 +163,27 @@ public class Renderer implements GLEventListener, Observer {
                   1.0f,
                   0.0f);
 
-    for (GraphicObject obj : objects) {
-      obj.draw();
+    gl.glDisable(GL_BLEND);
+
+    gl.glPushMatrix();
+    gl.glTranslatef(-3.0f, -2.0f, -2.5f);
+    gl.glRotatef(270f, 0.0f, 1.0f, 0.0f);
+    for (GraphicObject obj : jetPlane) {
+      gol.golDraw(obj);
     }
+    gl.glPopMatrix();
+
+    gl.glPushMatrix();
+    gl.glRotated(0.5f, 0.0f, 1.0f, 0.0f);
+    gl.glTranslatef(0.0f, -1.0f, 0.0f);
+    gol.golDraw(floor);
+    gl.glPopMatrix();
 
     fireSystem.draw();
 
-    drawAxes();
+    // drawAxes();
 
-    gl.glFlush();
+    // gl.glFlush();
 
     queryForErrors();
   }
@@ -261,25 +278,25 @@ public class Renderer implements GLEventListener, Observer {
     }
   }
 
-  private void drawAxes() {
-    gl.glDisable(GL.GL_BLEND);
-
-    gl.glPushMatrix();
-
-    gl.glBegin(GL.GL_LINES);
-
-    gl.glVertex3f(-20f, 0.0f, 0.0f);
-    gl.glVertex3f(20.0f, 0.0f, 0.0f);
-
-    gl.glVertex3f(0.0f, -20.0f, 0.0f);
-    gl.glVertex3f(0.0f, 20.0f, 0.0f);
-
-    gl.glVertex3f(0.0f, 0.0f, -20.0f);
-    gl.glVertex3f(0.0f, 0.0f, 20.0f);
-
-    gl.glEnd();
-    gl.glPopMatrix();
-  }
+  //  private void drawAxes() {
+  //    gl.glDisable(GL.GL_BLEND);
+  //
+  //    gl.glPushMatrix();
+  //
+  //    gl.glBegin(GL.GL_LINES);
+  //
+  //    gl.glVertex3f(-20f, 0.0f, 0.0f);
+  //    gl.glVertex3f(20.0f, 0.0f, 0.0f);
+  //
+  //    gl.glVertex3f(0.0f, -20.0f, 0.0f);
+  //    gl.glVertex3f(0.0f, 20.0f, 0.0f);
+  //
+  //    gl.glVertex3f(0.0f, 0.0f, -20.0f);
+  //    gl.glVertex3f(0.0f, 0.0f, 20.0f);
+  //
+  //    gl.glEnd();
+  //    gl.glPopMatrix();
+  //  }
 
   private void initParticleSystem(ParticleSystem system) {
     fireSystem.setParticlesPerSpawn(10);
@@ -288,5 +305,17 @@ public class Renderer implements GLEventListener, Observer {
     fireSystem.setScalar(150f);
 
     keyListener.registerObserver(fireSystem);
+  }
+
+  @Override
+  public void windowClosing(WindowEvent e) {
+    Thread thread = new Thread() {
+
+      public void run() {
+        animator.stop();
+        System.exit(0);
+      }
+    };
+    thread.start();
   }
 }
