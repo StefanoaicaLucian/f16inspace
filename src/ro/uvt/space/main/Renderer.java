@@ -15,7 +15,7 @@ import ro.uvt.api.systems.FountainSystem;
 import ro.uvt.api.systems.ParticleSystem;
 import ro.uvt.api.systems.ReversedSystem;
 import ro.uvt.api.systems.SprayedSystem;
-import ro.uvt.api.util.MaterialProperties;
+import ro.uvt.api.util.Material;
 import ro.uvt.api.util.Observer;
 import ro.uvt.api.util.Subject;
 import ro.uvt.api.util.Vertex;
@@ -60,7 +60,7 @@ public class Renderer extends WindowAdapter implements GLEventListener, Observer
   private Vertex targetPosition;
   private ParticleSystem fireSystem;
   private KeyboardListener keyListener = new KeyboardListener();
-  private MaterialProperties particleSystemMaterial;
+  private Material particleSystemMaterial;
   private Texture particleSystemTexture;
   private FPSAnimator animator;
 
@@ -120,7 +120,7 @@ public class Renderer extends WindowAdapter implements GLEventListener, Observer
     float[] specular = {0.3f, 0.1f, 0.5f, 1.0f};
     float[] shine = {100.0f};
 
-    particleSystemMaterial = new MaterialProperties(ambient, diffuse, specular, shine);
+    particleSystemMaterial = new Material(ambient, diffuse, specular, shine);
 
     keyListener.registerRenderer(this);
 
@@ -217,10 +217,10 @@ public class Renderer extends WindowAdapter implements GLEventListener, Observer
 
       case 2:
         keyListener.removeObserver(fireSystem);
-        positions[0] = new Vertex(2.5f, 1.7f, 0.0f);
-        positions[1] = new Vertex(10.0f, 1.7f, 0.0f);
+        positions[0] = new Vertex(2.5f, 1.7f, -4.4f);
+        positions[1] = new Vertex(10.0f, 1.7f, -4.4f);
         positions[2] = cameraPosition;
-        fireSystem = new CylindricalSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 1f);
+        fireSystem = new CylindricalSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 1.0f);
         initParticleSystem(fireSystem);
         break;
 
@@ -230,17 +230,17 @@ public class Renderer extends WindowAdapter implements GLEventListener, Observer
         positions[1] = new Vertex(2.0f, 27.0f, 0.0f);
         positions[2] = cameraPosition;
         fireSystem = new FountainSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 5.0f);
-        ((FountainSystem) fireSystem).setGravityVector(new Vertex(0.0f, -0.0024f, 0.0f));
+        fireSystem.setGravityVector(new Vertex(0.0f, -0.0024f, 0.0f));
         initParticleSystem(fireSystem);
         // the fountain particles will start off a lot smaller than the others
         break;
 
       case 4:
         keyListener.removeObserver(fireSystem);
-        positions[0] = new Vertex(2.5f, 1.7f, 0.0f);
-        positions[1] = new Vertex(10.0f, 1.7f, 0.0f);
+        positions[0] = new Vertex(2.5f, 1.7f, -4.4f);
+        positions[1] = new Vertex(10.0f, 1.7f, -4.4f);
         positions[2] = cameraPosition;
-        fireSystem = new ReversedSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 2.0f);
+        fireSystem = new ReversedSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 1.0f);
         initParticleSystem(fireSystem);
         break;
     }
