@@ -229,10 +229,9 @@ public class Renderer extends WindowAdapter implements GLEventListener, Observer
         positions[0] = new Vertex(2.0f, 1.0f, 0.0f);
         positions[1] = new Vertex(2.0f, 27.0f, 0.0f);
         positions[2] = cameraPosition;
-        fireSystem = new FountainSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 5.0f);
-        fireSystem.setGravityVector(new Vertex(0.0f, -0.0024f, 0.0f));
+        fireSystem = new FountainSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 3.0f);
+        fireSystem.setGravityVector(new Vertex(0.0f, -0.0030f, 0.0f));
         initParticleSystem(fireSystem);
-        // the fountain particles will start off a lot smaller than the others
         break;
 
       case 4:
