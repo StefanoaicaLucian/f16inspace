@@ -1,7 +1,14 @@
 
 package ro.uvt.space.main;
 
-import static java.awt.event.KeyEvent.*;
+import static java.awt.event.KeyEvent.VK_1;
+import static java.awt.event.KeyEvent.VK_2;
+import static java.awt.event.KeyEvent.VK_3;
+import static java.awt.event.KeyEvent.VK_4;
+import static java.awt.event.KeyEvent.VK_DOWN;
+import static java.awt.event.KeyEvent.VK_LEFT;
+import static java.awt.event.KeyEvent.VK_RIGHT;
+import static java.awt.event.KeyEvent.VK_UP;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -10,17 +17,15 @@ import java.util.HashMap;
 import java.util.List;
 
 import ro.uvt.api.util.Vertex;
-import ro.uvt.api.util.Observer;
-import ro.uvt.api.util.Subject;
 
 public class KeyboardListener implements KeyListener, Subject {
 
   private Vertex cameraPosition = new Vertex(0.0f, 1.0f, 0.0f);
   private Vertex targetPosition = new Vertex(0.0f, 1.0f, -1.0f);
-  private double cameraAngle;
+  private float cameraAngle;
 
-  private double angleStep = 0.1f;
-  private double fraction = 0.1f;
+  private float angleStep = 0.1f;
+  private float fraction = 0.1f;
 
   private List<Observer> observers = new ArrayList<>();
 
@@ -58,22 +63,22 @@ public class KeyboardListener implements KeyListener, Subject {
         break;
 
       case VK_1:
-        associatedRenderer.changeParticleSystem(1);
+        associatedRenderer.changeParticleEffect(1);
         notifyObservers();
         break;
 
       case VK_2:
-        associatedRenderer.changeParticleSystem(2);
+        associatedRenderer.changeParticleEffect(2);
         notifyObservers();
         break;
 
       case VK_3:
-        associatedRenderer.changeParticleSystem(3);
+        associatedRenderer.changeParticleEffect(3);
         notifyObservers();
         break;
 
       case VK_4:
-        associatedRenderer.changeParticleSystem(4);
+        associatedRenderer.changeParticleEffect(4);
         notifyObservers();
         break;
     }

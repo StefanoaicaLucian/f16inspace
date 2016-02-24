@@ -1,30 +1,6 @@
 
 package ro.uvt.space.main;
 
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import javax.media.opengl.GL2;
-import javax.media.opengl.GLAutoDrawable;
-import javax.media.opengl.GLEventListener;
-import javax.media.opengl.glu.GLU;
-import ro.uvt.api.systems.CylindricalSystem;
-import ro.uvt.api.systems.FountainSystem;
-import ro.uvt.api.systems.ParticleSystem;
-import ro.uvt.api.systems.ReversedSystem;
-import ro.uvt.api.systems.SprayedSystem;
-import ro.uvt.api.util.Material;
-import ro.uvt.api.util.Observer;
-import ro.uvt.api.util.Subject;
-import ro.uvt.api.util.Vertex;
-import ro.uvt.gol.GOL;
-import ro.uvt.gol.GraphicObject;
-
-import com.jogamp.opengl.util.FPSAnimator;
-import com.jogamp.opengl.util.texture.Texture;
-
 import static javax.media.opengl.GL.GL_BACK;
 import static javax.media.opengl.GL.GL_BLEND;
 import static javax.media.opengl.GL.GL_COLOR_BUFFER_BIT;
@@ -38,7 +14,6 @@ import static javax.media.opengl.GL.GL_NICEST;
 import static javax.media.opengl.GL.GL_NO_ERROR;
 import static javax.media.opengl.GL.GL_ONE;
 import static javax.media.opengl.GL.GL_SRC_ALPHA;
-import static javax.media.opengl.GL.GL_VERSION;
 import static javax.media.opengl.GL2ES1.GL_PERSPECTIVE_CORRECTION_HINT;
 import static javax.media.opengl.GL2ES1.GL_POINT_SMOOTH_HINT;
 import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_AMBIENT;
@@ -52,21 +27,42 @@ import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_SPECULAR;
 import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
 import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import javax.media.opengl.GL2;
+import javax.media.opengl.GLAutoDrawable;
+import javax.media.opengl.GLEventListener;
+import javax.media.opengl.glu.GLU;
+
+import ro.uvt.api.util.Material;
+import ro.uvt.api.util.Vertex;
+import ro.uvt.gol.GOL;
+import ro.uvt.gol.GraphicObject;
+import ro.uvt.pel.PEL;
+
+import com.jogamp.opengl.util.FPSAnimator;
+import com.jogamp.opengl.util.texture.Texture;
+
 public class Renderer extends WindowAdapter implements GLEventListener, Observer {
 
   private GLU glu;
   private GL2 gl;
   private Vertex cameraPosition;
   private Vertex targetPosition;
-  private ParticleSystem fireSystem;
   private KeyboardListener keyListener = new KeyboardListener();
   private Material particleSystemMaterial;
   private Texture particleSystemTexture;
   private FPSAnimator animator;
-
   private GOL gol;
+  private PEL pel;
   private List<GraphicObject> jetPlane = new ArrayList<GraphicObject>();
   private GraphicObject floor;
+  private float cameraAngle;
+  private int particleSystemIndex;
 
   public Renderer(FPSAnimator animator) {
     this.animator = animator;
@@ -77,8 +73,6 @@ public class Renderer extends WindowAdapter implements GLEventListener, Observer
 
   @Override
   public void init(GLAutoDrawable drawable) {
-    System.out.println("OpenGL version: " + drawable.getGL().glGetString(GL_VERSION));
-
     gl = drawable.getGL().getGL2();
     glu = new GLU();
     gol = new GOL(gl, "objFiles/", "mtlFiles/", "textureFiles/");
@@ -112,6 +106,8 @@ public class Renderer extends WindowAdapter implements GLEventListener, Observer
 
     floor = gol.golLoad("floor.obj", "floor.png");
 
+    pel = new PEL();
+
     // no need to use a new texture for each particle... just use the same for all... or maybe that will be an interesting effect.
     particleSystemTexture = gol.readTexture("particle.png");
 
@@ -123,11 +119,6 @@ public class Renderer extends WindowAdapter implements GLEventListener, Observer
     particleSystemMaterial = new Material(ambient, diffuse, specular, shine);
 
     keyListener.registerRenderer(this);
-
-    Vertex[] positions = {new Vertex(2.5f, 1.7f, -4.4f), new Vertex(10.0f, 1.7f, -4.4f), cameraPosition};
-
-    fireSystem = new SprayedSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 2.0f);
-    initParticleSystem(fireSystem);
   }
 
   @Override
@@ -179,11 +170,8 @@ public class Renderer extends WindowAdapter implements GLEventListener, Observer
     gol.golDraw(floor);
     gl.glPopMatrix();
 
-    fireSystem.draw();
-
-    // drawAxes();
-
-    // gl.glFlush();
+    // fireSystem.draw();
+    drawSystem();
 
     queryForErrors();
   }
@@ -197,52 +185,15 @@ public class Renderer extends WindowAdapter implements GLEventListener, Observer
     Map<String, Object> subjectState = toObserve.getState();
     cameraPosition = (Vertex) subjectState.get("camera_position");
     targetPosition = (Vertex) subjectState.get("target_position");
+    cameraAngle = (float) subjectState.get("camera_angle");
   }
 
   public KeyboardListener getKeyListener() {
     return keyListener;
   }
 
-  public void changeParticleSystem(int particleSystemID) {
-    Vertex[] positions = new Vertex[3];
-    switch (particleSystemID) {
-      case 1:
-        keyListener.removeObserver(fireSystem);
-        positions[0] = new Vertex(2.5f, 1.7f, -4.4f);
-        positions[1] = new Vertex(10.0f, 1.7f, -4.4f);
-        positions[2] = cameraPosition;
-        fireSystem = new SprayedSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 2.0f);
-        initParticleSystem(fireSystem);
-        break;
-
-      case 2:
-        keyListener.removeObserver(fireSystem);
-        positions[0] = new Vertex(2.5f, 1.7f, -4.4f);
-        positions[1] = new Vertex(10.0f, 1.7f, -4.4f);
-        positions[2] = cameraPosition;
-        fireSystem = new CylindricalSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 1.0f);
-        initParticleSystem(fireSystem);
-        break;
-
-      case 3:
-        keyListener.removeObserver(fireSystem);
-        positions[0] = new Vertex(2.0f, 1.0f, 0.0f);
-        positions[1] = new Vertex(2.0f, 27.0f, 0.0f);
-        positions[2] = cameraPosition;
-        fireSystem = new FountainSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 3.0f);
-        fireSystem.setGravityVector(new Vertex(0.0f, -0.0030f, 0.0f));
-        initParticleSystem(fireSystem);
-        break;
-
-      case 4:
-        keyListener.removeObserver(fireSystem);
-        positions[0] = new Vertex(2.5f, 1.7f, -4.4f);
-        positions[1] = new Vertex(10.0f, 1.7f, -4.4f);
-        positions[2] = cameraPosition;
-        fireSystem = new ReversedSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 1.0f);
-        initParticleSystem(fireSystem);
-        break;
-    }
+  public void changeParticleEffect(int particleSystemID) {
+    particleSystemIndex = particleSystemID;
   }
 
   public void lightTheWay() {
@@ -277,35 +228,6 @@ public class Renderer extends WindowAdapter implements GLEventListener, Observer
     }
   }
 
-  //  private void drawAxes() {
-  //    gl.glDisable(GL.GL_BLEND);
-  //
-  //    gl.glPushMatrix();
-  //
-  //    gl.glBegin(GL.GL_LINES);
-  //
-  //    gl.glVertex3f(-20f, 0.0f, 0.0f);
-  //    gl.glVertex3f(20.0f, 0.0f, 0.0f);
-  //
-  //    gl.glVertex3f(0.0f, -20.0f, 0.0f);
-  //    gl.glVertex3f(0.0f, 20.0f, 0.0f);
-  //
-  //    gl.glVertex3f(0.0f, 0.0f, -20.0f);
-  //    gl.glVertex3f(0.0f, 0.0f, 20.0f);
-  //
-  //    gl.glEnd();
-  //    gl.glPopMatrix();
-  //  }
-
-  private void initParticleSystem(ParticleSystem system) {
-    fireSystem.setParticlesPerSpawn(10);
-    fireSystem.setParticleRadius(0.2f);
-    fireSystem.setFadeUnit(0.007f);
-    fireSystem.setScalar(150f);
-
-    keyListener.registerObserver(fireSystem);
-  }
-
   @Override
   public void windowClosing(WindowEvent e) {
     Thread thread = new Thread() {
@@ -316,5 +238,36 @@ public class Renderer extends WindowAdapter implements GLEventListener, Observer
       }
     };
     thread.start();
+  }
+
+  private void drawSystem() {
+    Vertex[] positions = new Vertex[3];
+    switch (particleSystemIndex) {
+      case 1:
+        positions[0] = new Vertex(2.5f, 1.7f, -4.4f);
+        positions[1] = new Vertex(10.0f, 1.7f, -4.4f);
+        pel.pelDrawSprayedSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 2.0f, 10, 0.2f, 0.007f, 150f, cameraAngle);
+        break;
+
+      case 2:
+        positions[0] = new Vertex(2.5f, 1.7f, -4.4f);
+        positions[1] = new Vertex(10.0f, 1.7f, -4.4f);
+        pel.pelDrawCylindricalSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 4.0f, 10, 0.2f, 0.007f, 150f, cameraAngle);
+        break;
+
+      case 3:
+        positions[0] = new Vertex(2.0f, 1.0f, 0.0f);
+        positions[1] = new Vertex(2.0f, 27.0f, 0.0f);
+        pel.pelDrawFountainSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 2.0f, 10, 0.2f, 0.007f, 150f, cameraAngle, new Vertex(0.0f,
+                                                                                                                                                      -0.0025f,
+                                                                                                                                                      0.0f));
+        break;
+
+      case 4:
+        positions[0] = new Vertex(2.5f, 1.7f, -4.4f);
+        positions[1] = new Vertex(10.0f, 1.7f, -4.4f);
+        pel.pelDrawReversedSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 2.0f, 10, 0.2f, 0.007f, 150f, cameraAngle);
+        break;
+    }
   }
 }
