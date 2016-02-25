@@ -241,7 +241,7 @@ public class Renderer extends WindowAdapter implements GLEventListener, Observer
   }
 
   private void drawSystem() {
-    Vertex[] positions = new Vertex[3];
+    Vertex[] positions = new Vertex[2];
     switch (particleSystemIndex) {
       case 1:
         positions[0] = new Vertex(2.5f, 1.7f, -4.4f);
@@ -251,23 +251,24 @@ public class Renderer extends WindowAdapter implements GLEventListener, Observer
 
       case 2:
         positions[0] = new Vertex(2.5f, 1.7f, -4.4f);
-        positions[1] = new Vertex(10.0f, 1.7f, -4.4f);
-        pel.pelDrawCylindricalSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 4.0f, 10, 0.2f, 0.007f, 150f, cameraAngle);
+        positions[1] = new Vertex(7.0f, 1.7f, -4.4f);
+        pel.pelDrawCylindricalSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 0.2f, 10, 0.2f, 0.007f, 150f, cameraAngle);
         break;
 
       case 3:
+        positions[0] = new Vertex(2.5f, 1.7f, -4.4f);
+        positions[1] = new Vertex(7.0f, 1.7f, -4.4f);
+        pel.pelDrawReversedSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 0.2f, 10, 0.2f, 0.007f, 150f, cameraAngle);
+        break;
+
+      case 4:
         positions[0] = new Vertex(2.0f, 1.0f, 0.0f);
-        positions[1] = new Vertex(2.0f, 27.0f, 0.0f);
-        pel.pelDrawFountainSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 2.0f, 10, 0.2f, 0.007f, 150f, cameraAngle, new Vertex(0.0f,
+        positions[1] = new Vertex(2.0f, 15.0f, 0.0f);
+        pel.pelDrawFountainSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 5.0f, 10, 0.2f, 0.007f, 150f, cameraAngle, new Vertex(0.0f,
                                                                                                                                                       -0.0025f,
                                                                                                                                                       0.0f));
         break;
 
-      case 4:
-        positions[0] = new Vertex(2.5f, 1.7f, -4.4f);
-        positions[1] = new Vertex(10.0f, 1.7f, -4.4f);
-        pel.pelDrawReversedSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 2.0f, 10, 0.2f, 0.007f, 150f, cameraAngle);
-        break;
     }
   }
 }
