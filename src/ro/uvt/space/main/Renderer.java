@@ -2,18 +2,14 @@
 package ro.uvt.space.main;
 
 import static javax.media.opengl.GL.GL_BACK;
-import static javax.media.opengl.GL.GL_BLEND;
 import static javax.media.opengl.GL.GL_COLOR_BUFFER_BIT;
 import static javax.media.opengl.GL.GL_CULL_FACE;
 import static javax.media.opengl.GL.GL_DEPTH_BUFFER_BIT;
 import static javax.media.opengl.GL.GL_DEPTH_TEST;
-import static javax.media.opengl.GL.GL_FUNC_ADD;
 import static javax.media.opengl.GL.GL_LEQUAL;
 import static javax.media.opengl.GL.GL_LINE_SMOOTH;
 import static javax.media.opengl.GL.GL_NICEST;
 import static javax.media.opengl.GL.GL_NO_ERROR;
-import static javax.media.opengl.GL.GL_ONE;
-import static javax.media.opengl.GL.GL_SRC_ALPHA;
 import static javax.media.opengl.GL2ES1.GL_PERSPECTIVE_CORRECTION_HINT;
 import static javax.media.opengl.GL2ES1.GL_POINT_SMOOTH_HINT;
 import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_AMBIENT;
@@ -91,10 +87,7 @@ public class Renderer extends WindowAdapter implements GLEventListener, Observer
 
     gl.glShadeModel(GL_SMOOTH);
 
-    gl.glBlendEquation(GL_FUNC_ADD); // it is GL_FUNC_ADD by default...
     // to make it back the way it was set to GL_ONE
-
-    gl.glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 
     gl.glEnable(GL_LINE_SMOOTH);
 
@@ -106,7 +99,7 @@ public class Renderer extends WindowAdapter implements GLEventListener, Observer
 
     floor = gol.golLoad("floor.obj", "floor.png");
 
-    pel = new PEL();
+    pel = new PEL(gl);
 
     // no need to use a new texture for each particle... just use the same for all... or maybe that will be an interesting effect.
     particleSystemTexture = gol.readTexture("particle.png");
@@ -154,8 +147,6 @@ public class Renderer extends WindowAdapter implements GLEventListener, Observer
                   1.0f,
                   0.0f);
 
-    gl.glDisable(GL_BLEND);
-
     gl.glPushMatrix();
     gl.glTranslatef(-3.0f, -2.0f, -2.5f);
     gl.glRotatef(270f, 0.0f, 1.0f, 0.0f);
@@ -165,12 +156,9 @@ public class Renderer extends WindowAdapter implements GLEventListener, Observer
     gl.glPopMatrix();
 
     gl.glPushMatrix();
-    gl.glRotated(0.5f, 0.0f, 1.0f, 0.0f);
-    gl.glTranslatef(0.0f, -1.0f, 0.0f);
     gol.golDraw(floor);
     gl.glPopMatrix();
 
-    // fireSystem.draw();
     drawSystem();
 
     queryForErrors();
@@ -246,29 +234,28 @@ public class Renderer extends WindowAdapter implements GLEventListener, Observer
       case 1:
         positions[0] = new Vertex(2.5f, 1.7f, -4.4f);
         positions[1] = new Vertex(10.0f, 1.7f, -4.4f);
-        pel.pelDrawSprayedSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 2.0f, 10, 0.2f, 0.007f, 150f, cameraAngle);
+        pel.pelDrawSprayedSystem(positions, particleSystemTexture, particleSystemMaterial, 2.0f, 10, 0.2f, 0.007f, 150f, cameraAngle);
         break;
 
       case 2:
         positions[0] = new Vertex(2.5f, 1.7f, -4.4f);
         positions[1] = new Vertex(7.0f, 1.7f, -4.4f);
-        pel.pelDrawCylindricalSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 0.2f, 10, 0.2f, 0.007f, 150f, cameraAngle);
+        pel.pelDrawCylindricalSystem(positions, particleSystemTexture, particleSystemMaterial, 0.2f, 10, 0.2f, 0.007f, 150f, cameraAngle);
         break;
 
       case 3:
         positions[0] = new Vertex(2.5f, 1.7f, -4.4f);
         positions[1] = new Vertex(7.0f, 1.7f, -4.4f);
-        pel.pelDrawReversedSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 0.2f, 10, 0.2f, 0.007f, 150f, cameraAngle);
+        pel.pelDrawReversedSystem(positions, particleSystemTexture, particleSystemMaterial, 0.2f, 10, 0.2f, 0.007f, 150f, cameraAngle);
         break;
 
       case 4:
         positions[0] = new Vertex(2.0f, 1.0f, 0.0f);
         positions[1] = new Vertex(2.0f, 15.0f, 0.0f);
-        pel.pelDrawFountainSystem(gl, positions, particleSystemTexture, particleSystemMaterial, 5.0f, 10, 0.2f, 0.007f, 150f, cameraAngle, new Vertex(0.0f,
-                                                                                                                                                      -0.0025f,
-                                                                                                                                                      0.0f));
+        pel.pelDrawFountainSystem(positions, particleSystemTexture, particleSystemMaterial, 5.0f, 10, 0.2f, 0.007f, 150f, cameraAngle, new Vertex(0.0f,
+                                                                                                                                                  -0.0025f,
+                                                                                                                                                  0.0f));
         break;
-
     }
   }
 }
