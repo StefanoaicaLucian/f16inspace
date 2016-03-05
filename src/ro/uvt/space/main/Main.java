@@ -30,8 +30,6 @@ public class Main {
 	frame.addWindowListener(renderer);
 	frame.setUndecorated(true);
 	frame.setExtendedState(Frame.MAXIMIZED_BOTH);
-
-	// frame.setSize(800, 800);
 	frame.setVisible(true);
 	animator.start();
     }
