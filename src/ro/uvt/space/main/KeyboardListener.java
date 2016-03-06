@@ -6,6 +6,7 @@ import static java.awt.event.KeyEvent.VK_3;
 import static java.awt.event.KeyEvent.VK_4;
 import static java.awt.event.KeyEvent.VK_5;
 import static java.awt.event.KeyEvent.VK_6;
+import static java.awt.event.KeyEvent.VK_7;
 import static java.awt.event.KeyEvent.VK_DOWN;
 import static java.awt.event.KeyEvent.VK_LEFT;
 import static java.awt.event.KeyEvent.VK_RIGHT;
@@ -102,6 +103,11 @@ public class KeyboardListener implements KeyListener, Subject {
 
 	case VK_6:
 	    associatedRenderer.changeParticleEffect(6);
+	    notifyObservers();
+	    break;
+
+	case VK_7:
+	    associatedRenderer.changeParticleEffect(7);
 	    notifyObservers();
 	    break;
 
