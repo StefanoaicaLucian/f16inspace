@@ -279,10 +279,10 @@ public class Renderer extends WindowAdapter implements GLEventListener,
 	    break;
 
 	case 6:
-	    positions[0] = new Vertex(0.0f, 0.0f, 0.0f);
-	    positions[1] = new Vertex(0.0f, 3.0f, 0.0f);
+	    positions[0] = new Vertex(0.0f, 0.2f, 0.0f);
+	    positions[1] = new Vertex(0.0f, 0.0f, 0.0f);
 	    pel.pelDrawCircleSystem(positions, particleSystemTexture,
-		    particleSystemMaterial, 8, 50, 0.2f, 0.015f, 150f,
+		    particleSystemMaterial, 8, 75, 0.2f, 0.015f, 150f,
 		    cameraAngle, new Vertex(0.0f, 0.0025f, 0.0f));
 	    break;
 	}
