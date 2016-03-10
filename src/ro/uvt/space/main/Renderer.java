@@ -110,7 +110,7 @@ public class Renderer extends WindowAdapter implements GLEventListener,
 
 	// no need to use a new texture for each particle... just use the same
 	// for all... or maybe that will be an interesting effect.
-	particleSystemTexture = gol.readTexture("particle.png");
+	particleSystemTexture = gol.readTexture("star.png");
 
 	float[] ambient = { 0.3f, 0.1f, 0.5f, 1.0f };
 	float[] diffuse = { 0.3f, 0.1f, 0.5f, 1.0f };
@@ -165,8 +165,6 @@ public class Renderer extends WindowAdapter implements GLEventListener,
 	gl.glPopMatrix();
 
 	drawSystem();
-
-	// drawCircle();
 
 	queryForErrors();
     }
@@ -299,8 +297,17 @@ public class Renderer extends WindowAdapter implements GLEventListener,
 	    positions[1] = new Vertex(0.0f, 5.0f, 0.0f);
 	    pel.pelDrawFireworksSystem(positions, particleSystemTexture,
 		    particleSystemMaterial, 8, 1000, 0.2f, 0.015f, 150f,
-		    cameraAngle, new Vertex(0.0f, -0.001f, 0.0f));
+		    cameraAngle, new Vertex(0.0f, -0.0025f, 0.0f));
 	    break;
+
+	case 9:
+	    positions[0] = new Vertex(0.0f, 5.0f, 0.0f);
+	    positions[1] = new Vertex(0.0f, 5.0f, 0.0f);
+	    pel.pelDrawAtomicSystem(positions, particleSystemTexture,
+		    particleSystemMaterial, 8, 1000, 0.2f, 0.015f, 150f,
+		    cameraAngle, new Vertex(0.0f, 0.0f, 0.0f));
+	    break;
+
 	}
     }
 }
