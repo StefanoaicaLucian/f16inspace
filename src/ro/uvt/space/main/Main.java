@@ -28,8 +28,11 @@ public class Main {
     JFrame frame = new JFrame("F16 In Space");
     frame.getContentPane().add(canvas);
     frame.addWindowListener(renderer);
-    frame.setUndecorated(true);
-    frame.setExtendedState(Frame.MAXIMIZED_BOTH);
+    // frame.setUndecorated(true);
+    // frame.setExtendedState(Frame.MAXIMIZED_BOTH);
+
+    frame.setSize(790, 550);
+
     frame.setVisible(true);
     animator.start();
   }

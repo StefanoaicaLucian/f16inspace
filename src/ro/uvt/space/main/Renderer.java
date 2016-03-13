@@ -36,11 +36,11 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
 
-import ro.uvt.api.util.Material;
-import ro.uvt.api.util.Vertex;
 import ro.uvt.gol.GOL;
 import ro.uvt.gol.GraphicObject;
 import ro.uvt.pel.PEL;
+import ro.uvt.pel.util.Material;
+import ro.uvt.pel.util.Vertex;
 
 import com.jogamp.opengl.util.FPSAnimator;
 import com.jogamp.opengl.util.texture.Texture;
@@ -109,7 +109,7 @@ public class Renderer extends WindowAdapter implements GLEventListener, Observer
 
     // no need to use a new texture for each particle... just use the same
     // for all... or maybe that will be an interesting effect.
-    particleSystemTexture = gol.readTexture("star.png");
+    particleSystemTexture = gol.readTexture("particle.png");
 
     float[] ambient = {0.3f, 0.1f, 0.5f, 1.0f};
     float[] diffuse = {0.3f, 0.1f, 0.5f, 1.0f};
@@ -236,64 +236,64 @@ public class Renderer extends WindowAdapter implements GLEventListener, Observer
       case 1:
         positions[0] = new Vertex(2.5f, 1.7f, -4.4f);
         positions[1] = new Vertex(10.0f, 1.7f, -4.4f);
-        pel.pelDrawSprayedSystem(positions, particleSystemTexture, particleSystemMaterial, 2.0f,
-            10, 0.2f, 0.007f, 150f, cameraAngle);
+        pel.pelCone(positions, particleSystemTexture, particleSystemMaterial, 2.0f, 10, 0.2f,
+            0.007f, 150f, cameraAngle);
         break;
 
       case 2:
         positions[0] = new Vertex(2.5f, 1.7f, -4.4f);
         positions[1] = new Vertex(7.0f, 1.7f, -4.4f);
-        pel.pelDrawCylindricalSystem(positions, particleSystemTexture, particleSystemMaterial,
-            0.2f, 10, 0.2f, 0.007f, 150f, cameraAngle);
+        pel.pelCylinder(positions, particleSystemTexture, particleSystemMaterial, 0.2f, 10, 0.2f,
+            0.007f, 150f, cameraAngle);
         break;
 
       case 3:
         positions[0] = new Vertex(2.5f, 1.7f, -4.4f);
         positions[1] = new Vertex(7.0f, 1.7f, -4.4f);
-        pel.pelDrawReversedSystem(positions, particleSystemTexture, particleSystemMaterial, 0.2f,
-            10, 0.2f, 0.007f, 150f, cameraAngle);
+        pel.pelReversedCone(positions, particleSystemTexture, particleSystemMaterial, 0.2f, 10,
+            0.2f, 0.007f, 150f, cameraAngle);
         break;
 
       case 4:
         positions[0] = new Vertex(2.0f, 1.0f, 0.0f);
         positions[1] = new Vertex(2.0f, 15.0f, 0.0f);
-        pel.pelDrawFountainSystem(positions, particleSystemTexture, particleSystemMaterial, 5.0f,
-            10, 0.2f, 0.007f, 150f, cameraAngle, new Vertex(0.0f, -0.0025f, 0.0f));
+        pel.pelFountain(positions, particleSystemTexture, particleSystemMaterial, 5.0f, 10, 0.2f,
+            0.007f, 150f, cameraAngle, new Vertex(0.0f, -0.0025f, 0.0f));
         break;
 
       case 5:
         positions[0] = new Vertex(5.0f, 3.0f, 0.0f);
         positions[1] = new Vertex(0.0f, 3.0f, 0.0f);
-        pel.pelDrawLineSystem(positions, particleSystemTexture, particleSystemMaterial, 5.0f, 30,
-            0.2f, 0.025f, 150f, cameraAngle, new Vertex(0.0f, -0.0025f, 0.0f));
+        pel.pelLine(positions, particleSystemTexture, particleSystemMaterial, 5.0f, 30, 0.2f,
+            0.025f, 150f, cameraAngle, new Vertex(0.0f, -0.0025f, 0.0f));
         break;
 
       case 6:
         positions[0] = new Vertex(0.0f, 0.2f, 0.0f);
         positions[1] = new Vertex(0.0f, 0.0f, 0.0f);
-        pel.pelDrawCircleSystem(positions, particleSystemTexture, particleSystemMaterial, 8, 40,
-            0.2f, 0.015f, 150f, cameraAngle, new Vertex(0.0f, 0.0025f, 0.0f));
+        pel.pelFire(positions, particleSystemTexture, particleSystemMaterial, 8, 40, 0.2f, 0.015f,
+            150f, cameraAngle, new Vertex(0.0f, 0.0025f, 0.0f));
         break;
 
       case 7:
         positions[0] = new Vertex(0.0f, 5.0f, 0.0f);
         positions[1] = new Vertex(0.0f, 0.0f, 0.0f);
-        pel.pelDrawPulseSystem(positions, particleSystemTexture, particleSystemMaterial, 8, 1000,
-            0.2f, 0.015f, 150f, cameraAngle, new Vertex(0.0f, 0.0f, 0.0f));
+        pel.pelRing(positions, particleSystemTexture, particleSystemMaterial, 8, 1000, 0.2f,
+            0.015f, 150f, cameraAngle, new Vertex(0.0f, 0.0f, 0.0f));
         break;
 
       case 8:
         positions[0] = new Vertex(0.0f, 5.0f, 0.0f);
         positions[1] = new Vertex(0.0f, 5.0f, 0.0f);
-        pel.pelDrawFireworksSystem(positions, particleSystemTexture, particleSystemMaterial, 8,
-            1000, 0.2f, 0.015f, 150f, cameraAngle, new Vertex(0.0f, -0.0025f, 0.0f));
+        pel.pelFireworks(positions, particleSystemTexture, particleSystemMaterial, 8, 1000, 0.2f,
+            0.015f, 150f, cameraAngle, new Vertex(0.0f, -0.0025f, 0.0f));
         break;
 
       case 9:
         positions[0] = new Vertex(0.0f, 5.0f, 0.0f);
         positions[1] = new Vertex(0.0f, 5.0f, 0.0f);
-        pel.pelDrawAtomicSystem(positions, particleSystemTexture, particleSystemMaterial, 8, 1000,
-            0.2f, 0.015f, 150f, cameraAngle, new Vertex(0.0f, 0.0f, 0.0f));
+        pel.pelAtom(positions, particleSystemTexture, particleSystemMaterial, 8, 1000, 0.2f,
+            0.015f, 150f, cameraAngle, new Vertex(0.0f, 0.0f, 0.0f));
         break;
 
     }
