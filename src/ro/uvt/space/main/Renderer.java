@@ -38,6 +38,7 @@ import javax.media.opengl.glu.GLU;
 
 import ro.uvt.gol.GOL;
 import ro.uvt.gol.GraphicObject;
+import ro.uvt.pel.DefaultPEL;
 import ro.uvt.pel.PEL;
 import ro.uvt.pel.util.Material;
 import ro.uvt.pel.util.Vertex;
@@ -101,7 +102,7 @@ public class Renderer extends WindowAdapter implements GLEventListener, Observer
 
     floor = gol.golLoad("floor.obj", "floor.png");
 
-    pel = new PEL(gl);
+    pel = DefaultPEL.getInstance(drawable);
 
     System.out.println("renderer: " + gl.glGetString(GL_RENDERER));
     System.out.println("vendor: " + gl.glGetString(GL_VENDOR));
@@ -127,12 +128,10 @@ public class Renderer extends WindowAdapter implements GLEventListener, Observer
       height = 1;
     }
     gl.glViewport(0, 0, width, height);
-
+    
     gl.glMatrixMode(GL_PROJECTION);
     gl.glLoadIdentity();
-
-    float aspect = (float) width / height;
-    glu.gluPerspective(45.0, aspect, 0.1, 100.0);
+    glu.gluPerspective(45.0, (float) width / height, 0.1, 100.0);
 
     gl.glMatrixMode(GL_MODELVIEW);
     gl.glLoadIdentity();
@@ -278,8 +277,8 @@ public class Renderer extends WindowAdapter implements GLEventListener, Observer
       case 7:
         positions[0] = new Vertex(0.0f, 5.0f, 0.0f);
         positions[1] = new Vertex(0.0f, 0.0f, 0.0f);
-        pel.pelRing(positions, particleSystemTexture, particleSystemMaterial, 8, 1000, 0.2f,
-            0.015f, 150f, cameraAngle, new Vertex(0.0f, 0.0f, 0.0f));
+        pel.pelRing(positions, particleSystemTexture, particleSystemMaterial, 8, 1000, 0.2f, 0.015f,
+            150f, cameraAngle, new Vertex(0.0f, 0.0f, 0.0f));
         break;
 
       case 8:
@@ -292,8 +291,8 @@ public class Renderer extends WindowAdapter implements GLEventListener, Observer
       case 9:
         positions[0] = new Vertex(0.0f, 5.0f, 0.0f);
         positions[1] = new Vertex(0.0f, 5.0f, 0.0f);
-        pel.pelAtom(positions, particleSystemTexture, particleSystemMaterial, 8, 1000, 0.2f,
-            0.015f, 150f, cameraAngle, new Vertex(0.0f, 0.0f, 0.0f));
+        pel.pelAtom(positions, particleSystemTexture, particleSystemMaterial, 8, 1000, 0.2f, 0.015f,
+            150f, cameraAngle, new Vertex(0.0f, 0.0f, 0.0f));
         break;
 
     }

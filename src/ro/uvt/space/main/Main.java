@@ -18,21 +18,20 @@ public class Main {
     capabilities.setDoubleBuffered(true);
     capabilities.setNumSamples(2);
     capabilities.setSampleBuffers(true);
+    
     GLCanvas canvas = new GLCanvas(capabilities);
-    FPSAnimator animator = new FPSAnimator(canvas, 100);
+    FPSAnimator animator = new FPSAnimator(canvas, 60);
     Renderer renderer = new Renderer(animator);
     canvas.addGLEventListener(renderer);
     canvas.addKeyListener(renderer.getKeyListener());
     canvas.setFocusable(true);
     canvas.requestFocus();
+    
     JFrame frame = new JFrame("F16 In Space");
     frame.getContentPane().add(canvas);
     frame.addWindowListener(renderer);
-    // frame.setUndecorated(true);
-    // frame.setExtendedState(Frame.MAXIMIZED_BOTH);
-
-    frame.setSize(790, 550);
-
+    frame.setUndecorated(true);
+    frame.setExtendedState(Frame.MAXIMIZED_BOTH);
     frame.setVisible(true);
     animator.start();
   }
