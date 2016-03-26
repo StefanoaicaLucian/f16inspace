@@ -112,10 +112,10 @@ public class Renderer extends WindowAdapter implements GLEventListener, Observer
     // for all... or maybe that will be an interesting effect.
     particleSystemTexture = gol.readTexture("particle.png");
 
-    float[] ambient = {0.3f, 0.1f, 0.5f, 1.0f};
-    float[] diffuse = {0.3f, 0.1f, 0.5f, 1.0f};
-    float[] specular = {0.3f, 0.1f, 0.5f, 1.0f};
-    float[] shine = {100.0f};
+    float[] ambient = {0.0f, 0.1f, 0.5f, 1.0f};
+    float[] diffuse = {0.0f, 0.1f, 0.5f, 1.0f};
+    float[] specular = {0.0f, 0.1f, 0.5f, 1.0f};
+    float[] shine = {8.0f};
 
     particleSystemMaterial = new Material(ambient, diffuse, specular, shine);
 
@@ -235,73 +235,71 @@ public class Renderer extends WindowAdapter implements GLEventListener, Observer
       case 1:
         positions[0] = new Vertex(2.5f, 1.7f, -4.4f);
         positions[1] = new Vertex(10.0f, 1.7f, -4.4f);
-        pel.pelCone(positions[0], positions[1], particleSystemTexture, particleSystemMaterial, 2.0f,
-            10, 0.2f, 0.007f, 150f, cameraAngle);
+        pel.pelCone(positions[0], positions[1], particleSystemTexture, particleSystemMaterial, 10,
+            2f, 0.2f, 0.02f, 0.01f, cameraAngle);
         break;
 
       case 2:
         positions[0] = new Vertex(2.5f, 1.7f, -4.4f);
         positions[1] = new Vertex(7.0f, 1.7f, -4.4f);
         pel.pelCylinder(positions[0], positions[1], particleSystemTexture, particleSystemMaterial,
-            0.2f, 10, 0.2f, 0.007f, 150f, cameraAngle);
+            10, 0.2f, 0.2f, 0.01f, 0.01f, cameraAngle);
         break;
 
       case 3:
         positions[0] = new Vertex(2.5f, 1.7f, -4.4f);
         positions[1] = new Vertex(7.0f, 1.7f, -4.4f);
         pel.pelReversedCone(positions[0], positions[1], particleSystemTexture,
-            particleSystemMaterial, 0.2f, 10, 0.2f, 0.007f, 150f, cameraAngle);
+            particleSystemMaterial, 10, 0.2f, 0.2f, 0.01f, 0.01f, cameraAngle);
         break;
 
       case 4:
         positions[0] = new Vertex(2.0f, 1.0f, 0.0f);
         positions[1] = new Vertex(2.0f, 15.0f, 0.0f);
-        pel.pelFountain(positions[0], positions[1], particleSystemTexture, particleSystemMaterial,
-            5.0f, 10, 0.2f, 0.007f, 150f, cameraAngle, new Vertex(0.0f, -0.0025f, 0.0f));
+        pel.pelFountain(positions[0], positions[1], new Vertex(0.0f, -0.0025f, 0.0f),
+            particleSystemTexture, particleSystemMaterial, 10, 4.0f, 0.2f, 0.01f, 0.007f,
+            cameraAngle);
         break;
 
       case 5:
-        positions[0] = new Vertex(5.0f, 3.0f, 0.0f);
-        positions[1] = new Vertex(0.0f, 3.0f, 0.0f);
-        pel.pelLine(positions[0], positions[1], particleSystemTexture, particleSystemMaterial, 65,
-            0.2f, 0.025f, 150, cameraAngle, new Vertex(0.0f, -0.0025f, 0.0f));
+        positions[0] = new Vertex(5.0f, 2.0f, 0.0f);
+        positions[1] = new Vertex(7.0f, 3.0f, 0.0f);
+        pel.pelLine(positions[0], positions[1], new Vertex(0.0f, -0.0025f, 0.0f),
+            particleSystemTexture, particleSystemMaterial, 65, 0.2f, 0.03f, cameraAngle);
         break;
 
       case 6:
         positions[0] = new Vertex(0.0f, 0.2f, 0.0f);
-        positions[1] = new Vertex(0.0f, 0.0f, 0.0f);
-        pel.pelFire(positions[0], particleSystemTexture, particleSystemMaterial, 2, 40, 0.2f,
-            0.015f, 150f, cameraAngle, new Vertex(0.0f, 0.0025f, 0.0f));
+        pel.pelFire(positions[0], new Vertex(0.0f, 0.0025f, 0.0f), particleSystemTexture,
+            particleSystemMaterial, 40, 2.0f, 0.2f, 0.015f, cameraAngle);
         break;
 
       case 7:
-        positions[0] = new Vertex(0.0f, 5.0f, 0.0f);
-        positions[1] = new Vertex(0.0f, 0.0f, 0.0f);
-        pel.pelRing(positions[0], particleSystemTexture, particleSystemMaterial, 1000, 0.2f, 0.025f,
-            10f, cameraAngle, new Vertex(0.0f, 0.0f, 0.0f));
+        pel.pelRing(new Vertex(0.0f, 5.0f, 0.0f), particleSystemTexture, particleSystemMaterial,
+            1000, 0.2f, 0.025f, 0.1f, cameraAngle);
         break;
 
       case 8:
         List<Vertex> list = new ArrayList<>();
         list.add(new Vertex(0.0f, 5.0f, 0.0f));
-        list.add(new Vertex(0.0f, 5.0f, 0.0f));
-        pel.pelFireworks(list, particleSystemTexture, particleSystemMaterial, 1000, 0.2f, 0.025f,
-            150f, cameraAngle, new Vertex(0.0f, -0.0025f, 0.0f));
+        list.add(new Vertex(7.0f, 5.0f, 0.0f));
+        pel.pelFireworks(list, new Vertex(0.0f, -0.002f, 0.0f), particleSystemTexture,
+            particleSystemMaterial, 1000, 0.2f, 0.025f, 0.04f, cameraAngle);
         break;
 
       case 9:
         positions[0] = new Vertex(0.0f, 5.0f, 0.0f);
         positions[1] = new Vertex(0.0f, 5.0f, 0.0f);
         pel.pelAtom(positions[0], particleSystemTexture, particleSystemMaterial, 400, 0.2f, 0.025f,
-            5f, cameraAngle);
+            0.1f, cameraAngle);
         break;
 
       case 0:
         positions[0] = new Vertex(0.0f, 5.0f, 0.0f);
         positions[1] = new Vertex(0.0f, 5.0f, 0.0f);
-        pel.pelDisk(positions[0], 2.0f, 0.2f, particleSystemTexture, particleSystemMaterial, 5, 0.0025f, 150f, cameraAngle);
+        pel.pelDisk(positions[0], particleSystemTexture, particleSystemMaterial, 5, 0.0025f, 0.01f,
+            0.2f, cameraAngle);
         break;
-
     }
   }
 }
