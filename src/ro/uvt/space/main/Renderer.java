@@ -297,8 +297,8 @@ public class Renderer extends WindowAdapter implements GLEventListener, Observer
       case 0:
         positions[0] = new Vertex(0.0f, 5.0f, 0.0f);
         positions[1] = new Vertex(0.0f, 5.0f, 0.0f);
-        pel.pelDisk(positions[0], particleSystemTexture, particleSystemMaterial, 5, 0.0025f, 0.01f,
-            0.2f, cameraAngle);
+        pel.pelDisk(positions[0], particleSystemTexture, particleSystemMaterial, 5, 0.2f, 0.0025f,
+            0.01f, cameraAngle);
         break;
     }
   }
