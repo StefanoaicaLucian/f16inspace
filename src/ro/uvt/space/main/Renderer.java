@@ -41,6 +41,7 @@ import ro.uvt.gol.GraphicObject;
 import ro.uvt.pel.particle_systems.Libraries;
 import ro.uvt.pel.util.Material;
 import ro.uvt.pel.util.Vertex;
+import ro.uvt.pel.particle_systems.PEL;
 
 import com.jogamp.opengl.util.FPSAnimator;
 import com.jogamp.opengl.util.texture.Texture;
@@ -56,7 +57,7 @@ public class Renderer extends WindowAdapter implements GLEventListener, Observer
   private Texture particleSystemTexture;
   private FPSAnimator animator;
   private GOL gol;
-  private ro.uvt.pel.particle_systems.PEL pel;
+  private PEL pel;
   private List<GraphicObject> jetPlane = new ArrayList<GraphicObject>();
   private GraphicObject floor;
   private float cameraAngle;
@@ -254,8 +255,8 @@ public class Renderer extends WindowAdapter implements GLEventListener, Observer
         break;
 
       case 4:
-        positions[0] = new Vertex(2.0f, 1.0f, 0.0f);
-        positions[1] = new Vertex(2.0f, 15.0f, 0.0f);
+        positions[0] = new Vertex(2.0f, 1.0f, 4.0f);
+        positions[1] = new Vertex(2.0f, 15.0f, 4.0f);
         pel.pelFountain(positions[0], positions[1], new Vertex(0.0f, -0.0025f, 0.0f),
             particleSystemTexture, particleSystemMaterial, 10, 4.0f, 0.2f, 0.01f, 0.007f,
             cameraAngle);
@@ -269,9 +270,9 @@ public class Renderer extends WindowAdapter implements GLEventListener, Observer
         break;
 
       case 6:
-        positions[0] = new Vertex(0.0f, 0.2f, 0.0f);
+        positions[0] = new Vertex(0.0f, 0.2f, 4.0f);
         pel.pelFire(positions[0], new Vertex(0.0f, 0.0025f, 0.0f), particleSystemTexture,
-            particleSystemMaterial, 40, 2.0f, 0.2f, 0.015f, cameraAngle);
+            particleSystemMaterial, 40, 2.0f, 0.2f, 0.025f, cameraAngle);
         break;
 
       case 7:
@@ -281,8 +282,8 @@ public class Renderer extends WindowAdapter implements GLEventListener, Observer
 
       case 8:
         List<Vertex> list = new ArrayList<>();
-        list.add(new Vertex(0.0f, 5.0f, 0.0f));
-        list.add(new Vertex(7.0f, 5.0f, 0.0f));
+        list.add(new Vertex(0.0f, 5.0f, 4.0f));
+        list.add(new Vertex(7.0f, 5.0f, 4.0f));
         pel.pelFireworks(list, new Vertex(0.0f, -0.002f, 0.0f), particleSystemTexture,
             particleSystemMaterial, 1000, 0.2f, 0.025f, 0.04f, cameraAngle);
         break;
